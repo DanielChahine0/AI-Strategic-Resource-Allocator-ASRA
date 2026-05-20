@@ -81,3 +81,44 @@ def evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
 @app.get("/eval/datasets")
 def eval_datasets() -> dict[str, list[str]]:
     return {"datasets": eval_mod.available_datasets()}
+
+
+class DatasetResponse(BaseModel):
+    dataset: str
+    applicants: list[Applicant]
+    inventory: list[Device]
+    ground_truth: dict[str, Any]
+
+
+@app.get("/eval/dataset/{dataset}", response_model=DatasetResponse)
+def eval_dataset(dataset: str) -> DatasetResponse:
+    """Raw labelled dataset (applicants + inventory + ground-truth labels) for
+    the frontend's read-only dataset viewer. Read-only; runs no matching."""
+    try:
+        applicants, inventory, ground_truth = eval_mod.load_dataset(dataset)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return DatasetResponse(
+        dataset=dataset,
+        applicants=applicants,
+        inventory=inventory,
+        ground_truth=ground_truth,
+    )
+
+
+@app.get("/health")
+def health() -> dict[str, Any]:
+    st = llm_mod.model_status()
+    return {"status": "ok", "model_state": st["state"], "live": st["live"]}
+
+
+@app.get("/status")
+def status(probe: bool = False) -> dict:
+    """Live model state for the dashboard: generation + embedding models,
+    whether the engine is serving live Gemini output or deterministic
+    fallbacks, quota/retry details from the last 429, and this session's
+    call stats. Pass ?probe=true to spend one cheap generation + embedding
+    call confirming the models answer right now (costs quota); default is a
+    zero-cost snapshot derived from real calls made this session.
+    """
+    return llm_mod.model_status(probe=probe)

@@ -16,8 +16,9 @@ No DB, no auth — this is the surface a future web frontend would call.
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -99,3 +100,26 @@ def post_evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
 @app.get("/eval/datasets")
 def eval_datasets() -> dict[str, list[str]]:
     return {"datasets": eval_mod.available_datasets()}
+
+
+class DatasetResponse(BaseModel):
+    dataset: str
+    applicants: list[Applicant]
+    inventory: list[Device]
+    ground_truth: dict[str, Any]
+
+
+@app.get("/eval/dataset/{dataset}", response_model=DatasetResponse)
+def eval_dataset(dataset: str) -> DatasetResponse:
+    """Raw labelled dataset (applicants + inventory + ground-truth labels) for
+    the frontend's read-only dataset viewer. Read-only; runs no matching."""
+    try:
+        applicants, inventory, ground_truth = eval_mod.load_dataset(dataset)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return DatasetResponse(
+        dataset=dataset,
+        applicants=applicants,
+        inventory=inventory,
+        ground_truth=ground_truth,
+    )

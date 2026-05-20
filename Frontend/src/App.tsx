@@ -3,6 +3,7 @@ import { fetchDatasets, runEvaluation } from "./api";
 import ComparisonTable from "./components/ComparisonTable";
 import DatasetPicker from "./components/DatasetPicker";
 import HeadToHead from "./components/HeadToHead";
+import ModelStatusBar from "./components/ModelStatusBar";
 import SummaryCard from "./components/SummaryCards";
 import type { ModelKey, ModelRunState } from "./types";
 
@@ -80,6 +81,9 @@ export default function ModelComparison() {
           rationale cites the applicant's own words.
         </p>
       </header>
+
+      {/* live model health */}
+      <ModelStatusBar />
 
       {/* controls */}
       <div className="pt-8">

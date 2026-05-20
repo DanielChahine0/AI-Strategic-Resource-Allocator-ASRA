@@ -137,6 +137,12 @@ def _load_dataset(dataset: str) -> tuple[list[Applicant], list[Device], dict]:
     return applicants, inventory, ground_truth
 
 
+def load_dataset(dataset: str) -> tuple[list[Applicant], list[Device], dict]:
+    """Public accessor for the raw labelled dataset (applicants, inventory,
+    ground-truth labels). Powers the frontend's read-only dataset viewer."""
+    return _load_dataset(dataset)
+
+
 # ---------------------------------------------------------------------------
 # Metric scorers (deterministic — identical logic in both models)
 # ---------------------------------------------------------------------------

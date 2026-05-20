@@ -357,11 +357,13 @@ def _generate(
                 model=_model(), contents=user, config=cfg
             )
             _record_usage(resp)
+            _record_success()
             return resp.text or ""
         except Exception as exc:
             last_exc = exc
             time.sleep(0.5)
     assert last_exc is not None
+    _record_failure(last_exc)
     raise last_exc
 
 

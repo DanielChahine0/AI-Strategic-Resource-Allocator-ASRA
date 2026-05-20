@@ -1,4 +1,4 @@
-import type { EvalResult, ModelKey } from "./types";
+import type { DatasetPayload, EvalResult, ModelKey, ModelStatus } from "./types";
 
 const ENDPOINTS: Record<ModelKey, string> = {
   ai: import.meta.env.VITE_AI_API ?? "http://localhost:8000",
@@ -10,11 +10,43 @@ export const MODEL_LABELS: Record<ModelKey, string> = {
   rag: "RAG Model",
 };
 
+export async function fetchStatus(model: ModelKey): Promise<ModelStatus> {
+  let res: Response;
+  try {
+    res = await fetch(`${ENDPOINTS[model]}/status`);
+  } catch {
+    throw new Error(
+      `Could not reach ${MODEL_LABELS[model]} at ${ENDPOINTS[model]}.`,
+    );
+  }
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return (await res.json()) as ModelStatus;
+}
+
 export async function fetchDatasets(model: ModelKey): Promise<string[]> {
   const res = await fetch(`${ENDPOINTS[model]}/eval/datasets`);
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   const data = await res.json();
   return data.datasets ?? [];
+}
+
+export async function fetchDataset(
+  model: ModelKey,
+  dataset: string,
+): Promise<DatasetPayload> {
+  let res: Response;
+  try {
+    res = await fetch(`${ENDPOINTS[model]}/eval/dataset/${encodeURIComponent(dataset)}`);
+  } catch {
+    throw new Error(
+      `Could not reach ${MODEL_LABELS[model]} at ${ENDPOINTS[model]}. Is the server running?`,
+    );
+  }
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    throw new Error(`${MODEL_LABELS[model]} returned ${res.status}: ${detail.slice(0, 200)}`);
+  }
+  return (await res.json()) as DatasetPayload;
 }
 
 export async function runEvaluation(
