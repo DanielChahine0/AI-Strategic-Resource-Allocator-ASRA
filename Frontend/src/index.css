@@ -7,11 +7,12 @@
    for headings, grotesque for body, mono for every number and identifier.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-paper: #f6f1e7;
-  --color-paper-2: #efe8d9;
+  --color-bg: #ece4d5; /* page surface (one step deeper than cards) */
+  --color-paper: #fcf9f3; /* elevated card surface (near-white warm) */
+  --color-paper-2: #efe8d9; /* muted track / table header */
   --color-ink: #1c1813;
   --color-ink-soft: #5b5347;
-  --color-line: #d8cdb8;
+  --color-line: #ddd2bd;
 
   --color-ai: #bf4a2f; /* terracotta */
   --color-ai-soft: #f3ddd2;
@@ -36,26 +37,13 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-paper);
+  min-height: 100dvh;
   color: var(--color-ink);
   font-family: var(--font-body);
-  /* faint engineering grid + grain for atmosphere */
-  background-image:
-    linear-gradient(var(--color-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
-  background-size: 28px 28px, 28px 28px;
-  background-position: -1px -1px, -1px -1px;
-}
-
-/* grain overlay */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.04;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* clean layered page: a quiet warm wash, no texture */
+  background-color: var(--color-bg);
+  background-image: linear-gradient(180deg, #f1ebde 0%, var(--color-bg) 38%, #e6ddca 100%);
+  background-attachment: fixed;
 }
 
 .tnum {

@@ -88,7 +88,7 @@ export default function ComparisonTable({
   if (rows.length === 0) return null;
 
   return (
-    <div className="rise border border-[var(--color-line)] bg-[var(--color-paper)]">
+    <div className="card rise overflow-hidden border border-[var(--color-line)] bg-[var(--color-paper)]">
       {/* header */}
       <div className="grid grid-cols-[1.1fr_1.4fr_1.4fr] border-b border-[var(--color-ink)] bg-[var(--color-paper-2)]">
         <div className="px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em]">

@@ -138,7 +138,7 @@ export default function ModelStatusBar() {
   }, []);
 
   return (
-    <section className="mt-6 border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3">
+    <section className="card mt-6 border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3">
       <div className="mb-1 flex items-center gap-2">
         <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
           Model status
