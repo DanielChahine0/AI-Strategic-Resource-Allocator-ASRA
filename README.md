@@ -1,13 +1,7 @@
-# ASRA — AI Strategic Resource Allocator
+# ASRA | AI Strategic Resource Allocator
 
-A matching-engine prototype that pairs technology applicants with donated
-hardware for **Let's Get Together (LGT)**, built as part of the Riipen / ASRA
-project. Given an applicant's needs (collected through a short, ESL-friendly
-intake) and a pool of donated devices, the engine recommends the best-fit
-device with a transparent, auditable rationale.
-
-This repository holds **three programs** — two independent implementations of
-the matching engine plus a placeholder for the user interface:
+A matching-engine prototype that pairs technology applicants with donated hardware for **Let's Get Together (LGT)**, built as part of the Riipen / ASRA project. Given an applicant's needs (collected through a short, ESL-friendly intake) and a pool of donated devices, the engine recommends the best-fit device with a transparent, auditable rationale. 
+This repository holds **three programs** — two independent implementations of the matching engine plus a placeholder for the user interface:
 
 | Program | What it is | Status |
 |---|---|---|
@@ -15,13 +9,7 @@ the matching engine plus a placeholder for the user interface:
 | [`RAG Model/`](RAG%20Model/) | Same engine, evolved into a **retrieval-augmented** version: a ChromaDB knowledge base grounds every LLM call so each allocation cites the documents behind it. | ✅ Working MVP (32 tests) |
 | [`Frontend/`](Frontend/) | Web UI for intake + reviewer dashboard. | 🚧 Placeholder — not yet implemented |
 
-> **Why two engines?** They are two prototype approaches to the same problem,
-> kept side by side so LGT can compare them. The **AI Model** is the leaner,
-> faster baseline. The **RAG Model** trades setup cost (a local vector store)
-> for *grounded, citable* decisions — every recommendation points back to a
-> category definition, tier spec, policy, or past-decision document the LGT
-> team can audit. Both share the same core idea: **fit is a hard gate, scoring
-> is pure-functional, and the LLM never overrides the rules.**
+> **Why two engines?** They are two prototype approaches to the same problem, kept side by side so LGT can compare them. The **AI Model** is the leaner, faster baseline. The **RAG Model** trades setup cost (a local vector store) for *grounded, citable* decisions — every recommendation points back to a category definition, tier spec, policy, or past-decision document the LGT team can audit. Both share the same core idea: **fit is a hard gate, scoring is pure-functional, and the LLM never overrides the rules.**
 
 ---
 
@@ -42,9 +30,7 @@ Pick the application whose #1 device scores highest
 Final result: selected device + runner-up + LLM explanation + discarded splits
 ```
 
-Every weight, threshold, and bonus LGT might want to tune lives in a **named
-constant**, not a buried magic number. See each program's README for the full
-list of tunable knobs and the open stakeholder questions.
+Every weight, threshold, and bonus LGT might want to tune lives in a **named constant**, not a buried magic number. See each program's README for the full list of tunable knobs and the open stakeholder questions.
 
 ---
 
@@ -72,14 +58,9 @@ matching system prototype/
 ## Prerequisites
 
 - **Python 3.11+**
-- A **Gemini API key** is *optional*. Both engines run without one — every LLM
-  call has a deterministic fallback, so the demo never crashes on a missing key
-  or a transient API error. Set `GEMINI_API_KEY` to unlock LLM parsing, tier
-  recommendation, and natural-language explanations.
+- A **Gemini API key** is *optional*. Both engines run without one — every LLM call has a deterministic fallback, so the demo never crashes on a missing key or a transient API error. Set `GEMINI_API_KEY` to unlock LLM parsing, tier recommendation, and natural-language explanations.
 
-> ⚠️ **Secrets:** each program reads its key from a local `.env` file, which is
-> **gitignored** and must never be committed. Copy `.env.example` → `.env` and
-> paste your key in. If you ever expose a key, rotate it in Google AI Studio.
+> ⚠️ **Secrets:** each program reads its key from a local `.env` file, which is **gitignored** and must never be committed. Copy `.env.example` → `.env` and paste your key in. If you ever expose a key, rotate it in Google AI Studio.
 
 ---
 
@@ -97,9 +78,7 @@ cp .env.example .env            # then add GEMINI_API_KEY (optional)
 python -m asra_matcher intake --inventory sample_data/inventory.json
 
 # Or score a saved applicant non-interactively
-python -m asra_matcher match \
-    sample_data/applicants/app-FC-newcomer-jobsearch.json \
-    --inventory sample_data/inventory.json
+python -m asra_matcher match sample_data/applicants/app-FC-newcomer-jobsearch.json --inventory sample_data/inventory.json
 
 # Optional FastAPI server: POST /match, POST /intake/parse, GET /health
 uvicorn asra_matcher.api:app --reload --port 8000
@@ -122,29 +101,21 @@ cp .env.example .env            # then add GEMINI_API_KEY (optional)
 .venv/bin/python -m asra_matcher intake --inventory sample_data/inventory.json
 
 # 3. Or run a saved applicant
-.venv/bin/python -m asra_matcher match \
-    sample_data/applicants/applicant_FC_multi.json \
-    --inventory sample_data/inventory.json
+.venv/bin/python -m asra_matcher match sample_data/applicants/applicant_FC_multi.json --inventory sample_data/inventory.json
 
 .venv/bin/pytest -v             # 32 tests (LLM + embeddings mocked)
 ```
 
-Each program's own README has the deep detail: full pipeline, the LLM's exact
-role and fallbacks, every tunable knob, and (for the RAG Model) how to extend
-the knowledge base.
+Each program's own README has the deep detail: full pipeline, the LLM's exact role and fallbacks, every tunable knob, and (for the RAG Model) how to extend the knowledge base.
 
 ---
 
 ## Frontend
 
-`Frontend/` is a placeholder for the planned web interface (applicant intake +
-LGT reviewer dashboard). It is **not implemented yet** — today both engines are
-driven through their CLI and the optional FastAPI endpoints, which a frontend
-would call.
+`Frontend/` is a placeholder for the planned web interface (applicant intake + LGT reviewer dashboard). It is **not implemented yet** — today both engines are driven through their CLI and the optional FastAPI endpoints, which a frontend would call.
 
 ---
 
 ## License
 
-Proprietary — see [`LICENSE`](LICENSE). © 2026 Riipen / ASRA team. All rights
-reserved. Internal prototype for stakeholder demo; not for redistribution.
+Proprietary — see [`LICENSE`](LICENSE). © 2026 Riipen / ASRA team. All rights reserved. Internal prototype for stakeholder demo; not for redistribution.
