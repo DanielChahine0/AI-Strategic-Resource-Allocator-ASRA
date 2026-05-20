@@ -1,0 +1,60 @@
+{
+  "dataset": "sample-v1",
+  "_note": "Expected category + tier per applicant, derived from the LGT precedent decisions in 'RAG Model/kb/past_decisions/'. acceptable_tiers allows >1 valid tier. PENDING HUMAN VALIDATION — these labels encode the documented allocation, not necessarily what either engine currently outputs.",
+  "applicants": {
+    "app-A1-kid": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "app-A2-teen": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": ["T2"]
+    },
+    "app-A3-arts": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": ["T2"]
+    },
+    "app-A3-cs-vm": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T1",
+      "acceptable_tiers": ["T1"]
+    },
+    "app-B-healthcare": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "app-C-jobsearch": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "app-D-senior-vision": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": ["T3", "OTHER"]
+    },
+    "app-F-newcomer-family": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "app-FC-newcomer-jobsearch": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    }
+  }
+}

@@ -131,3 +131,6 @@ class FinalMatchResult(BaseModel):
     retrieval_trace: dict[str, list[RetrievedChunk]] = Field(default_factory=dict)
     explanations: dict[str, str] = Field(default_factory=dict)
     notes: list[str] = Field(default_factory=list)
+    # Confidence of the RAG tier recommendation for the chosen application
+    # (A3 / C only; None otherwise). Additive — surfaced for the eval harness.
+    chosen_tier_confidence: Optional[float] = None

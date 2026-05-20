@@ -1,20 +1,30 @@
-"""FastAPI app exposing match / parse / reingest endpoints."""
+"""FastAPI app exposing match / parse / reingest / evaluate endpoints."""
 from __future__ import annotations
 
 from typing import Any
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 load_dotenv()
 
 from . import engine as engine_mod
+from . import eval as eval_mod
 from . import llm as llm_mod
 from .models import Applicant, Device, FinalMatchResult, IntakeAnswers
 from .rag import ingest as ingest_mod
 
 app = FastAPI(title="ASRA Matcher", version="0.1.0")
+
+# Allow the local Model Comparison frontend (Vite dev server) to call us.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class MatchRequest(BaseModel):
@@ -56,3 +66,18 @@ def reingest(rebuild: bool = False) -> dict[str, int]:
         return ingest_mod.ingest(rebuild=rebuild)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+class EvaluateRequest(BaseModel):
+    dataset: str = "sample-v1"
+    limit: int | None = None
+
+
+@app.post("/evaluate", response_model=eval_mod.EvalResult)
+def evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
+    return eval_mod.run_eval(dataset=req.dataset, limit=req.limit)
+
+
+@app.get("/eval/datasets")
+def eval_datasets() -> dict[str, list[str]]:
+    return {"datasets": eval_mod.available_datasets()}

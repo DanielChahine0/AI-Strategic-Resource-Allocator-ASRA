@@ -18,6 +18,12 @@ build/
 dist/
 .python-version
 
+# Frontend (Node)
+node_modules/
+Frontend/dist/
+*.tsbuildinfo
+*.local
+
 # Virtual environments
 .venv/
 venv/
@@ -55,3 +61,4 @@ intake_sessions/*.json
 *.swp
 *~
 .DS_Store
+.gstack/

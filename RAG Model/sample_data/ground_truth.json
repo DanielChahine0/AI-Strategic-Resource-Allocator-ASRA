@@ -1,0 +1,60 @@
+{
+  "dataset": "sample-v1",
+  "_note": "Expected category + tier per applicant, derived from the LGT precedent decisions in 'kb/past_decisions/'. acceptable_tiers allows >1 valid tier. Scenario keys are shared with the AI Model's ground_truth.json so the frontend can join rows across models. PENDING HUMAN VALIDATION.",
+  "applicants": {
+    "APP-A1-001": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "APP-A2-001": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": ["T2"]
+    },
+    "APP-A3-002": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": ["T2"]
+    },
+    "APP-A3-001": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T1",
+      "acceptable_tiers": ["T1"]
+    },
+    "APP-B-001": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "APP-C-001": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "APP-D-001": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": ["T3", "OTHER"]
+    },
+    "APP-F-001": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    },
+    "APP-FC-001": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": ["T3"]
+    }
+  }
+}

@@ -51,6 +51,55 @@ def _audit(record: dict[str, Any]) -> None:
         f.write(json.dumps(record, default=str) + "\n")
 
 
+# ---------------------------------------------------------------------------
+# Token capture (used by the evaluation harness — see asra_matcher.eval)
+# ---------------------------------------------------------------------------
+#
+# The eval runner wraps a single `engine.match()` call in start/read so it can
+# attribute Gemini token usage (across the tier-recommendation and explanation
+# calls) to one applicant. When no ledger is active — the normal /match path —
+# `_record_usage` is a no-op, so production behaviour is unchanged.
+
+import contextvars
+
+_TOKEN_LEDGER: contextvars.ContextVar[dict | None] = contextvars.ContextVar(
+    "asra_token_ledger", default=None
+)
+
+
+def start_token_capture() -> dict:
+    """Begin capturing token usage for the current context. Returns the ledger."""
+    ledger = {"input": 0, "output": 0, "total": 0, "calls": 0}
+    _TOKEN_LEDGER.set(ledger)
+    return ledger
+
+
+def read_token_capture() -> dict | None:
+    """Return the active ledger (or None if capture was never started)."""
+    return _TOKEN_LEDGER.get()
+
+
+def stop_token_capture() -> None:
+    _TOKEN_LEDGER.set(None)
+
+
+def _record_usage(response: Any) -> None:
+    """Add one Gemini response's token counts to the active ledger, if any."""
+    ledger = _TOKEN_LEDGER.get()
+    if ledger is None:
+        return
+    usage = getattr(response, "usage_metadata", None)
+    if usage is None:
+        return
+    pin = int(getattr(usage, "prompt_token_count", 0) or 0)
+    pout = int(getattr(usage, "candidates_token_count", 0) or 0)
+    total = int(getattr(usage, "total_token_count", 0) or 0) or (pin + pout)
+    ledger["input"] += pin
+    ledger["output"] += pout
+    ledger["total"] += total
+    ledger["calls"] += 1
+
+
 @dataclass
 class TierRecommendation:
     recommended_tier: DeviceTier
@@ -117,6 +166,7 @@ def _generate(
             resp = client.models.generate_content(
                 model=_model(), contents=user, config=cfg
             )
+            _record_usage(resp)
             return resp.text or ""
         except Exception as exc:
             last_exc = exc

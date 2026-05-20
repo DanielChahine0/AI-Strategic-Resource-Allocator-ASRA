@@ -1,10 +1,14 @@
 """Minimal FastAPI shim for ASRA.
 
-Two endpoints:
-  POST /match         — body: {"applicant": {...}, "inventory": [...]}
-                        returns FinalMatchResult
-  POST /intake/parse  — body: {"q1": "...", "q2": "...", ...}
-                        returns parsed Applicant (id auto-assigned)
+Endpoints:
+  POST /match          — body: {"applicant": {...}, "inventory": [...]}
+                         returns FinalMatchResult
+  POST /intake/parse   — body: {"q1": "...", "q2": "...", ...}
+                         returns parsed Applicant (id auto-assigned)
+  GET  /health
+  POST /evaluate       — run the engine over a labelled dataset; returns
+                         per-match rows + an aggregate summary (eval mode)
+  GET  /eval/datasets  — list available eval datasets
 
 No DB, no auth — this is the surface a future web frontend would call.
 """
@@ -14,12 +18,21 @@ from __future__ import annotations
 from datetime import datetime
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from asra_matcher import engine, llm
+from asra_matcher import engine, eval as eval_mod, llm
 from asra_matcher.models import Applicant, Device, FinalMatchResult
 
 app = FastAPI(title="ASRA Matching Engine", version="0.1.0")
+
+# Allow the local Model Comparison frontend (Vite dev server) to call us.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class MatchRequest(BaseModel):
@@ -59,3 +72,18 @@ def post_intake_parse(req: IntakeParseRequest) -> Applicant:
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "llm_available": str(llm.is_available())}
+
+
+class EvaluateRequest(BaseModel):
+    dataset: str = "sample-v1"
+    limit: int | None = None
+
+
+@app.post("/evaluate", response_model=eval_mod.EvalResult)
+def post_evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
+    return eval_mod.run_eval(dataset=req.dataset, limit=req.limit)
+
+
+@app.get("/eval/datasets")
+def eval_datasets() -> dict[str, list[str]]:
+    return {"datasets": eval_mod.available_datasets()}

@@ -119,6 +119,7 @@ def match(
         retrieval_trace=retrieval_trace,
         explanations={m.device.id: (m.explanation or "") for m in top2},
         notes=notes,
+        chosen_tier_confidence=(chosen_rag.confidence if chosen_rag else None),
     )
 
 
