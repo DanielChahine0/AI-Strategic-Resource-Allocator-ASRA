@@ -46,7 +46,7 @@ function Mark({ ok }: { ok: boolean | null | undefined }) {
 
 function Alloc({ row, model }: { row?: EvalRow; model: ModelKey }) {
   const color = ACCENT[model];
-  if (!row) return <div className="px-4 py-3 text-xs text-[var(--color-ink-soft)]">—</div>;
+  if (!row) return <div className="px-4 py-3 text-xs text-[var(--color-ink-soft)]">no result</div>;
   if (row.error)
     return <div className="px-4 py-3 font-mono text-[11px] text-[var(--color-signal)]">{row.error}</div>;
   return (
@@ -56,7 +56,7 @@ function Alloc({ row, model }: { row?: EvalRow; model: ModelKey }) {
           className="tnum px-1.5 py-0.5 text-[11px] font-semibold text-[var(--color-paper)]"
           style={{ backgroundColor: color }}
         >
-          {row.chosen_category}/{row.chosen_tier ?? "—"}
+          {row.chosen_category}/{row.chosen_tier ?? "n/a"}
         </span>
         <span className="tnum text-[11px] text-[var(--color-ink-soft)]">{row.chosen_device_id}</span>
       </div>
@@ -160,14 +160,14 @@ export default function ComparisonTable({
 
       <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-[var(--color-ink)] bg-[var(--color-paper-2)] px-4 py-2.5 text-[10px] text-[var(--color-ink-soft)]">
         <span>
-          <Mark ok /> <Mark ok={false} /> = category · tier vs. ground truth
+          <Mark ok /> <Mark ok={false} /> = category and tier vs the answer key
         </span>
         <span className="tnum">0.00 composite</span>
         <span className="tnum" style={{ color: ACCENT.ai }}>
           0.00 confidence
         </span>
         <span style={{ color: "var(--color-signal)" }}>▌ diverges = models chose differently</span>
-        <span className="ml-auto italic">click a row to expand explanations</span>
+        <span className="ml-auto italic">click a row to see more</span>
       </div>
     </div>
   );

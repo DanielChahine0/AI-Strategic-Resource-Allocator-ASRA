@@ -42,8 +42,8 @@ export default function DatasetPicker({ datasets, value, onChange, onRun, runnin
       </button>
 
       <p className="max-w-xs text-xs leading-relaxed text-[var(--color-ink-soft)]">
-        Dispatches <span className="font-mono">/evaluate</span> to both engines in parallel.
-        Each resolves the dataset against its own applicant set.
+        Sends <span className="font-mono">/evaluate</span> to both models at the same time.
+        Each one runs the data set on its own list of applicants.
       </p>
     </div>
   );

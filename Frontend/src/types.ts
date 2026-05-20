@@ -105,7 +105,7 @@ export interface ModelStatus {
   last_error_kind: string | null;
 }
 
-// Per-model async state — kept independent so one model can load or fail
+// Per-model async state, kept separate so one model can load or fail
 // without affecting the other.
 export interface ModelRunState {
   status: "idle" | "loading" | "done" | "error";

@@ -148,7 +148,7 @@ export default function HeadToHead({
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2" style={{ backgroundColor: RAG }} /> RAG
           </span>
-          <span className="hidden sm:inline">shared 0–100% scale</span>
+          <span className="hidden sm:inline">same 0 to 100% scale</span>
         </div>
       </header>
 

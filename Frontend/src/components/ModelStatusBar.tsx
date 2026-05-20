@@ -37,7 +37,7 @@ function StatusRow({ model, cell, now }: { model: ModelKey; cell: Cell; now: num
   const accent = ACCENT[model];
 
   let dotColor = "var(--color-ink-soft)";
-  let label = "—";
+  let label = "n/a";
   let detail = "";
   let extra: React.ReactNode = null;
 
@@ -68,7 +68,7 @@ function StatusRow({ model, cell, now }: { model: ModelKey; cell: Cell; now: num
       extra = (
         <span className="tnum text-[10px] text-[var(--color-ink-soft)]">
           {s.session.successes}/{s.session.total_calls} live ·{" "}
-          {Math.round(s.session.fallback_rate * 100)}% fallback
+          {Math.round(s.session.fallback_rate * 100)}% backup
         </span>
       );
     }
@@ -100,8 +100,8 @@ function StatusRow({ model, cell, now }: { model: ModelKey; cell: Cell; now: num
 
 /**
  * Live model health strip. Polls each backend's /status every 15s with a
- * zero-cost snapshot (no probe → no quota spend) and shows whether each engine
- * is serving live Gemini output or running on deterministic fallbacks.
+ * zero-cost snapshot (no probe, so no quota spend) and shows whether each model
+ * is giving live Gemini answers or running on backup logic.
  */
 export default function ModelStatusBar() {
   const [ai, setAi] = useState<Cell>({ kind: "loading" });

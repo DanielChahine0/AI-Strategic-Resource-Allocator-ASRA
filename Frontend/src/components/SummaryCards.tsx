@@ -3,8 +3,8 @@ import { dec, int, ms, pct } from "../lib/format";
 import type { EvalSummary, ModelKey, ModelRunState } from "../types";
 
 const ACCENT: Record<ModelKey, { color: string; soft: string; tag: string }> = {
-  ai: { color: "var(--color-ai)", soft: "var(--color-ai-soft)", tag: "deterministic + Gemini" },
-  rag: { color: "var(--color-rag)", soft: "var(--color-rag-soft)", tag: "retrieval-augmented" },
+  ai: { color: "var(--color-ai)", soft: "var(--color-ai-soft)", tag: "rules + Gemini" },
+  rag: { color: "var(--color-rag)", soft: "var(--color-rag-soft)", tag: "search + Gemini" },
 };
 
 function Bar({ value, color }: { value: number; color: string }) {
@@ -104,7 +104,7 @@ function Loaded({
 }) {
   return (
     <div className="flex flex-col gap-5">
-      {/* hero — accuracy leads the card */}
+      {/* hero: accuracy leads the card */}
       <div className="flex flex-col gap-2">
         <div className="flex items-end justify-between gap-3">
           <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
@@ -154,7 +154,7 @@ function Loaded({
           display={pct(summary.fallback_rate)}
           value={summary.fallback_rate}
           color={color}
-          hint={summary.fallback_rate > 0 ? "no live key → deterministic path" : "live engine"}
+          hint={summary.fallback_rate > 0 ? "used backup logic" : "used live AI"}
           delta={
             <Delta mine={summary.fallback_rate} peer={peer?.fallback_rate} lowerIsBetter fmt={pct} />
           }

@@ -1,7 +1,7 @@
 export const pct = (v: number): string => `${Math.round(v * 100)}%`;
 
 export const dec = (v: number | null | undefined, places = 2): string =>
-  v === null || v === undefined ? "—" : v.toFixed(places);
+  v === null || v === undefined ? "n/a" : v.toFixed(places);
 
 export const int = (v: number): string => v.toLocaleString("en-US");
 
@@ -12,8 +12,8 @@ export const ms = (v: number): string =>
 export const SCENARIO_ORDER = ["A1", "A2", "A3-arts", "A3-swe", "B", "C", "D", "F", "FC"];
 
 export const SCENARIO_LABELS: Record<string, string> = {
-  A1: "Education · K–6",
-  A2: "Education · Gr 8–HS",
+  A1: "Education · K to 6",
+  A2: "Education · Gr 8 to HS",
   "A3-arts": "Post-sec · Arts",
   "A3-swe": "Post-sec · Software",
   B: "Healthcare",

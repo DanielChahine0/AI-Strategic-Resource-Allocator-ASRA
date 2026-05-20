@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { fetchDatasets, runEvaluation } from "./api";
 import ComparisonTable from "./components/ComparisonTable";
 import DatasetPicker from "./components/DatasetPicker";
@@ -42,8 +43,8 @@ export default function ModelComparison() {
 
   function run() {
     if (!dataset) return;
-    // Fire both independently — neither awaits the other, so each panel
-    // resolves (or fails) on its own schedule.
+    // Fire both at once. Neither waits for the other, so each panel
+    // finishes (or fails) on its own.
     const dispatch = (
       model: ModelKey,
       set: React.Dispatch<React.SetStateAction<ModelRunState>>,
@@ -67,18 +68,25 @@ export default function ModelComparison() {
           <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--color-ink-soft)]">
             ASRA · Allocation Bench
           </span>
-          <span className="tnum text-[11px] text-[var(--color-ink-soft)]">
-            {new Date().toISOString().slice(0, 10)}
+          <span className="flex items-baseline gap-4">
+            <Link
+              to="/dataset"
+              className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] underline-offset-4 hover:text-[var(--color-ink)] hover:underline"
+            >
+              Sample data →
+            </Link>
+            <span className="tnum text-[11px] text-[var(--color-ink-soft)]">
+              {new Date().toISOString().slice(0, 10)}
+            </span>
           </span>
         </div>
         <h1 className="mt-3 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[0.95] tracking-tight sm:text-6xl">
           Model Comparison
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          Run the deterministic <em>AI Model</em> and the retrieval-augmented{" "}
-          <em>RAG Model</em> over the same labelled dataset and read them side by side —
-          token cost, accuracy against the LGT precedent, confidence, and how well each
-          rationale cites the applicant's own words.
+          Run the <em>AI Model</em> and the <em>RAG Model</em> on the same data set and
+          read them side by side: how much they cost, how often they are right, how sure
+          they are, and how well each one uses the applicant's own words.
         </p>
       </header>
 
@@ -96,13 +104,13 @@ export default function ModelComparison() {
         />
       </div>
 
-      {/* head-to-head verdict — appears once both engines have reported */}
+      {/* head-to-head verdict, shown once both models have reported */}
       <HeadToHead
         ai={ai.status === "done" ? ai.result : null}
         rag={rag.status === "done" ? rag.result : null}
       />
 
-      {/* summaries — independent loading/error per model */}
+      {/* summaries, with their own loading/error per model */}
       <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
         <SummaryCard model="ai" state={ai} peer={rag} />
         <SummaryCard model="rag" state={rag} peer={ai} />
@@ -122,11 +130,11 @@ export default function ModelComparison() {
       )}
 
       <footer className="mt-14 border-t border-[var(--color-line)] pt-4 text-[11px] text-[var(--color-ink-soft)]">
-        Accuracy is measured against{" "}
-        <span className="font-mono">sample_data/ground_truth.json</span> (derived from the LGT
-        precedent decisions, pending human validation). Token counts are live only when each
-        backend has a <span className="font-mono">GEMINI_API_KEY</span>; otherwise the engines run
-        deterministic fallbacks (0 tokens).
+        We check answers against{" "}
+        <span className="font-mono">sample_data/ground_truth.json</span> (based on past LGT
+        decisions, still to be checked by a person). Token counts show up only when each
+        backend has a <span className="font-mono">GEMINI_API_KEY</span>. If it does not, the
+        model uses backup logic and costs 0 tokens.
       </footer>
     </div>
   );

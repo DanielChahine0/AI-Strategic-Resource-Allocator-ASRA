@@ -50,7 +50,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
         </span>
         {row.tier_recommendation_confidence !== null && (
           <span className="tnum text-[11px] text-[var(--color-ink-soft)]">
-            tier-rec conf {dec(row.tier_recommendation_confidence)}
+            tier pick confidence {dec(row.tier_recommendation_confidence)}
           </span>
         )}
       </div>
@@ -65,7 +65,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
 
           <div>
             <p className="mb-1.5 text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
-              Cited applicant anchors
+              Words it used from the applicant
             </p>
             <Anchors row={row} />
           </div>
@@ -73,12 +73,12 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
           {row.citations.length > 0 && (
             <div>
               <p className="mb-1.5 text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
-                Grounding citations
+                Sources it cited
               </p>
               <ul className="flex flex-col gap-1">
                 {row.citations.map((c, i) => (
                   <li key={i} className="tnum text-[11px] text-[var(--color-ink)]">
-                    ↳ {c}
+                    • {c}
                   </li>
                 ))}
               </ul>
@@ -88,7 +88,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
           <dl className="grid grid-cols-3 gap-3 border-t border-[var(--color-line)] pt-3 text-[11px]">
             <div>
               <dt className="text-[var(--color-ink-soft)]">runner-up</dt>
-              <dd className="tnum">{row.runner_up_device_id ?? "—"}</dd>
+              <dd className="tnum">{row.runner_up_device_id ?? "n/a"}</dd>
               <dd className="tnum text-[var(--color-ink-soft)]">{dec(row.runner_up_composite)}</dd>
             </div>
             <div>

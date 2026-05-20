@@ -187,14 +187,14 @@ _QUOTA_ID_RE = _re.compile(r"quotaId'?:?\s*'?([A-Za-z0-9\-]+)")
 _METRIC_RE = _re.compile(r"quotaMetric'?:?\s*'?([A-Za-z0-9_./\-]+)")
 
 _STATE_DETAIL = {
-    "live": "Serving live Gemini output.",
-    "ready": "Configured and ready; no calls made yet this session.",
-    "rate_limited": "Gemini quota exhausted (HTTP 429). Running deterministic "
-    "fallbacks until the quota window resets.",
-    "auth_error": "Gemini rejected the API key. Check GEMINI_API_KEY.",
-    "no_api_key": "GEMINI_API_KEY is not set; running deterministic fallbacks.",
-    "sdk_missing": "google-genai SDK is not installed; running deterministic fallbacks.",
-    "degraded": "Recent Gemini calls are failing; serving deterministic fallbacks.",
+    "live": "Using live Gemini answers.",
+    "ready": "Set up and ready. No calls made yet.",
+    "rate_limited": "Out of Gemini quota (error 429). Using backup logic until "
+    "the limit resets.",
+    "auth_error": "Gemini did not accept the API key. Check GEMINI_API_KEY.",
+    "no_api_key": "GEMINI_API_KEY is not set. Using backup logic.",
+    "sdk_missing": "The google-genai library is not installed. Using backup logic.",
+    "degraded": "Recent Gemini calls are failing. Using backup logic.",
 }
 
 
