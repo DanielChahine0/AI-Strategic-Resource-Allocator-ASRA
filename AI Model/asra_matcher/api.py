@@ -74,6 +74,18 @@ def health() -> dict[str, str]:
     return {"status": "ok", "llm_available": str(llm.is_available())}
 
 
+@app.get("/status")
+def status(probe: bool = False) -> dict:
+    """Live model state for the dashboard: which generation model is wired up,
+    whether it is serving live Gemini output or running on deterministic
+    fallbacks, quota/retry details from the last 429, and this session's
+    call stats. Pass ?probe=true to spend one cheap call confirming the
+    model answers right now (costs quota); default is a zero-cost snapshot
+    derived from real calls made this session.
+    """
+    return llm.model_status(probe=probe)
+
+
 class EvaluateRequest(BaseModel):
     dataset: str = "sample-v1"
     limit: int | None = None

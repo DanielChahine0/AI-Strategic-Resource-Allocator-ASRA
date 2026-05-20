@@ -16,7 +16,7 @@ import os
 import re
 import time
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -140,6 +140,196 @@ def _client():
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is not set")
     return genai.Client(api_key=api_key)
+
+
+# ---------------------------------------------------------------------------
+# Live model health (surfaced via the API /status endpoint)
+# ---------------------------------------------------------------------------
+#
+# Outcomes of real Gemini calls are recorded into a process-local state dict
+# instead of probing on each status request — a probe would itself consume the
+# (small) free-tier quota we are trying to protect. This makes it observable
+# whether the engine is serving live LLM output or deterministic fallbacks.
+
+import re as _re
+
+
+def _embedding_model() -> str:
+    return os.environ.get("ASRA_EMBEDDING_MODEL", "gemini-embedding-001")
+
+
+def _sdk_ok() -> bool:
+    try:
+        import google.genai  # type: ignore  # noqa: F401
+
+        return True
+    except Exception:
+        return False
+
+
+_HEALTH: dict[str, Any] = {
+    "total_calls": 0,
+    "total_success": 0,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "last_call_ts": None,
+    "last_success_ts": None,
+    "last_error": None,
+    "last_error_kind": None,     # "rate_limit" | "auth" | "other"
+    "rate_limited_until": None,
+    "quota": None,               # {"limit", "quota_id", "metric"} parsed from a 429
+}
+
+_RETRY_RE = _re.compile(r"retry in ([\d.]+)s", _re.IGNORECASE)
+_RETRY_RE2 = _re.compile(r"retryDelay'?:?\s*'?(\d+(?:\.\d+)?)s", _re.IGNORECASE)
+_LIMIT_RE = _re.compile(r"limit:\s*(\d+)")
+_QUOTA_ID_RE = _re.compile(r"quotaId'?:?\s*'?([A-Za-z0-9\-]+)")
+_METRIC_RE = _re.compile(r"quotaMetric'?:?\s*'?([A-Za-z0-9_./\-]+)")
+
+_STATE_DETAIL = {
+    "live": "Serving live Gemini output.",
+    "ready": "Configured and ready; no calls made yet this session.",
+    "rate_limited": "Gemini quota exhausted (HTTP 429). Running deterministic "
+    "fallbacks until the quota window resets.",
+    "auth_error": "Gemini rejected the API key. Check GEMINI_API_KEY.",
+    "no_api_key": "GEMINI_API_KEY is not set; running deterministic fallbacks.",
+    "sdk_missing": "google-genai SDK is not installed; running deterministic fallbacks.",
+    "degraded": "Recent Gemini calls are failing; serving deterministic fallbacks.",
+}
+
+
+def _classify_error(msg: str) -> str:
+    low = msg.lower()
+    if "429" in msg or "resource_exhausted" in low or "quota" in low:
+        return "rate_limit"
+    if (
+        ("api key" in low and "not valid" in low)
+        or "api_key_invalid" in low
+        or "permission_denied" in low
+        or "401" in msg
+        or "403" in msg
+    ):
+        return "auth"
+    return "other"
+
+
+def _record_success() -> None:
+    now = time.time()
+    _HEALTH["total_calls"] += 1
+    _HEALTH["total_success"] += 1
+    _HEALTH["consecutive_failures"] = 0
+    _HEALTH["last_call_ts"] = now
+    _HEALTH["last_success_ts"] = now
+    _HEALTH["last_error"] = None
+    _HEALTH["last_error_kind"] = None
+    _HEALTH["rate_limited_until"] = None
+
+
+def _record_failure(exc: Exception) -> None:
+    now = time.time()
+    msg = str(exc)
+    kind = _classify_error(msg)
+    _HEALTH["total_calls"] += 1
+    _HEALTH["total_failures"] += 1
+    _HEALTH["consecutive_failures"] += 1
+    _HEALTH["last_call_ts"] = now
+    _HEALTH["last_error"] = msg[:500]
+    _HEALTH["last_error_kind"] = kind
+    if kind == "rate_limit":
+        m = _RETRY_RE.search(msg) or _RETRY_RE2.search(msg)
+        secs = float(m.group(1)) if m else None
+        _HEALTH["rate_limited_until"] = now + (secs if secs else 60.0)
+        quota: dict[str, Any] = {}
+        if (lm := _LIMIT_RE.search(msg)):
+            quota["limit"] = int(lm.group(1))
+        if (qm := _QUOTA_ID_RE.search(msg)):
+            quota["quota_id"] = qm.group(1)
+        if (mm := _METRIC_RE.search(msg)):
+            quota["metric"] = mm.group(1)
+        _HEALTH["quota"] = quota or None
+
+
+def _iso(ts: float | None) -> str | None:
+    if not ts:
+        return None
+    return datetime.fromtimestamp(ts, timezone.utc).isoformat()
+
+
+def model_status(probe: bool = False) -> dict[str, Any]:
+    """Structured snapshot of the RAG model's live state — generation model,
+    embedding model, whether live or on deterministic fallbacks, quota/retry
+    info from the last 429, and this session's call stats.
+
+    Derived from real calls made this session (zero quota cost) unless
+    ``probe=True``, which spends one cheap generation call (and one embedding
+    call) to confirm both answer right now.
+    """
+    sdk = _sdk_ok()
+    key = bool(os.environ.get("GEMINI_API_KEY"))
+    now = time.time()
+
+    rlu = _HEALTH["rate_limited_until"]
+    rate_limited = bool(rlu and rlu > now)
+
+    embeddings_ok: bool | None = None
+    if probe and sdk and key and not rate_limited:
+        try:
+            _generate("Reply with one word.", "OK", temperature=0.0, json_mode=False)
+        except Exception:
+            pass  # recorded in _HEALTH by the call itself
+        try:
+            _client().models.embed_content(model=_embedding_model(), contents=["ok"])
+            embeddings_ok = True
+        except Exception:
+            embeddings_ok = False
+        rlu = _HEALTH["rate_limited_until"]
+        rate_limited = bool(rlu and rlu > now)
+
+    if not sdk:
+        state = "sdk_missing"
+    elif not key:
+        state = "no_api_key"
+    elif rate_limited:
+        state = "rate_limited"
+    elif _HEALTH["last_error_kind"] == "auth":
+        state = "auth_error"
+    elif _HEALTH["total_calls"] == 0:
+        state = "ready"
+    elif _HEALTH["consecutive_failures"] > 0:
+        state = "degraded"
+    else:
+        state = "live"
+
+    calls = _HEALTH["total_calls"]
+    fallback_rate = (_HEALTH["total_failures"] / calls) if calls else 0.0
+    retry_after = max(0, round(rlu - now)) if (rate_limited and rlu) else None
+
+    return {
+        "model": _model(),
+        "embedding_model": _embedding_model(),
+        "embeddings_ok": embeddings_ok,
+        "provider": "google-gemini",
+        "sdk_installed": sdk,
+        "api_key_configured": key,
+        "state": state,
+        "live": state == "live",
+        "using_fallback": state
+        in ("rate_limited", "auth_error", "no_api_key", "sdk_missing", "degraded"),
+        "detail": _STATE_DETAIL.get(state, ""),
+        "retry_after_seconds": retry_after,
+        "quota": _HEALTH["quota"],
+        "session": {
+            "total_calls": calls,
+            "successes": _HEALTH["total_success"],
+            "failures": _HEALTH["total_failures"],
+            "fallback_rate": round(fallback_rate, 3),
+            "consecutive_failures": _HEALTH["consecutive_failures"],
+        },
+        "last_success": _iso(_HEALTH["last_success_ts"]),
+        "last_call": _iso(_HEALTH["last_call_ts"]),
+        "last_error": _HEALTH["last_error"],
+        "last_error_kind": _HEALTH["last_error_kind"],
+    }
 
 
 def _generate(

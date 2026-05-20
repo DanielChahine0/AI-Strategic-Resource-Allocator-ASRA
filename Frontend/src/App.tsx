@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchDatasets, runEvaluation } from "./api";
 import ComparisonTable from "./components/ComparisonTable";
 import DatasetPicker from "./components/DatasetPicker";
+import HeadToHead from "./components/HeadToHead";
 import SummaryCard from "./components/SummaryCards";
 import type { ModelKey, ModelRunState } from "./types";
 
@@ -81,7 +82,7 @@ export default function ModelComparison() {
       </header>
 
       {/* controls */}
-      <div className="py-8">
+      <div className="pt-8">
         <DatasetPicker
           datasets={datasets}
           value={dataset}
@@ -91,10 +92,16 @@ export default function ModelComparison() {
         />
       </div>
 
+      {/* head-to-head verdict — appears once both engines have reported */}
+      <HeadToHead
+        ai={ai.status === "done" ? ai.result : null}
+        rag={rag.status === "done" ? rag.result : null}
+      />
+
       {/* summaries — independent loading/error per model */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <SummaryCard model="ai" state={ai} />
-        <SummaryCard model="rag" state={rag} />
+      <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <SummaryCard model="ai" state={ai} peer={rag} />
+        <SummaryCard model="rag" state={rag} peer={ai} />
       </div>
 
       {/* per-scenario ledger */}

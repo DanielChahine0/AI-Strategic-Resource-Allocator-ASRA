@@ -115,15 +115,24 @@ export default function ComparisonTable({
           <div
             key={j.scenario}
             className="border-b border-[var(--color-line)] last:border-b-0"
-            style={div ? { boxShadow: "inset 3px 0 0 var(--color-signal)" } : undefined}
+            style={
+              div
+                ? {
+                    boxShadow: "inset 3px 0 0 var(--color-signal)",
+                    backgroundColor: "color-mix(in srgb, var(--color-signal) 4%, transparent)",
+                  }
+                : undefined
+            }
           >
             <button
               onClick={() => setOpen(isOpen ? null : j.scenario)}
-              className="grid w-full grid-cols-[1.1fr_1.4fr_1.4fr] items-stretch text-left transition-colors hover:bg-[var(--color-paper-2)]/50"
+              aria-expanded={isOpen}
+              className="group grid w-full grid-cols-[1.1fr_1.4fr_1.4fr] items-stretch text-left transition-colors hover:bg-[var(--color-paper-2)]"
+              style={isOpen ? { backgroundColor: "var(--color-paper-2)" } : undefined}
             >
               <div className="flex items-center gap-2.5 px-4 py-3">
-                <span className="tnum text-[10px] text-[var(--color-ink-soft)]">
-                  {String(idx + 1).padStart(2, "0")}
+                <span className="tnum w-5 text-[10px] text-[var(--color-ink-soft)] transition-colors group-hover:text-[var(--color-ink)]">
+                  {isOpen ? "▾" : String(idx + 1).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col">
                   <span className="font-medium leading-tight">{j.scenario}</span>
