@@ -44,10 +44,20 @@ except Exception:  # pragma: no cover
 
 from asra_matcher.models import Application, Device, IntakeAnswers, MatchResult
 from asra_matcher.taxonomy import DeviceTier
+from asra_matcher import cache, ratelimit
 
 MODEL_ID = "gemini-2.5-flash-lite"
 TEMPERATURE = 0.2
 AUDIT_LOG = Path("logs/llm_audit.jsonl")
+
+
+def _max_output_tokens() -> int:
+    """Cap output to avoid runaway generations. Generous enough not to truncate
+    the small JSON/text payloads these tasks emit."""
+    try:
+        return int(os.environ.get("ASRA_MAX_OUTPUT_TOKENS", "1024"))
+    except ValueError:
+        return 1024
 
 
 # ---------------------------------------------------------------------------
@@ -310,11 +320,17 @@ def _generate_json(prompt: str, system: str | None = None, schema: dict | None =
     Retries once on transient failure. Raises on hard failure so callers can
     fall back deterministically.
     """
+    ck = cache.make_key("json", MODEL_ID, TEMPERATURE, prompt, system, schema)
+    hit = cache.get("gen", ck)
+    if hit is not None:
+        return hit
+
     client = _get_client()
 
     config_kwargs: dict[str, Any] = {
         "temperature": TEMPERATURE,
         "response_mime_type": "application/json",
+        "max_output_tokens": _max_output_tokens(),
     }
     if system:
         config_kwargs["system_instruction"] = system
@@ -325,6 +341,7 @@ def _generate_json(prompt: str, system: str | None = None, schema: dict | None =
     last_err: Exception | None = None
     for attempt in range(2):
         try:
+            ratelimit.wait_generation()
             response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=prompt,
@@ -334,6 +351,7 @@ def _generate_json(prompt: str, system: str | None = None, schema: dict | None =
             text = (response.text or "").strip()
             data = json.loads(text)
             _record_success()
+            cache.put("gen", ck, data)
             _audit({
                 "task": "json_call",
                 "attempt": attempt,
@@ -352,8 +370,16 @@ def _generate_json(prompt: str, system: str | None = None, schema: dict | None =
 
 def _generate_text(prompt: str, system: str | None = None) -> str:
     """Call Gemini and return raw text. One retry."""
+    ck = cache.make_key("text", MODEL_ID, TEMPERATURE, prompt, system)
+    hit = cache.get("gen", ck)
+    if hit is not None:
+        return hit
+
     client = _get_client()
-    config_kwargs: dict[str, Any] = {"temperature": TEMPERATURE}
+    config_kwargs: dict[str, Any] = {
+        "temperature": TEMPERATURE,
+        "max_output_tokens": _max_output_tokens(),
+    }
     if system:
         config_kwargs["system_instruction"] = system
     config = genai_types.GenerateContentConfig(**config_kwargs)  # type: ignore
@@ -361,6 +387,7 @@ def _generate_text(prompt: str, system: str | None = None) -> str:
     last_err: Exception | None = None
     for attempt in range(2):
         try:
+            ratelimit.wait_generation()
             response = client.models.generate_content(
                 model=MODEL_ID,
                 contents=prompt,
@@ -369,6 +396,7 @@ def _generate_text(prompt: str, system: str | None = None) -> str:
             _record_usage(response)
             text = (response.text or "").strip()
             _record_success()
+            cache.put("gen", ck, text)
             _audit({
                 "task": "text_call",
                 "attempt": attempt,

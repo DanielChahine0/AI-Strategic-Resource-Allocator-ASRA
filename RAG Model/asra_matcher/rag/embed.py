@@ -16,13 +16,16 @@ import re
 import time
 from typing import Iterable
 
+from .. import cache, ratelimit
+
 _DEFAULT_MODEL = "gemini-embedding-001"
 
 # Rate-limit-friendly defaults for the Gemini free tier.
-# Each item in `contents` counts as one quota unit. 5 items/batch with a 4 s
-# pause = 75 req/min, comfortably under the 100/min cap.
+# Each item in `contents` counts as one quota unit. The shared token-bucket
+# limiter (one token per item) keeps us under the ~100 req/min cap, so we no
+# longer need a fixed inter-batch sleep — batching is now purely a round-trip
+# optimisation.
 _BATCH_SIZE = int(os.environ.get("ASRA_EMBED_BATCH_SIZE", "5"))
-_INTER_BATCH_SLEEP_S = float(os.environ.get("ASRA_EMBED_BATCH_SLEEP_S", "4"))
 # Cap on how long we'll wait on a 429 before giving up.
 _MAX_RETRY_WAIT_S = float(os.environ.get("ASRA_EMBED_MAX_RETRY_WAIT_S", "120"))
 
@@ -44,16 +47,43 @@ def _client():
 
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
-    """Embed a list of texts. Small batches + inter-batch pause + 429 backoff."""
+    """Embed a list of texts.
+
+    Each text is cached on disk by content hash, so repeated query strings —
+    common across the multiple retrievals in one match, and across re-runs of
+    the same eval — are embedded once and reused with no API call. Only the
+    cache misses (deduplicated) hit the network, batched and rate-limited.
+    """
     if not texts:
         return []
+
+    results: dict[int, list[float]] = {}
+    miss_index: dict[str, list[int]] = {}
+    for i, t in enumerate(texts):
+        cached = cache.get("embed", cache.make_key(_model(), t))
+        if cached is not None:
+            results[i] = cached
+        else:
+            miss_index.setdefault(t, []).append(i)
+
+    miss_texts = list(miss_index.keys())
+    if miss_texts:
+        vectors = _embed_uncached(miss_texts)
+        for t, vec in zip(miss_texts, vectors):
+            cache.put("embed", cache.make_key(_model(), t), vec)
+            for i in miss_index[t]:
+                results[i] = vec
+
+    return [results[i] for i in range(len(texts))]
+
+
+def _embed_uncached(texts: list[str]) -> list[list[float]]:
+    """Embed cache-miss texts: batched calls, one rate-limit token per item."""
     out: list[list[float]] = []
-    batches = list(_chunks(texts, _BATCH_SIZE))
-    total = len(batches)
-    for i, batch in enumerate(batches):
+    for batch in _chunks(texts, _BATCH_SIZE):
+        for _ in batch:
+            ratelimit.wait_embedding()
         out.extend(_embed_batch_with_retry(batch))
-        if i < total - 1:
-            time.sleep(_INTER_BATCH_SLEEP_S)
     return out
 
 

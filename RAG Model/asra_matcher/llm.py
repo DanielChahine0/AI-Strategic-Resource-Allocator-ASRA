@@ -29,11 +29,21 @@ from .models import (
 )
 from .rag import prompts, retrieve as retrieve_mod
 from .taxonomy import Category, DeviceTier
+from . import cache, ratelimit
 
 DEFAULT_GEN_MODEL = "gemini-2.5-flash-lite"
 TEMP_PARSE = 0.1
 TEMP_TIER = 0.1
 TEMP_EXPLAIN = 0.4
+
+
+def _max_output_tokens() -> int:
+    """Cap output to avoid runaway generations. Generous enough not to truncate
+    the small JSON payloads these tasks emit."""
+    try:
+        return int(os.environ.get("ASRA_MAX_OUTPUT_TOKENS", "1024"))
+    except ValueError:
+        return 1024
 
 
 def _model() -> str:
@@ -339,8 +349,19 @@ def _generate(
     temperature: float,
     json_mode: bool = True,
 ) -> str:
-    """Single call to Gemini. Returns raw text. One retry on transient error."""
+    """Single call to Gemini. Returns raw text. One retry on transient error.
+
+    Responses are cached on disk by content hash (see ``cache``): an identical
+    (model, system, user, temperature, json_mode) tuple is served from cache
+    with no API call. A process-global limiter paces live calls under the
+    free-tier RPM cap.
+    """
     from google.genai import types  # type: ignore
+
+    ck = cache.make_key(_model(), system, user, temperature, json_mode)
+    hit = cache.get("gen", ck)
+    if hit is not None:
+        return hit
 
     last_exc: Exception | None = None
     for attempt in range(2):
@@ -349,16 +370,20 @@ def _generate(
             cfg_kwargs: dict[str, Any] = {
                 "temperature": temperature,
                 "system_instruction": system,
+                "max_output_tokens": _max_output_tokens(),
             }
             if json_mode:
                 cfg_kwargs["response_mime_type"] = "application/json"
             cfg = types.GenerateContentConfig(**cfg_kwargs)
+            ratelimit.wait_generation()
             resp = client.models.generate_content(
                 model=_model(), contents=user, config=cfg
             )
             _record_usage(resp)
             _record_success()
-            return resp.text or ""
+            text = resp.text or ""
+            cache.put("gen", ck, text)
+            return text
         except Exception as exc:
             last_exc = exc
             time.sleep(0.5)
