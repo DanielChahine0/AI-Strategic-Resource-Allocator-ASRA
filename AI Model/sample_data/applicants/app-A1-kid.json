@@ -1,0 +1,24 @@
+{
+  "applicant_id": "app-A1-kid",
+  "submitted_at": "2026-05-10",
+  "notes": "Grade 4 student needs a laptop for homework.",
+  "intake": {
+    "who_needs_it": "my 9-year-old son in grade 4",
+    "main_usage": ["web browsing and email", "writing documents", "online classes"],
+    "software_needed": [],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": ["A1"],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed",
+    "accessibility_needs": [],
+    "language_preference": "en",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 14
+  }
+}

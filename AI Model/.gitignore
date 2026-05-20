@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+.env
+.idea/
+.vscode/
+*.egg-info/
+build/
+dist/
+logs/*.jsonl
+intake_sessions/*.json
+!intake_sessions/.gitkeep
+!logs/.gitkeep

@@ -1,0 +1,17 @@
+{
+  "id": "APP-A1-001",
+  "submitted_at": "2026-05-10T09:30:00",
+  "intake": {
+    "who_needs_it": "My 9-year-old child in Grade 3",
+    "purpose": ["A1"],
+    "main_usage": "Google Classroom assignments, Zoom for school, Khan Academy Kids",
+    "software_needed": [],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "current_tech_access": {
+      "has_internet": true,
+      "device_situation": "none",
+      "notes": "Currently using a borrowed phone."
+    }
+  }
+}

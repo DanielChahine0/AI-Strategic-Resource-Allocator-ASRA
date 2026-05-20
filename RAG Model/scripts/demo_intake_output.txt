@@ -1,0 +1,60 @@
+
+=== ASRA Intake ===
+We have 7 short questions. Type '?' at any time for help.
+
+Q1. Who needs the computer?
+    1. You
+    2. Your child or someone you take care of
+    3. Shared in your household
+    4. Someone else (please tell us who)
+> 
+Q2. What do you need this for? (choose all that apply)
+    1. School or learning
+    2. Work or job searching
+    3. Healthcare (appointments, portals, prescriptions)
+    4. Personal use (staying connected, browsing)
+    5. Settling in Canada (newcomer)
+    6. Other (please describe)
+> 
+    What level?
+    1. K to Grade 6
+    2. Grade 8 through high school
+    3. Post-secondary — please tell us the program name
+> 
+Q3. What is the main usage? What will you do on the device most days?
+    (For example: writing documents, video calls, programming, design, online classes.)
+> 
+Q4. Is there any specific software, website, or tool that must run on this device?
+    (For example: Photoshop, Zoom, a school portal, a medical system. Type 'none' if not sure.)
+> 
+Q5. How many people will share this device? (1 = just you)
+> 
+Q6. How soon do you need it?
+    1. This week (critical)
+    2. Within a month (high)
+    3. 1 to 3 months (medium)
+    4. Flexible (low)
+> 
+Q7. What is your current access to technology?
+    - Do you have internet where you'll use this device?
+    - Do you currently have any computer, tablet, or phone?
+      (none / phone only / shared device / outdated device)
+> 
+[intake saved → intake_sessions/20260512T040834_appl-16d95307.json]
+[purpose categories: ['A2', 'C']]
+[note] LLM parser fell back to heuristic parsing. Review the saved intake.
+
+=== Match Result for applicant appl-16d95307 ===
+Chosen application: category C
+Discarded applications: A2
+Notes:
+  - Tier recommendation fell back to a conservative default — review the audit log.
+  - Explanation fell back to a deterministic template.
+
+Top matches:
+  #1 DEV-016 (item=computer tier=T3 condition=5/5 avail=2026-05-15)
+      composite=0.843 priority=0.55 timing=1.00 condition=1.00 efficiency=1.00
+      explanation: Device DEV-016 (computer, tier T3, condition 5/5) is the highest-scoring fit for this C application based on the deterministic score breakdown.
+  #2 DEV-011 (item=computer tier=T3 condition=4/5 avail=2026-05-12)
+      composite=0.802 priority=0.55 timing=1.00 condition=0.80 efficiency=1.00
+      explanation: Device DEV-011 (computer, tier T3, condition 4/5) is the highest-scoring fit for this C application based on the deterministic score breakdown.

@@ -1,0 +1,17 @@
+{
+  "id": "APP-FC-001",
+  "submitted_at": "2026-05-10T16:00:00",
+  "intake": {
+    "who_needs_it": "Me — newcomer to Canada and looking for work",
+    "purpose": ["F", "C"],
+    "main_usage": "Immigration portals, language learning, job applications, video interviews, building resume",
+    "software_needed": ["Zoom", "Chrome"],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "current_tech_access": {
+      "has_internet": true,
+      "device_situation": "phone_only",
+      "notes": "Phone only; hard to apply for jobs or join interviews from it."
+    }
+  }
+}

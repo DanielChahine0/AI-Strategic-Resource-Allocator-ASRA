@@ -1,0 +1,19 @@
+{
+  "applicant_id": "app-D-senior-vision",
+  "submitted_at": "2026-05-09",
+  "intake": {
+    "who_needs_it": "myself, retired",
+    "main_usage": ["web browsing and email", "video calls", "government or healthcare websites"],
+    "software_needed": [],
+    "shared_user_count": 1,
+    "urgency": "medium",
+    "purpose": ["D"],
+    "current_tech_access": "none",
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "accessibility_needs": ["vision"],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 45
+  }
+}

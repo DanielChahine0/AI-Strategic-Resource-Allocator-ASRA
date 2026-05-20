@@ -1,0 +1,6 @@
+tests/test_rag_retrieve.py::test_ingest_counts_by_namespace
+  /Users/danielchahine/Desktop/Programs/Riipen/ASRA/matching system prototype/RAG Model/.venv/lib/python3.14/site-packages/chromadb/telemetry/opentelemetry/__init__.py:128: DeprecationWarning: 'asyncio.iscoroutinefunction' is deprecated and slated for removal in Python 3.16; use inspect.iscoroutinefunction() instead
+    if asyncio.iscoroutinefunction(f):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+32 passed, 25 warnings in 0.97s

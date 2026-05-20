@@ -1,0 +1,21 @@
+{
+  "applicant_id": "app-A3-cs-vm",
+  "submitted_at": "2026-05-09",
+  "notes": "Final-year CS student needs VMs and Docker for capstone.",
+  "intake": {
+    "who_needs_it": "myself, a CS student at York",
+    "main_usage": ["programming or coding", "online classes", "writing documents"],
+    "software_needed": ["Docker", "VirtualBox", "IntelliJ", "Android Studio"],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": ["A3"],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": "software_engineering",
+    "program_name": "Computer Science, York University",
+    "age_range": "18-25",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 21
+  }
+}

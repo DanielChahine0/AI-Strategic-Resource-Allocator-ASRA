@@ -1,0 +1,194 @@
+[
+  {
+    "id": "DEV-T1-001",
+    "item_type": "computer",
+    "tier": "T1",
+    "specs": {"cpu": "Intel i9-12900K", "ram_gb": 64, "gpu": "RTX 3080", "storage_gb": 2000},
+    "condition": 5,
+    "available_from": "2026-05-15",
+    "location": "Toronto",
+    "notes": "Donated by media production studio. Workstation tower."
+  },
+  {
+    "id": "DEV-T1-002",
+    "item_type": "computer",
+    "tier": "T1",
+    "specs": {"cpu": "AMD Ryzen 9 5950X", "ram_gb": 32, "gpu": "RTX 3070", "storage_gb": 1000},
+    "condition": 4,
+    "available_from": "2026-05-20",
+    "location": "Mississauga",
+    "notes": "ML / data-science capable."
+  },
+  {
+    "id": "DEV-T1-003",
+    "item_type": "computer",
+    "tier": "T1",
+    "specs": {"cpu": "Intel i7-11800H", "ram_gb": 32, "gpu": "RTX 3060 (mobile)", "storage_gb": 1000, "form_factor": "laptop"},
+    "condition": 4,
+    "available_from": "2026-06-01",
+    "location": "Toronto",
+    "notes": "Gaming laptop suitable for VMs and emulators."
+  },
+  {
+    "id": "DEV-T1-004",
+    "item_type": "computer",
+    "tier": "T1",
+    "specs": {"cpu": "Apple M2 Pro", "ram_gb": 32, "storage_gb": 1000, "form_factor": "laptop"},
+    "condition": 5,
+    "available_from": "2026-07-01",
+    "location": "Toronto",
+    "notes": "MacBook Pro 16-inch. Good for creative work."
+  },
+  {
+    "id": "DEV-T2-001",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "Intel i5-10500", "ram_gb": 16, "storage_gb": 512, "form_factor": "desktop"},
+    "condition": 4,
+    "available_from": "2026-05-12",
+    "location": "Toronto",
+    "notes": "Office desktop."
+  },
+  {
+    "id": "DEV-T2-002",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "Intel i5-1135G7", "ram_gb": 16, "storage_gb": 512, "form_factor": "laptop"},
+    "condition": 4,
+    "available_from": "2026-05-13",
+    "location": "Brampton",
+    "notes": "ThinkPad T14 laptop."
+  },
+  {
+    "id": "DEV-T2-003",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "AMD Ryzen 5 5600U", "ram_gb": 16, "storage_gb": 512, "form_factor": "laptop"},
+    "condition": 5,
+    "available_from": "2026-05-18",
+    "location": "Toronto",
+    "notes": "HP Pavilion laptop. Like new."
+  },
+  {
+    "id": "DEV-T2-004",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "Intel i7-9700", "ram_gb": 16, "storage_gb": 256, "form_factor": "desktop"},
+    "condition": 3,
+    "available_from": "2026-05-25",
+    "location": "Scarborough"
+  },
+  {
+    "id": "DEV-T2-005",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "Apple M1", "ram_gb": 8, "storage_gb": 256, "form_factor": "laptop"},
+    "condition": 4,
+    "available_from": "2026-06-10",
+    "location": "Toronto",
+    "notes": "MacBook Air 2020."
+  },
+  {
+    "id": "DEV-T2-006",
+    "item_type": "computer",
+    "tier": "T2",
+    "specs": {"cpu": "Intel i5-8350U", "ram_gb": 8, "storage_gb": 256, "form_factor": "laptop"},
+    "condition": 3,
+    "available_from": "2026-08-01",
+    "location": "Markham"
+  },
+  {
+    "id": "DEV-T3-001",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "Intel i3-7100U", "ram_gb": 8, "storage_gb": 256, "form_factor": "laptop"},
+    "condition": 4,
+    "available_from": "2026-05-12",
+    "location": "Toronto",
+    "notes": "Dell Inspiron. Good for browsing and documents."
+  },
+  {
+    "id": "DEV-T3-002",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "Intel Celeron N4020", "ram_gb": 4, "storage_gb": 128, "form_factor": "laptop"},
+    "condition": 3,
+    "available_from": "2026-05-14",
+    "location": "Etobicoke",
+    "notes": "Budget Chromebook-class laptop."
+  },
+  {
+    "id": "DEV-T3-003",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "Intel i3-8130U", "ram_gb": 8, "storage_gb": 256, "form_factor": "laptop", "screen_in": 15.6},
+    "condition": 5,
+    "available_from": "2026-05-13",
+    "location": "Toronto",
+    "notes": "Large 15.6\" display — suits low-vision users."
+  },
+  {
+    "id": "DEV-T3-004",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "Intel Pentium Silver", "ram_gb": 4, "storage_gb": 64, "form_factor": "laptop"},
+    "condition": 2,
+    "available_from": "2026-05-16",
+    "location": "North York",
+    "notes": "Older laptop, basic web only."
+  },
+  {
+    "id": "DEV-T3-005",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "AMD A6", "ram_gb": 4, "storage_gb": 128, "form_factor": "desktop"},
+    "condition": 3,
+    "available_from": "2026-05-22",
+    "location": "Toronto"
+  },
+  {
+    "id": "DEV-T3-006",
+    "item_type": "computer",
+    "tier": "T3",
+    "specs": {"cpu": "Intel i3-6100U", "ram_gb": 8, "storage_gb": 500, "form_factor": "laptop"},
+    "condition": 4,
+    "available_from": "2026-05-18",
+    "location": "Toronto"
+  },
+  {
+    "id": "DEV-MOB-001",
+    "item_type": "mobile",
+    "specs": {"device": "iPad 9th gen", "ram_gb": 3, "storage_gb": 64},
+    "condition": 4,
+    "available_from": "2026-05-13",
+    "location": "Toronto",
+    "notes": "Tablet — good for seniors and newcomers."
+  },
+  {
+    "id": "DEV-MOB-002",
+    "item_type": "mobile",
+    "specs": {"device": "Samsung Galaxy A53 phone", "ram_gb": 6, "storage_gb": 128},
+    "condition": 4,
+    "available_from": "2026-05-15",
+    "location": "Toronto",
+    "notes": "Phone."
+  },
+  {
+    "id": "DEV-MOB-003",
+    "item_type": "mobile",
+    "specs": {"device": "HP Chromebook 11", "ram_gb": 4, "storage_gb": 32},
+    "condition": 3,
+    "available_from": "2026-05-14",
+    "location": "Toronto",
+    "notes": "Chromebook — fits newcomers and seniors."
+  },
+  {
+    "id": "DEV-DISP-001",
+    "item_type": "display",
+    "specs": {"size_in": 24, "resolution": "1920x1080"},
+    "condition": 4,
+    "available_from": "2026-05-12",
+    "location": "Toronto",
+    "notes": "External monitor."
+  }
+]

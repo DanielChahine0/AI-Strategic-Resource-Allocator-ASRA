@@ -1,0 +1,18 @@
+{
+  "applicant_id": "app-B-healthcare",
+  "submitted_at": "2026-05-10",
+  "intake": {
+    "who_needs_it": "myself, a community health worker",
+    "main_usage": ["government or healthcare websites", "writing documents", "video calls"],
+    "software_needed": ["Zoom", "Microsoft Office"],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": ["B"],
+    "current_tech_access": "outdated_device",
+    "age_range": "40-60",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 10
+  }
+}

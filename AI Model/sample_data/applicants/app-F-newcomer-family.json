@@ -1,0 +1,20 @@
+{
+  "applicant_id": "app-F-newcomer-family",
+  "submitted_at": "2026-05-10",
+  "intake": {
+    "who_needs_it": "our family of four, recently arrived from Syria",
+    "main_usage": ["web browsing and email", "video calls", "government or healthcare websites", "online classes"],
+    "software_needed": [],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": ["F"],
+    "current_tech_access": "phone_only",
+    "age_range": "25-40",
+    "year_arrived_canada": 2025,
+    "language_preference": "ar",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 25
+  }
+}

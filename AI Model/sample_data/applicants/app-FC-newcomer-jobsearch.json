@@ -1,0 +1,22 @@
+{
+  "applicant_id": "app-FC-newcomer-jobsearch",
+  "submitted_at": "2026-05-11",
+  "notes": "Multi-category — newcomer AND job-searching. Splitter will produce two applications.",
+  "intake": {
+    "who_needs_it": "myself — newcomer to Canada, also looking for work",
+    "main_usage": ["web browsing and email", "writing documents", "video calls", "government or healthcare websites"],
+    "software_needed": ["Zoom", "Microsoft Word"],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": ["F", "C"],
+    "current_tech_access": "phone_only",
+    "age_range": "25-40",
+    "year_arrived_canada": 2025,
+    "employment_status": "unemployed",
+    "language_preference": "en",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 18
+  }
+}

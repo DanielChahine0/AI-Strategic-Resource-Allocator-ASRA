@@ -1,0 +1,18 @@
+{
+  "applicant_id": "app-A2-teen",
+  "submitted_at": "2026-05-08",
+  "intake": {
+    "who_needs_it": "my daughter in grade 11",
+    "main_usage": ["online classes", "writing documents", "video calls", "professional software"],
+    "software_needed": ["Microsoft Office", "Zoom"],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "purpose": ["A2"],
+    "current_tech_access": "shared_device",
+    "age_range": "18-25",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 30
+  }
+}

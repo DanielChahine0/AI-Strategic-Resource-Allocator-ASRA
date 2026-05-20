@@ -1,0 +1,18 @@
+{
+  "applicant_id": "app-C-jobsearch",
+  "submitted_at": "2026-05-11",
+  "intake": {
+    "who_needs_it": "myself, looking for work",
+    "main_usage": ["web browsing and email", "writing documents", "video calls"],
+    "software_needed": ["Zoom", "Microsoft Word"],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "purpose": ["C"],
+    "current_tech_access": "none",
+    "age_range": "25-40",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 70
+  }
+}

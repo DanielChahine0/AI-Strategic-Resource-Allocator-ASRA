@@ -1,0 +1,57 @@
+# ─────────────────────────────────────────────────────────────
+#  Secrets — NEVER commit. Real GEMINI_API_KEY lives in .env.
+#  Only the .env.example templates are tracked.
+# ─────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─────────────────────────────────────────────────────────────
+#  Python
+# ─────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+.python-version
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ─────────────────────────────────────────────────────────────
+#  Testing / type-checking / linting caches
+# ─────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# ─────────────────────────────────────────────────────────────
+#  ASRA runtime artifacts (regenerated on demand; may hold PII)
+# ─────────────────────────────────────────────────────────────
+# Local vector store (RAG Model) — rebuild with `asra_matcher ingest --rebuild`
+chroma_db/
+# LLM audit logs (prompts + responses, possibly with applicant data)
+logs/*.jsonl
+# Saved intake sessions written by the interactive `intake` flow
+intake_sessions/*.json
+# Keep the placeholder files so the runtime directories survive a clone
+!**/.gitkeep
+
+# ─────────────────────────────────────────────────────────────
+#  Editors / OS
+# ─────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store

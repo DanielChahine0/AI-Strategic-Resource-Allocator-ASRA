@@ -1,0 +1,20 @@
+{
+  "applicant_id": "app-A3-arts",
+  "submitted_at": "2026-05-09",
+  "intake": {
+    "who_needs_it": "myself — graphic design student",
+    "main_usage": ["graphic design or video editing", "writing documents", "online classes"],
+    "software_needed": ["Adobe Photoshop", "Adobe Illustrator"],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": ["A3"],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": "arts",
+    "program_name": "Graphic Design, OCAD",
+    "age_range": "18-25",
+    "accessibility_needs": [],
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 12
+  }
+}
