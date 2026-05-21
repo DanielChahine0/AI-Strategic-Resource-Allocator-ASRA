@@ -8,6 +8,12 @@ steady stream that stays under the cap, instead of firing fast and eating 429s.
 Defaults sit safely under the caps and are overridable via env:
   ASRA_RATELIMIT_GENERATION_RPM (default 12, under the 15 cap)
   ASRA_RATELIMIT_EMBEDDING_RPM  (default 80, under the ~100 cap)
+  ASRA_RATELIMIT_BURST          (default 1)
+
+The bucket capacity (burst) is deliberately small and *independent* of the
+RPM: a bucket sized to the full RPM would allow a one-minute burst of up to
+~2x RPM (initial fill + refill) and blow the cap. With burst=1, the worst case
+in any rolling minute is burst + RPM tokens, which stays under the real limit.
 """
 from __future__ import annotations
 
@@ -17,10 +23,14 @@ import time
 
 
 class _Bucket:
-    """A simple token bucket. acquire() blocks until a token is available."""
+    """A simple token bucket. acquire() blocks until a token is available.
 
-    def __init__(self, rpm: float) -> None:
-        self.capacity = max(1.0, rpm)
+    ``rpm`` sets the sustained refill rate; ``burst`` sets the max number of
+    requests that may fire back-to-back before pacing kicks in.
+    """
+
+    def __init__(self, rpm: float, burst: float = 1.0) -> None:
+        self.capacity = max(1.0, burst)
         self.tokens = self.capacity
         self.rate = max(1e-6, rpm / 60.0)  # tokens per second
         self.ts = time.monotonic()
@@ -48,12 +58,17 @@ def _bucket(name: str, default_rpm: float) -> _Bucket:
     with _reg_lock:
         b = _buckets.get(name)
         if b is None:
-            env = f"ASRA_RATELIMIT_{name.upper()}_RPM"
             try:
-                rpm = float(os.environ.get(env, default_rpm))
+                rpm = float(
+                    os.environ.get(f"ASRA_RATELIMIT_{name.upper()}_RPM", default_rpm)
+                )
             except ValueError:
                 rpm = default_rpm
-            b = _Bucket(rpm)
+            try:
+                burst = float(os.environ.get("ASRA_RATELIMIT_BURST", "1"))
+            except ValueError:
+                burst = 1.0
+            b = _Bucket(rpm, burst)
             _buckets[name] = b
         return b
 

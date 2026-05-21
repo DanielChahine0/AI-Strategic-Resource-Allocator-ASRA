@@ -65,3 +65,6 @@ intake_sessions/*.json
 
 # Local run.sh backend logs
 .run-logs/
+
+# Persistent Gemini response cache (generation + embeddings)
+.asra_cache/
