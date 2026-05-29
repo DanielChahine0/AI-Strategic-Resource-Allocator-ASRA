@@ -314,7 +314,7 @@ def _get_client():
     return _client
 
 
-def _generate_json(prompt: str, system: str | None = None, schema: dict | None = None) -> dict:
+def _generate_json(prompt: str, system: str | None = None, schema: Any | None = None) -> dict:
     """Call Gemini with a structured-JSON output instruction.
 
     Retries once on transient failure. Raises on hard failure so callers can
@@ -493,55 +493,102 @@ def _tier_fallback(candidate_tiers: set[DeviceTier], reason: str) -> dict[str, A
 
 
 _EXPLAIN_SYSTEM = (
-    "You are summarising why a specific donated device is a good match for "
-    "a specific applicant, for the human reviewer who will approve the "
-    "allocation. Write 2 to 3 sentences. Be concrete: cite the device tier, "
-    "the applicant's stated need, and any noteworthy score (timing, condition, "
-    "priority). Do not invent facts. Do not rank or compare against other "
-    "devices. Do not change the recommendation."
+    "You are summarising why each donated device is a good match for a "
+    "specific applicant, for the human reviewer who will approve the "
+    "allocation. For EACH device, write 2 to 3 sentences. Be concrete: cite "
+    "the device tier, the applicant's stated need, and any noteworthy score "
+    "(timing, condition, priority). Do not invent facts. Explain each device "
+    "on its own merits; do not rank or compare the devices against each "
+    "other. Do not change the recommendation."
 )
+
+# Native structured-output schema: one rationale per device in a single call,
+# so the system prompt + shared applicant context are sent once instead of once
+# per device.
+_EXPLAIN_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "explanations": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "device_id": {"type": "string"},
+                    "rationale": {"type": "string"},
+                },
+                "required": ["device_id", "rationale"],
+            },
+        }
+    },
+    "required": ["explanations"],
+}
 
 
 def explain_matches(application: Application, matches: list[MatchResult]) -> list[str]:
-    """Return a 2-3 sentence rationale per match. Same length as `matches`."""
+    """Return a 2-3 sentence rationale per match, in the same order as `matches`.
+
+    All devices are explained in a SINGLE batched call (one entry per device in
+    the JSON response) rather than one request per device — the system prompt
+    and shared applicant context are sent once. Any device the model omits, or
+    a total failure, falls back to the deterministic template per device.
+    """
     if not matches:
         return []
 
     if not is_available():
         return [_explain_fallback(application, m) for m in matches]
 
-    explanations: list[str] = []
-    for m in matches:
-        prompt = _explain_prompt(application, m)
-        try:
-            text = _generate_text(prompt, system=_EXPLAIN_SYSTEM)
-            explanations.append(text)
-        except Exception as exc:
-            _audit({"task": "explain_fallback", "error": str(exc)})
-            explanations.append(_explain_fallback(application, m))
-    return explanations
+    try:
+        data = _generate_json(
+            _batch_explain_prompt(application, matches),
+            system=_EXPLAIN_SYSTEM,
+            schema=_EXPLAIN_SCHEMA,
+        )
+        by_id: dict[str, str] = {}
+        for entry in data.get("explanations", []) or []:
+            did = str(entry.get("device_id", "")).strip()
+            if did:
+                by_id[did] = str(entry.get("rationale", "")).strip()
+        return [
+            by_id.get(m.device.id) or _explain_fallback(application, m)
+            for m in matches
+        ]
+    except Exception as exc:
+        _audit({"task": "explain_batch_fallback", "error": str(exc)})
+        return [_explain_fallback(application, m) for m in matches]
 
 
-def _explain_prompt(application: Application, match: MatchResult) -> str:
+def _batch_explain_prompt(application: Application, matches: list[MatchResult]) -> str:
+    """Shared applicant context once, then one block per device, asking for a
+    JSON array of {device_id, rationale}."""
     intake = application.intake
-    dev = match.device
-    s = match.scores
-    return (
+    header = (
         f"Applicant ID: {application.applicant_id}\n"
         f"Category: {application.category.value}\n"
         f"Urgency: {intake.urgency.value}, current tech access: {intake.current_tech_access.value}\n"
         f"Main usage: {intake.main_usage}\n"
         f"Software needed: {intake.software_needed}\n"
         f"Shared users: {intake.shared_user_count}\n"
-        f"--- Device {dev.id} ---\n"
-        f"Type: {dev.item_type.value}, tier: {dev.tier.value if dev.tier else 'n/a'}\n"
-        f"Condition: {dev.condition}/5, available_from: {dev.available_from}\n"
-        f"Specs: {dev.specs}\n"
-        f"--- Scores ---\n"
-        f"Priority: {s.priority:.2f}, Timing: {s.timing:.2f}, "
-        f"Condition: {s.condition:.2f}, Efficiency: {s.efficiency:.2f}, "
-        f"Composite: {s.composite:.2f}\n"
-        "Write the 2-3 sentence rationale now."
+    )
+    device_blocks: list[str] = []
+    for m in matches:
+        dev = m.device
+        s = m.scores
+        device_blocks.append(
+            f"--- Device {dev.id} ---\n"
+            f"Type: {dev.item_type.value}, tier: {dev.tier.value if dev.tier else 'n/a'}\n"
+            f"Condition: {dev.condition}/5, available_from: {dev.available_from}\n"
+            f"Specs: {dev.specs}\n"
+            f"Scores — priority: {s.priority:.2f}, timing: {s.timing:.2f}, "
+            f"condition: {s.condition:.2f}, efficiency: {s.efficiency:.2f}, "
+            f"composite: {s.composite:.2f}"
+        )
+    return (
+        header
+        + "\nWrite one 2-3 sentence rationale for each device below. Return a "
+        'JSON object {"explanations": [{"device_id": ..., "rationale": ...}]} '
+        "with exactly one entry per device, using the device_id shown.\n\n"
+        + "\n".join(device_blocks)
     )
 
 
@@ -606,7 +653,11 @@ def parse_intake(raw_answers: dict[str, str]) -> IntakeAnswers:
     )
 
     try:
-        data = _generate_json(prompt, system=_PARSE_SYSTEM)
+        # Pass the Pydantic model as a native response_schema so Gemini emits
+        # JSON constrained to the IntakeAnswers shape (constrained decoding) —
+        # more reliable than describing the shape in prose, and the SDK handles
+        # the schema server-side instead of us re-sending it as prompt tokens.
+        data = _generate_json(prompt, system=_PARSE_SYSTEM, schema=IntakeAnswers)
         # Validate against Pydantic
         return IntakeAnswers.model_validate(data)
     except Exception as exc:

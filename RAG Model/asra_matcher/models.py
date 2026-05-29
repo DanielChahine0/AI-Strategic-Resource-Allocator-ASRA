@@ -1,6 +1,7 @@
 """Pydantic models for applicants, devices, intake answers, and match results."""
 from __future__ import annotations
 
+import os
 from datetime import date, datetime
 from typing import Any, Optional
 
@@ -103,10 +104,17 @@ class RagContext(BaseModel):
     def render(self) -> str:
         if not self.chunks:
             return "(no retrieved context)"
+        # Cap each chunk's rendered text so a single over-long chunk can't blow
+        # up the (per-call, re-billed) context block. ~1200 chars ≈ 300 tokens.
+        try:
+            max_chars = int(os.environ.get("ASRA_MAX_CHUNK_CHARS", "1200"))
+        except ValueError:
+            max_chars = 1200
         parts = []
         for i, c in enumerate(self.chunks, 1):
+            text = c.text if len(c.text) <= max_chars else c.text[:max_chars].rstrip() + " …[truncated]"
             parts.append(
-                f"[{i}] source={c.source_path} namespace={c.namespace} similarity={c.similarity:.3f}\n{c.text}"
+                f"[{i}] source={c.source_path} namespace={c.namespace} similarity={c.similarity:.3f}\n{text}"
             )
         return "\n\n---\n\n".join(parts)
 

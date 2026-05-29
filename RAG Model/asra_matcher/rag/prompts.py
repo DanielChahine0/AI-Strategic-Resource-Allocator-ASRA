@@ -69,24 +69,23 @@ def explanation_prompt(app: Application, devices: list[Device], ctx: RagContext)
     return SYSTEM_BOILERPLATE, user
 
 
-def intake_parse_prompt(raw_answers: dict, schema: dict, ctx: RagContext) -> tuple[str, str]:
-    """Parse free-text intake answers into the IntakeAnswers schema."""
+def intake_parse_prompt(raw_answers: dict, ctx: RagContext) -> tuple[str, str]:
+    """Parse free-text intake answers into the IntakeAnswers schema.
+
+    The output shape is enforced via a native ``response_schema`` on the
+    generation call (see ``llm._IntakeParseEnvelope``), so the full
+    IntakeAnswers JSON-schema is intentionally NOT inlined here — that block was
+    ~424 redundant input tokens re-sent on every call.
+    """
     user = (
-        "TASK: Parse the raw free-text intake answers below into a JSON object "
-        "matching IntakeAnswers_SCHEMA. Use the retrieved CONTEXT to disambiguate "
-        "category mapping and software references. Unknown fields stay null. "
-        "Note which chunk informed each inferred field via the citations array.\n\n"
+        "TASK: Parse the raw free-text intake answers below into the parsed "
+        "object. Use the retrieved CONTEXT to disambiguate category mapping and "
+        "software references. Leave unknown fields null/empty. Populate "
+        "`citations` with the source filenames that informed inferred fields, "
+        "and `uncertain_fields` with the names of any fields you were unsure "
+        "about.\n\n"
         f"RAW_ANSWERS:\n{raw_answers}\n\n"
-        f"IntakeAnswers_SCHEMA:\n{schema}\n\n"
         "CONTEXT:\n"
-        f"{ctx.render()}\n\n"
-        "Respond ONLY with JSON of the form:\n"
-        "{\n"
-        '  "parsed": { ...fields matching IntakeAnswers... },\n'
-        '  "citations": ["<source_path>", ...],\n'
-        '  "uncertain_fields": ["<field_name>", ...]\n'
-        "}\n"
-        "If a required field is unparseable, return "
-        "{\"abstain\": true, \"reason\": \"...\", \"follow_up_question\": \"...\"}."
+        f"{ctx.render()}\n"
     )
     return SYSTEM_BOILERPLATE, user

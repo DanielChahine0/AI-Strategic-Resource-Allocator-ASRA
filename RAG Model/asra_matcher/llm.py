@@ -20,6 +20,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
+from pydantic import BaseModel
+
 from .models import (
     Application,
     Device,
@@ -136,6 +138,16 @@ class IntakeParseResult:
     uncertain_fields: list[str]
     fallback_used: bool = False
     chunks: list[RetrievedChunk] = None  # type: ignore[assignment]
+
+
+class _IntakeParseEnvelope(BaseModel):
+    """Native response_schema for parse_intake — lets Gemini emit the parsed
+    object plus citations/uncertain_fields in a constrained shape, so the full
+    IntakeAnswers JSON-schema no longer has to be inlined into the prompt."""
+
+    parsed: IntakeAnswers
+    citations: list[str] = []
+    uncertain_fields: list[str] = []
 
 
 # ---------------------------------------------------------------------------
@@ -348,17 +360,22 @@ def _generate(
     *,
     temperature: float,
     json_mode: bool = True,
+    response_schema: Any = None,
 ) -> str:
     """Single call to Gemini. Returns raw text. One retry on transient error.
 
     Responses are cached on disk by content hash (see ``cache``): an identical
-    (model, system, user, temperature, json_mode) tuple is served from cache
-    with no API call. A process-global limiter paces live calls under the
-    free-tier RPM cap.
+    (model, system, user, temperature, json_mode, response_schema) tuple is
+    served from cache with no API call. A process-global limiter paces live
+    calls under the free-tier RPM cap.
+
+    When ``response_schema`` is set, Gemini constrains output to that shape
+    (constrained decoding) so callers can drop the JSON-shape description from
+    the prompt entirely.
     """
     from google.genai import types  # type: ignore
 
-    ck = cache.make_key(_model(), system, user, temperature, json_mode)
+    ck = cache.make_key(_model(), system, user, temperature, json_mode, response_schema)
     hit = cache.get("gen", ck)
     if hit is not None:
         return hit
@@ -374,6 +391,8 @@ def _generate(
             }
             if json_mode:
                 cfg_kwargs["response_mime_type"] = "application/json"
+            if response_schema is not None:
+                cfg_kwargs["response_schema"] = response_schema
             cfg = types.GenerateContentConfig(**cfg_kwargs)
             ratelimit.wait_generation()
             resp = client.models.generate_content(
@@ -414,6 +433,44 @@ def _parse_json(text: str) -> dict[str, Any] | None:
             except Exception:
                 return None
         return None
+
+
+# Cap on how many retrieved chunks get rendered into a single prompt. The
+# context block is the dominant input-token cost per call, and the JSON answer
+# typically cites only 1-3 sources, so summing every namespace's k (up to 13 for
+# tier recommendation) over-stuffs the prompt. Override via env.
+def _max_context_chunks() -> int:
+    try:
+        return int(os.environ.get("ASRA_MAX_CONTEXT_CHUNKS", "6"))
+    except ValueError:
+        return 6
+
+
+def _prune_chunks(
+    chunks: list[RetrievedChunk],
+    *,
+    top_n: int | None = None,
+    min_similarity: float = 0.0,
+) -> list[RetrievedChunk]:
+    """Dedupe identical chunks returned by overlapping namespace queries and
+    keep the globally most-similar ``top_n`` (default: ``_max_context_chunks``).
+
+    Trims redundant retrieval context before it is billed as generation input
+    tokens, without touching ``retrieve.query`` (whose per-call ``k`` semantics
+    other callers/tests rely on)."""
+    if top_n is None:
+        top_n = _max_context_chunks()
+    seen: set[tuple[str, str]] = set()
+    deduped: list[RetrievedChunk] = []
+    for c in sorted(chunks, key=lambda x: x.similarity, reverse=True):
+        if c.similarity < min_similarity:
+            continue
+        key = (c.source_path, c.text)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(c)
+    return deduped[:top_n]
 
 
 # ---------------------------------------------------------------------------
@@ -460,6 +517,7 @@ def recommend_tier(
         # Retrieval failure: pipeline continues with empty context → triggers fallback.
         chunks = []
 
+    chunks = _prune_chunks(chunks)
     ctx = RagContext(task="tier_recommendation", chunks=chunks)
     system, user = prompts.tier_recommendation_prompt(application, ctx)
 
@@ -566,6 +624,7 @@ def explain_matches(
     except Exception:
         chunks = []
 
+    chunks = _prune_chunks(chunks)
     ctx = RagContext(task="explain_matches", chunks=chunks)
     system, user = prompts.explanation_prompt(application, devices, ctx)
 
@@ -654,9 +713,9 @@ def parse_intake(
     except Exception:
         chunks = []
 
-    schema = IntakeAnswers.model_json_schema()
+    chunks = _prune_chunks(chunks)
     ctx = RagContext(task="parse_intake", chunks=chunks)
-    system, user = prompts.intake_parse_prompt(raw_answers, schema, ctx)
+    system, user = prompts.intake_parse_prompt(raw_answers, ctx)
 
     raw = ""
     parsed_json: dict[str, Any] | None = None
@@ -664,7 +723,17 @@ def parse_intake(
     fallback_used = False
     try:
         gen = generate_fn or _generate
-        raw = gen(system, user, temperature=TEMP_PARSE)
+        if generate_fn is None:
+            # Native structured output: Gemini returns {parsed, citations,
+            # uncertain_fields} matching _IntakeParseEnvelope, so the full
+            # IntakeAnswers JSON-schema no longer has to be inlined into the
+            # prompt (it was ~424 tokens re-sent on every call).
+            raw = gen(
+                system, user, temperature=TEMP_PARSE,
+                response_schema=_IntakeParseEnvelope,
+            )
+        else:
+            raw = gen(system, user, temperature=TEMP_PARSE)
         parsed_json = _parse_json(raw)
     except Exception as exc:
         error = repr(exc)
