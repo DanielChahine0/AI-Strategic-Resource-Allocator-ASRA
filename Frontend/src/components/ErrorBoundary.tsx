@@ -37,22 +37,19 @@ export default class ErrorBoundary extends Component<Props, State> {
     const { error } = this.state;
     if (!error) return this.props.children;
     return (
-      <div className="mx-auto max-w-2xl px-6 py-16">
-        <div className="border border-[var(--color-signal)] bg-[color-mix(in_srgb,var(--color-signal)_8%,transparent)] p-6">
-          <h1 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-[var(--color-ink)]">
-            Something broke while rendering
-          </h1>
-          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            The page hit an unexpected error — usually a malformed response from
-            one of the backends. Try again; if it keeps happening, check the
-            backend logs.
+      <div className="mx-auto max-w-2xl px-6 py-24">
+        <div className="rounded-card border border-signal/40 bg-signal-soft/50 p-8">
+          <h1 className="font-display text-display text-ink">Something broke while rendering</h1>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft">
+            Usually a malformed response from one of the backends. Try again; if it persists,
+            check the backend logs.
           </p>
-          <pre className="mt-4 overflow-auto whitespace-pre-wrap break-words border border-[var(--color-line)] bg-[var(--color-paper-2)] p-3 font-mono text-[11px] text-[var(--color-ink)]">
+          <pre className="mt-5 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-line bg-subtle p-3.5 font-mono text-[11px] text-ink">
             {error.message}
           </pre>
           <button
             onClick={this.reset}
-            className="mt-4 border border-[var(--color-ink)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)]"
+            className="mt-5 rounded-lg bg-ink px-5 py-2 text-[13px] font-medium text-canvas transition-colors hover:bg-ink/90"
           >
             Try again
           </button>

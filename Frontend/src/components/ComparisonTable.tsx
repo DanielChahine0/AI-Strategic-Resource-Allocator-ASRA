@@ -3,9 +3,9 @@ import { dec, SCENARIO_LABELS, SCENARIO_ORDER } from "../lib/format";
 import type { EvalResult, EvalRow, ModelKey } from "../types";
 import RowDetail from "./RowDetail";
 
-const ACCENT: Record<ModelKey, string> = {
-  ai: "var(--color-ai)",
-  rag: "var(--color-rag)",
+const ACCENT: Record<ModelKey, { color: string; soft: string }> = {
+  ai: { color: "var(--color-ai)", soft: "var(--color-ai-soft)" },
+  rag: { color: "var(--color-rag)", soft: "var(--color-rag-soft)" },
 };
 
 interface Joined {
@@ -48,39 +48,39 @@ function diverges(a?: EvalRow, b?: EvalRow): boolean {
 }
 
 function Mark({ ok }: { ok: boolean | null | undefined }) {
-  if (ok === null || ok === undefined) return <span className="text-[var(--color-ink-soft)]">·</span>;
+  if (ok === null || ok === undefined) return <span className="text-ink-faint">·</span>;
   return ok ? (
-    <span style={{ color: "var(--color-good)" }}>✓</span>
+    <span className="text-ink">✓</span>
   ) : (
     <span style={{ color: "var(--color-signal)" }}>✗</span>
   );
 }
 
 function Alloc({ row, model }: { row?: EvalRow; model: ModelKey }) {
-  const color = ACCENT[model];
-  if (!row) return <div className="px-4 py-3 text-xs text-[var(--color-ink-soft)]">no result</div>;
+  const accent = ACCENT[model];
+  if (!row) return <div className="px-4 py-3.5 text-xs text-ink-faint">no result</div>;
   if (row.error)
-    return <div className="px-4 py-3 font-mono text-[11px] text-[var(--color-signal)]">{row.error}</div>;
+    return <div className="px-4 py-3.5 font-mono text-[11px] text-signal">{row.error}</div>;
   return (
-    <div className="flex items-center justify-between gap-3 px-4 py-3">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-3 px-4 py-3.5">
+      <div className="flex items-center gap-2.5">
         <span
-          className="tnum px-1.5 py-0.5 text-[11px] font-semibold text-[var(--color-paper)]"
-          style={{ backgroundColor: color }}
+          className="tnum rounded-md px-1.5 py-0.5 text-[11px] font-medium"
+          style={{ backgroundColor: accent.soft, color: accent.color }}
         >
           {row.chosen_category}/{row.chosen_tier ?? "n/a"}
         </span>
-        <span className="tnum text-[11px] text-[var(--color-ink-soft)]">{row.chosen_device_id}</span>
+        <span className="tnum text-[11px] text-ink-faint">{row.chosen_device_id}</span>
       </div>
       <div className="flex items-center gap-3 text-[11px]">
         <span className="flex items-center gap-1" title="category / tier accuracy">
           <Mark ok={row.accuracy?.category_correct} />
           <Mark ok={row.accuracy?.tier_correct} />
         </span>
-        <span className="tnum w-8 text-right text-[var(--color-ink-soft)]" title="composite">
+        <span className="tnum w-8 text-right text-ink-faint" title="composite">
           {dec(row.composite)}
         </span>
-        <span className="tnum w-8 text-right" style={{ color }} title="confidence">
+        <span className="tnum w-8 text-right" style={{ color: accent.color }} title="confidence">
           {dec(row.confidence)}
         </span>
       </div>
@@ -100,21 +100,21 @@ export default function ComparisonTable({
   if (rows.length === 0) return null;
 
   return (
-    <div className="card rise overflow-hidden border border-[var(--color-line)] bg-[var(--color-paper)]">
+    <div className="card rise overflow-hidden rounded-card border border-line bg-surface">
       {/* header */}
-      <div className="grid grid-cols-[1.1fr_1.4fr_1.4fr] border-b border-[var(--color-ink)] bg-[var(--color-paper-2)]">
-        <div className="px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em]">
+      <div className="grid grid-cols-[1.1fr_1.4fr_1.4fr] border-b border-line bg-subtle">
+        <div className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-ink-soft">
           Scenario
         </div>
         <div
-          className="px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em]"
-          style={{ color: ACCENT.ai }}
+          className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.18em]"
+          style={{ color: ACCENT.ai.color }}
         >
           AI Model
         </div>
         <div
-          className="px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em]"
-          style={{ color: ACCENT.rag }}
+          className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.18em]"
+          style={{ color: ACCENT.rag.color }}
         >
           RAG Model
         </div>
@@ -126,12 +126,12 @@ export default function ComparisonTable({
         return (
           <div
             key={j.applicant_id}
-            className="border-b border-[var(--color-line)] last:border-b-0"
+            className="border-b border-line-soft last:border-b-0"
             style={
               div
                 ? {
-                    boxShadow: "inset 3px 0 0 var(--color-signal)",
-                    backgroundColor: "color-mix(in srgb, var(--color-signal) 4%, transparent)",
+                    boxShadow: "inset 2px 0 0 var(--color-signal)",
+                    backgroundColor: "color-mix(in srgb, var(--color-signal) 3%, transparent)",
                   }
                 : undefined
             }
@@ -139,29 +139,29 @@ export default function ComparisonTable({
             <button
               onClick={() => setOpen(isOpen ? null : j.applicant_id)}
               aria-expanded={isOpen}
-              className="group grid w-full grid-cols-[1.1fr_1.4fr_1.4fr] items-stretch text-left transition-colors hover:bg-[var(--color-paper-2)]"
-              style={isOpen ? { backgroundColor: "var(--color-paper-2)" } : undefined}
+              className="group grid w-full grid-cols-[1.1fr_1.4fr_1.4fr] items-stretch text-left transition-colors hover:bg-subtle"
+              style={isOpen ? { backgroundColor: "var(--color-subtle)" } : undefined}
             >
-              <div className="flex items-center gap-2.5 px-4 py-3">
-                <span className="tnum w-5 text-[10px] text-[var(--color-ink-soft)] transition-colors group-hover:text-[var(--color-ink)]">
+              <div className="flex items-center gap-2.5 px-4 py-3.5">
+                <span className="tnum w-5 text-[10px] text-ink-faint transition-colors group-hover:text-ink">
                   {isOpen ? "▾" : String(idx + 1).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col">
-                  <span className="font-medium leading-tight">{j.scenario}</span>
-                  <span className="text-[11px] text-[var(--color-ink-soft)]">
+                  <span className="font-medium leading-tight text-ink">{j.scenario}</span>
+                  <span className="text-[11px] text-ink-faint">
                     {SCENARIO_LABELS[j.scenario] ?? ""}
                   </span>
                 </div>
                 {div && (
-                  <span className="ml-auto self-start border border-[var(--color-signal)] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[var(--color-signal)]">
+                  <span className="ml-auto self-start rounded-md border border-signal/50 px-1.5 py-0.5 font-mono text-[9px] font-medium uppercase tracking-[0.1em] text-signal">
                     diverges
                   </span>
                 )}
               </div>
-              <div className="border-l border-[var(--color-line)]">
+              <div className="border-l border-line-soft">
                 <Alloc row={j.ai} model="ai" />
               </div>
-              <div className="border-l border-[var(--color-line)]">
+              <div className="border-l border-line-soft">
                 <Alloc row={j.rag} model="rag" />
               </div>
             </button>
@@ -170,16 +170,12 @@ export default function ComparisonTable({
         );
       })}
 
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-[var(--color-ink)] bg-[var(--color-paper-2)] px-4 py-2.5 text-[10px] text-[var(--color-ink-soft)]">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-line bg-subtle px-4 py-3 text-[10px] text-ink-faint">
         <span>
-          <Mark ok /> <Mark ok={false} /> = category and tier vs the answer key
+          <Mark ok /> <Mark ok={false} /> category · tier vs answer key
         </span>
         <span className="tnum">0.00 composite</span>
-        <span className="tnum" style={{ color: ACCENT.ai }}>
-          0.00 confidence
-        </span>
-        <span style={{ color: "var(--color-signal)" }}>▌ diverges = models chose differently</span>
-        <span className="ml-auto italic">click a row to see more</span>
+        <span className="tnum">0.00 confidence (per engine)</span>
       </div>
     </div>
   );

@@ -1,62 +1,118 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   ASRA · Model Evaluation Bench · design tokens
-   A "laboratory instrument" aesthetic: warm paper, ink type, two model accents
-   (terracotta = AI, teal = RAG), coral signal for divergence. A single typeface —
-   Bricolage Grotesque — for every word: headings, body, and tabular numbers.
+   ASRA · Model Comparison — "Editorial" design system on Apple system fonts
+   A near-white editorial canvas with maximum whitespace. The Apple system
+   font (San Francisco) carries every role: SF Pro Display (headings), SF Pro
+   Text (UI / body), and SF Mono (every number, id, and metric — kept
+   monospace so data columns stay aligned). No web fonts are loaded; the type
+   is provided by the OS. Two muted model accents — clay (AI) and slate-teal
+   (RAG) — and exactly one signal red, reserved for divergence and errors.
 --------------------------------------------------------------------------- */
 @theme {
-  --color-bg: #ece4d5; /* page surface (one step deeper than cards) */
-  --color-paper: #fcf9f3; /* elevated card surface (near-white warm) */
-  --color-paper-2: #efe8d9; /* muted track / table header */
-  --color-ink: #1c1813;
-  --color-ink-soft: #5b5347;
-  --color-line: #ddd2bd;
+  /* Wipe Tailwind's default palette so no stray hue can leak the old look;
+     keep only the primitives we actually compose with. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
 
-  --color-ai: #bf4a2f; /* terracotta */
-  --color-ai-soft: #f3ddd2;
-  --color-rag: #1f6f6b; /* deep teal */
-  --color-rag-soft: #d3e6e2;
-  --color-signal: #c61f3d; /* divergence coral-red */
-  --color-good: #4a7a3f;
+  /* Canvas — near-white, the whitespace itself is the brand */
+  --color-canvas: #fcfcfb; /* page */
+  --color-surface: #ffffff; /* a hair above the canvas: cards */
+  --color-subtle: #f5f4f1; /* inset wells, table headers, bar tracks */
 
-  /* one typeface for every word in the UI */
-  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
-  --font-body: "Bricolage Grotesque", system-ui, sans-serif;
-  --font-mono: "Bricolage Grotesque", system-ui, sans-serif;
+  /* Ink */
+  --color-ink: #1a1a18; /* headings + primary text */
+  --color-ink-soft: #6b6b63; /* secondary text (~5:1 on canvas) */
+  --color-ink-faint: #757065; /* captions, metadata, tertiary (~4.6:1 — AA) */
+  --color-line: #e7e5e0; /* hairlines */
+  --color-line-soft: #f0eee9; /* faintest dividers */
 
-  /* soft ink shadow for elevated paper surfaces */
-  --shadow-card: 0 1px 2px rgba(28, 24, 19, 0.04), 0 6px 20px -8px rgba(28, 24, 19, 0.12);
-  --shadow-lift: 0 2px 4px rgba(28, 24, 19, 0.05), 0 14px 32px -10px rgba(28, 24, 19, 0.18);
+  /* Two muted model accents + exactly one signal red. No other hue.
+     Correctness is expressed in ink (calm) vs signal (flagged), not green. */
+  --color-ai: #9c4f38; /* clay — AI Model (AA on its own tint) */
+  --color-ai-soft: #f1e7e1;
+  --color-rag: #3d6b6d; /* slate-teal — RAG Model */
+  --color-rag-soft: #e2ebea;
+  --color-signal: #cf2436; /* divergence / error — a true red, far in hue from clay */
+  --color-signal-soft: #f8dee1;
+
+  /* Type families — Apple system fonts (San Francisco), OS-provided */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+
+  /* Fluid type scale — display sizes carry their own leading + tracking.
+     Headings stay at weight 400; the scale does the work, not bold. */
+  --text-hero: clamp(3rem, 1.7rem + 5.6vw, 5.5rem);
+  --text-hero--line-height: 0.96;
+  --text-hero--letter-spacing: -0.021em;
+  --text-hero--font-weight: 400;
+
+  --text-display: clamp(2rem, 1.3rem + 3vw, 3rem);
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.018em;
+  --text-display--font-weight: 400;
+
+  --text-title: clamp(1.5rem, 1.2rem + 1.1vw, 1.95rem);
+  --text-title--line-height: 1.1;
+  --text-title--letter-spacing: -0.012em;
+  --text-title--font-weight: 400;
+
+  /* Big tabular metric (mono) */
+  --text-metric: clamp(2.25rem, 1.5rem + 2.6vw, 3.25rem);
+  --text-metric--line-height: 0.92;
+  --text-metric--letter-spacing: -0.02em;
+
+  /* Radius — soft editorial, never pill-ish on containers */
+  --radius-card: 1rem;
+
+  /* Shadows — barely there; the canvas, not elevation, carries the design */
+  --shadow-card: 0 1px 2px rgb(26 26 24 / 0.03), 0 10px 30px -18px rgb(26 26 24 / 0.10);
+  --shadow-lift: 0 2px 6px rgb(26 26 24 / 0.05), 0 24px 50px -22px rgb(26 26 24 / 0.16);
+
+  /* Motion */
+  --ease-editorial: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 html {
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
+  background-color: var(--color-canvas);
   color: var(--color-ink);
-  font-family: var(--font-body);
-  /* clean layered page: a quiet warm wash, no texture */
-  background-color: var(--color-bg);
-  background-image: linear-gradient(180deg, #f1ebde 0%, var(--color-bg) 38%, #e6ddca 100%);
-  background-attachment: fixed;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
+/* Every number, id, and code token is mono + tabular so columns align. */
 .tnum {
-  font-variant-numeric: tabular-nums;
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "zero"; /* slashed zero for data clarity */
 }
 
-/* staggered reveal */
+/* A quiet, consistent keyboard focus ring (keyboard-only, not on click). */
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-ink) 45%, transparent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* --- restrained motion ----------------------------------------------------
+   One entrance, one bar-fill, one hover lift. Nothing decorative. */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -64,27 +120,56 @@ body {
   }
 }
 .rise {
-  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: rise 0.55s var(--ease-editorial) both;
 }
 
-/* elevated paper surface that responds to the pointer */
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.grow {
+  transform-origin: left center;
+  animation: grow 0.9s var(--ease-editorial) both;
+}
+
 .card {
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: box-shadow 0.35s var(--ease-editorial),
+    transform 0.35s var(--ease-editorial);
 }
 .card-lift:hover {
   box-shadow: var(--shadow-lift);
   transform: translateY(-2px);
 }
 
-/* growing fill for comparison bars (set --to via inline style) */
-@keyframes grow {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+/* loading shimmer for skeletons */
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
-.grow {
-  transform-origin: left center;
-  animation: grow 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+.sweep {
+  position: relative;
+  overflow: hidden;
+}
+.sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-ink) 5%, transparent),
+    transparent
+  );
+  animation: sweep 1.3s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,16 +181,4 @@ body {
     transition: none !important;
     transform: none !important;
   }
-}
-
-@keyframes sweep {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-.sweep::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06), transparent);
-  animation: sweep 1.1s linear infinite;
 }

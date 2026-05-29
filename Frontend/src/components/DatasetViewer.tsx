@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { fetchDataset, fetchDatasets, MODEL_LABELS } from "../api";
 import type {
   CurrentTechAccessObj,
@@ -11,6 +10,7 @@ import type {
   ModelKey,
 } from "../types";
 import { SCENARIO_LABELS, sortScenarios } from "../lib/format";
+import TopBar from "./TopBar";
 
 type Tab = "applicants" | "inventory" | "ground";
 
@@ -22,14 +22,16 @@ const MODEL_ACCENT: Record<ModelKey, string> = {
 const TIER: Record<string, { label: string; tone: string }> = {
   T1: { label: "T1 · High power", tone: "var(--color-ai)" },
   T2: { label: "T2 · Standard", tone: "var(--color-rag)" },
-  T3: { label: "T3 · Basic", tone: "var(--color-ink-soft)" },
+  T3: { label: "T3 · Basic", tone: "var(--color-ink-faint)" },
 };
 
+// Neutral ink ramp + signal for critical. The dataset is the shared input both
+// engines score against, so urgency must NOT borrow a model accent (clay/teal).
 const URGENCY_TONE: Record<string, string> = {
   critical: "var(--color-signal)",
-  high: "var(--color-ai)",
+  high: "var(--color-ink)",
   medium: "var(--color-ink-soft)",
-  low: "var(--color-ink-soft)",
+  low: "var(--color-ink-faint)",
 };
 
 const ITEM_TYPE_ORDER = ["computer", "mobile", "display", "input"];
@@ -59,9 +61,9 @@ function techNotes(t: DatasetIntake["current_tech_access"]): string | null {
 function Chip({ children, tone }: { children: React.ReactNode; tone?: string }) {
   return (
     <span
-      className="inline-flex items-center border px-2 py-0.5 font-mono text-[11px] leading-tight"
+      className="inline-flex items-center rounded-md border px-2 py-0.5 font-mono text-[11px] leading-tight"
       style={{
-        borderColor: tone ?? "var(--color-line)",
+        borderColor: tone ? `color-mix(in srgb, ${tone} 35%, transparent)` : "var(--color-line)",
         color: tone ?? "var(--color-ink-soft)",
       }}
     >
@@ -72,7 +74,7 @@ function Chip({ children, tone }: { children: React.ReactNode; tone?: string }) 
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
+    <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-ink-faint">
       {children}
     </span>
   );
@@ -80,9 +82,9 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 
 function Condition({ value }: { value: number }) {
   return (
-    <span className="tnum tracking-tight" title={`Condition ${value}/5`}>
+    <span className="tnum tracking-tight text-ink" title={`Condition ${value}/5`}>
       {"●".repeat(value)}
-      <span className="text-[var(--color-line)]">{"○".repeat(Math.max(0, 5 - value))}</span>
+      <span className="text-line">{"○".repeat(Math.max(0, 5 - value))}</span>
     </span>
   );
 }
@@ -101,18 +103,16 @@ function ApplicantCard({
   const urgency = (intake.urgency ?? "").toLowerCase();
   const notes = techNotes(intake.current_tech_access);
   return (
-    <article className="card card-lift rise flex flex-col gap-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
+    <article className="card card-lift rise flex flex-col gap-3.5 rounded-card border border-line bg-surface p-5">
       <header className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <span className="tnum text-[11px] text-[var(--color-ink-soft)]">{id}</span>
-          <h3 className="font-[family-name:var(--font-display)] text-lg font-semibold leading-tight">
-            {intake.who_needs_it}
-          </h3>
+          <span className="tnum text-[11px] text-ink-faint">{id}</span>
+          <h3 className="font-display text-xl leading-tight text-ink">{intake.who_needs_it}</h3>
         </div>
         {urgency && (
           <span
-            className="shrink-0 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--color-paper)]"
-            style={{ backgroundColor: URGENCY_TONE[urgency] ?? "var(--color-ink-soft)" }}
+            className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.12em] text-canvas"
+            style={{ backgroundColor: URGENCY_TONE[urgency] ?? "var(--color-ink-faint)" }}
           >
             {urgency}
           </span>
@@ -130,11 +130,11 @@ function ApplicantCard({
 
       <div className="flex flex-col gap-1">
         <FieldLabel>Main usage</FieldLabel>
-        <p className="text-sm leading-relaxed text-[var(--color-ink)]">{usageText(intake.main_usage)}</p>
+        <p className="text-sm leading-relaxed text-ink">{usageText(intake.main_usage)}</p>
       </div>
 
       {intake.software_needed?.length > 0 && (
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           <FieldLabel>Software</FieldLabel>
           <div className="flex flex-wrap gap-1.5">
             {intake.software_needed.map((s) => (
@@ -146,23 +146,23 @@ function ApplicantCard({
 
       <div className="flex flex-col gap-1">
         <FieldLabel>Current access</FieldLabel>
-        <p className="text-sm text-[var(--color-ink)]">
+        <p className="text-sm text-ink">
           {techAccessLine(intake.current_tech_access)}
-          <span className="text-[var(--color-ink-soft)]">
+          <span className="text-ink-faint">
             {" "}
             · {intake.shared_user_count} {intake.shared_user_count === 1 ? "user" : "users"}
           </span>
         </p>
-        {notes && <p className="text-xs italic text-[var(--color-ink-soft)]">“{notes}”</p>}
+        {notes && <p className="text-xs italic text-ink-faint">“{notes}”</p>}
       </div>
 
       {truth && (
-        <footer className="mt-1 flex items-center gap-2 border-t border-[var(--color-line)] pt-3">
-          <FieldLabel>Ground truth</FieldLabel>
-          <Chip tone="var(--color-good)">{truth.category}</Chip>
-          <Chip tone={TIER[truth.tier]?.tone ?? "var(--color-good)"}>{truth.tier}</Chip>
+        <footer className="mt-1 flex items-center gap-2 border-t border-line-soft pt-3.5">
+          <FieldLabel>Answer key</FieldLabel>
+          <Chip tone="var(--color-ink)">{truth.category}</Chip>
+          <Chip tone={TIER[truth.tier]?.tone ?? "var(--color-ink)"}>{truth.tier}</Chip>
           {truth.acceptable_tiers && truth.acceptable_tiers.length > 1 && (
-            <span className="text-[11px] text-[var(--color-ink-soft)]">
+            <span className="text-[11px] text-ink-faint">
               ok: {truth.acceptable_tiers.join(", ")}
             </span>
           )}
@@ -188,12 +188,12 @@ function DeviceCard({ device }: { device: DatasetDevice }) {
   const tier = device.tier ? TIER[device.tier] : undefined;
   const specEntries = Object.entries(device.specs ?? {});
   return (
-    <article className="card card-lift rise flex flex-col gap-2.5 border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+    <article className="card card-lift rise flex flex-col gap-3 rounded-card border border-line bg-surface p-4">
       <header className="flex items-center justify-between gap-2">
-        <span className="tnum text-sm font-semibold">{device.id}</span>
+        <span className="tnum text-sm font-medium text-ink">{device.id}</span>
         {tier ? (
           <span
-            className="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--color-paper)]"
+            className="rounded-full px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-canvas"
             style={{ backgroundColor: tier.tone }}
           >
             {device.tier}
@@ -213,13 +213,13 @@ function DeviceCard({ device }: { device: DatasetDevice }) {
         </div>
       )}
 
-      <div className="flex items-center justify-between text-[11px] text-[var(--color-ink-soft)]">
+      <div className="flex items-center justify-between text-[11px] text-ink-faint">
         <Condition value={device.condition} />
         <span className="tnum">{device.available_from}</span>
       </div>
 
       {(device.location || device.notes) && (
-        <p className="text-[11px] text-[var(--color-ink-soft)]">
+        <p className="text-[11px] text-ink-faint">
           {device.location}
           {device.location && device.notes ? " · " : ""}
           {device.notes}
@@ -242,15 +242,15 @@ function InventoryTab({ data }: { data: DatasetPayload }) {
   }, [data.inventory]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       {groups.map(([type, devices]) => (
-        <section key={type} className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
+        <section key={type} className="flex flex-col gap-3.5">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-ink-soft">
               {type}
             </span>
-            <span className="tnum text-[11px] text-[var(--color-ink-soft)]">({devices.length})</span>
-            <span className="h-px flex-1 bg-[var(--color-line)]" />
+            <span className="tnum text-[11px] text-ink-faint">{devices.length}</span>
+            <span className="h-px flex-1 bg-line-soft" />
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {devices
@@ -272,20 +272,18 @@ function GroundTruthTab({ data }: { data: DatasetPayload }) {
   const rows = useMemo(() => {
     const entries = Object.entries(data.ground_truth);
     const order = sortScenarios(entries.map(([, v]) => v.scenario));
-    return entries.sort(
-      (a, b) => order.indexOf(a[1].scenario) - order.indexOf(b[1].scenario),
-    );
+    return entries.sort((a, b) => order.indexOf(a[1].scenario) - order.indexOf(b[1].scenario));
   }, [data.ground_truth]);
 
   return (
-    <div className="card overflow-x-auto border border-[var(--color-line)] bg-[var(--color-paper)]">
+    <div className="card overflow-x-auto rounded-card border border-line bg-surface">
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="border-b border-[var(--color-ink)] text-left">
+          <tr className="border-b border-line bg-subtle text-left">
             {["Applicant", "Scenario", "Category", "Tier", "Acceptable tiers"].map((h) => (
               <th
                 key={h}
-                className="px-4 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--color-ink-soft)]"
+                className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.16em] text-ink-soft"
               >
                 {h}
               </th>
@@ -294,18 +292,18 @@ function GroundTruthTab({ data }: { data: DatasetPayload }) {
         </thead>
         <tbody>
           {rows.map(([id, label]) => (
-            <tr key={id} className="border-b border-[var(--color-line)] last:border-0">
-              <td className="tnum px-4 py-2.5 text-[var(--color-ink)]">{id}</td>
-              <td className="px-4 py-2.5 text-[var(--color-ink-soft)]">
+            <tr key={id} className="border-b border-line-soft last:border-0">
+              <td className="tnum px-4 py-3 text-ink">{id}</td>
+              <td className="px-4 py-3 text-ink-soft">
                 {SCENARIO_LABELS[label.scenario] ?? label.scenario}
               </td>
-              <td className="px-4 py-2.5">
+              <td className="px-4 py-3">
                 <Chip tone="var(--color-ink)">{label.category}</Chip>
               </td>
-              <td className="px-4 py-2.5">
+              <td className="px-4 py-3">
                 <Chip tone={TIER[label.tier]?.tone ?? "var(--color-ink)"}>{label.tier}</Chip>
               </td>
-              <td className="tnum px-4 py-2.5 text-[var(--color-ink-soft)]">
+              <td className="tnum px-4 py-3 text-ink-faint">
                 {(label.acceptable_tiers ?? [label.tier]).join(", ")}
               </td>
             </tr>
@@ -376,140 +374,139 @@ export default function DatasetViewer() {
       }
     : { applicants: 0, inventory: 0, ground: 0 };
 
-  const TABS: { key: Tab; label: string }[] = [
-    { key: "applicants", label: `Applicants · ${counts.applicants}` },
-    { key: "inventory", label: `Inventory · ${counts.inventory}` },
-    { key: "ground", label: `Ground truth · ${counts.ground}` },
+  const TABS: { key: Tab; label: string; count: number }[] = [
+    { key: "applicants", label: "Applicants", count: counts.applicants },
+    { key: "inventory", label: "Inventory", count: counts.inventory },
+    { key: "ground", label: "Answer key", count: counts.ground },
   ];
 
   return (
-    <div className="relative z-10 mx-auto max-w-6xl px-6 py-10 sm:px-10 sm:py-14">
-      <header className="border-b-2 border-[var(--color-ink)] pb-6">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--color-ink-soft)]">
-            ASRA · Sample Dataset
-          </span>
-          <Link
-            to="/compare"
-            className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] underline-offset-4 hover:text-[var(--color-ink)] hover:underline"
-          >
-            Model comparison →
-          </Link>
-        </div>
-        <h1 className="mt-3 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[0.95] tracking-tight sm:text-6xl">
-          Sample Data
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          The data set every test runs on. It has the applicant forms, the list of devices they
-          can be matched to, and the right answer for who should get what. Each backend has its
-          own list of applicants, so pick a source below.
-        </p>
-      </header>
+    <div className="mx-auto max-w-[1180px] px-6 sm:px-10">
+      <TopBar />
 
-      {/* controls: source backend + dataset */}
-      <div className="flex flex-wrap items-end gap-6 pt-8">
-        <div className="flex flex-col gap-1.5">
-          <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
-            Source
-          </span>
-          <div className="flex border border-[var(--color-ink)]">
-            {(["ai", "rag"] as ModelKey[]).map((m) => {
-              const active = source === m;
-              return (
-                <button
-                  key={m}
-                  onClick={() => setSource(m)}
-                  className="px-4 py-2.5 font-mono text-sm transition-colors"
-                  style={{
-                    backgroundColor: active ? MODEL_ACCENT[m] : "transparent",
-                    color: active ? "var(--color-paper)" : "var(--color-ink)",
-                  }}
-                >
-                  {MODEL_LABELS[m]}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+      <main>
+        {/* hero */}
+        <section className="pt-10 sm:pt-16">
+          <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-ink-faint">
+            Shared dataset
+          </p>
+          <h1 className="mt-3 font-display text-hero text-ink">Sample data</h1>
+          <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-ink-soft">
+            The applicants, the device inventory, and the answer key every run is scored
+            against.
+          </p>
+        </section>
 
-        <label className="flex flex-col gap-1.5">
-          <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
-            Dataset
-          </span>
-          <div className="relative">
-            <select
-              value={dataset}
-              onChange={(e) => setDataset(e.target.value)}
-              disabled={datasets.length === 0}
-              className="appearance-none rounded-none border border-[var(--color-ink)] bg-transparent py-2.5 pl-3.5 pr-10 font-mono text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ink)] disabled:opacity-50"
-            >
-              {datasets.length === 0 && <option>{dataset || "loading…"}</option>}
-              {datasets.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-ink-soft)]">
-              ▾
+        {/* controls: source backend + dataset */}
+        <div className="mt-10 flex flex-wrap items-end gap-6">
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-faint">
+              Source
             </span>
+            <div className="flex gap-1 rounded-lg border border-line bg-surface p-1">
+              {(["ai", "rag"] as ModelKey[]).map((m) => {
+                const active = source === m;
+                return (
+                  <button
+                    key={m}
+                    onClick={() => setSource(m)}
+                    aria-pressed={active}
+                    className="min-h-9 rounded-md px-3.5 py-1.5 text-[13px] transition-colors"
+                    style={{
+                      backgroundColor: active ? MODEL_ACCENT[m] : "transparent",
+                      color: active ? "var(--color-canvas)" : "var(--color-ink-soft)",
+                    }}
+                  >
+                    {MODEL_LABELS[m]}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </label>
-      </div>
 
-      {/* tabs */}
-      <div className="mt-8 flex flex-wrap gap-1 border-b border-[var(--color-line)]">
-        {TABS.map((t) => {
-          const active = tab === t.key;
-          return (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className="-mb-px border-b-2 px-3 py-2 font-mono text-sm transition-colors"
-              style={{
-                borderColor: active ? "var(--color-ink)" : "transparent",
-                color: active ? "var(--color-ink)" : "var(--color-ink-soft)",
-              }}
-            >
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
+          <label className="flex flex-col gap-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-faint">
+              Dataset
+            </span>
+            <div className="relative">
+              <select
+                value={dataset}
+                onChange={(e) => setDataset(e.target.value)}
+                disabled={datasets.length === 0}
+                className="min-h-11 appearance-none rounded-lg border border-line bg-surface py-2.5 pl-4 pr-11 font-mono text-sm text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
+              >
+                {datasets.length === 0 && <option>{dataset || "loading…"}</option>}
+                {datasets.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+              <span
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-faint"
+                aria-hidden
+              >
+                ↓
+              </span>
+            </div>
+          </label>
+        </div>
 
-      {/* body */}
-      <div className="mt-8">
-        {error && (
-          <div className="border border-[var(--color-signal)] bg-[color-mix(in_srgb,var(--color-signal)_8%,transparent)] p-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-signal)]">
-              Could not load dataset
-            </p>
-            <p className="mt-1.5 font-mono text-xs leading-relaxed text-[var(--color-ink)]">{error}</p>
-          </div>
-        )}
+        {/* tabs */}
+        <div className="mt-10 flex flex-wrap gap-6 border-b border-line">
+          {TABS.map((t) => {
+            const active = tab === t.key;
+            return (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key)}
+                aria-current={active ? "page" : undefined}
+                className={`-mb-px flex items-baseline gap-1.5 border-b-2 pb-3 text-sm transition-colors ${
+                  active
+                    ? "border-ink text-ink"
+                    : "border-transparent text-ink-faint hover:text-ink-soft"
+                }`}
+              >
+                {t.label}
+                <span className="tnum text-[11px] text-ink-faint">{t.count}</span>
+              </button>
+            );
+          })}
+        </div>
 
-        {loading && !data && (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="sweep relative h-40 overflow-hidden bg-[var(--color-paper-2)]" />
-            ))}
-          </div>
-        )}
+        {/* body */}
+        <div className="mt-8">
+          {error && (
+            <div className="rounded-xl border border-signal/40 bg-signal-soft/60 p-4">
+              <p className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-signal">
+                Could not load dataset
+              </p>
+              <p className="mt-1.5 font-mono text-xs leading-relaxed text-ink">{error}</p>
+            </div>
+          )}
 
-        {data && !error && (
-          <>
-            {tab === "applicants" && <ApplicantsTab data={data} />}
-            {tab === "inventory" && <InventoryTab data={data} />}
-            {tab === "ground" && <GroundTruthTab data={data} />}
-          </>
-        )}
-      </div>
+          {loading && !data && (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="sweep h-44 rounded-card bg-subtle" />
+              ))}
+            </div>
+          )}
 
-      <footer className="mt-14 border-t border-[var(--color-line)] pt-4 text-[11px] text-[var(--color-ink-soft)]">
-        Served read-only from <span className="font-mono">/eval/dataset/{dataset}</span> on the{" "}
-        {MODEL_LABELS[source]} backend. Ground-truth labels are derived from the LGT precedent
-        decisions and are pending human validation.
-      </footer>
+          {data && !error && (
+            <>
+              {tab === "applicants" && <ApplicantsTab data={data} />}
+              {tab === "inventory" && <InventoryTab data={data} />}
+              {tab === "ground" && <GroundTruthTab data={data} />}
+            </>
+          )}
+        </div>
+
+        <footer className="mt-20 mb-16 border-t border-line-soft pt-5 text-xs text-ink-faint">
+          Read-only from the {MODEL_LABELS[source]} backend · answer-key labels derived from LGT
+          precedent, pending human validation.
+        </footer>
+      </main>
     </div>
   );
 }

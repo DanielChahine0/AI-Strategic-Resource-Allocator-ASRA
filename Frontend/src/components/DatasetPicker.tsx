@@ -8,9 +8,9 @@ interface Props {
 
 export default function DatasetPicker({ datasets, value, onChange, onRun, running }: Props) {
   return (
-    <div className="flex flex-wrap items-end gap-5">
-      <label className="flex flex-col gap-1.5">
-        <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
+    <div className="flex flex-wrap items-end gap-4">
+      <label className="flex flex-col gap-2">
+        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-ink-faint">
           Dataset
         </span>
         <div className="relative">
@@ -18,7 +18,7 @@ export default function DatasetPicker({ datasets, value, onChange, onRun, runnin
             value={value}
             onChange={(e) => onChange(e.target.value)}
             disabled={running || datasets.length === 0}
-            className="appearance-none rounded-none border border-[var(--color-ink)] bg-transparent py-2.5 pl-3.5 pr-10 font-mono text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ink)] disabled:opacity-50"
+            className="min-h-11 appearance-none rounded-lg border border-line bg-surface py-2.5 pl-4 pr-11 font-mono text-sm text-ink transition-colors hover:border-ink/30 disabled:opacity-50"
           >
             {datasets.length === 0 && <option>loading…</option>}
             {datasets.map((d) => (
@@ -27,8 +27,11 @@ export default function DatasetPicker({ datasets, value, onChange, onRun, runnin
               </option>
             ))}
           </select>
-          <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-ink-soft)]">
-            ▾
+          <span
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-ink-faint"
+            aria-hidden
+          >
+            ↓
           </span>
         </div>
       </label>
@@ -36,15 +39,10 @@ export default function DatasetPicker({ datasets, value, onChange, onRun, runnin
       <button
         onClick={onRun}
         disabled={running || !value}
-        className="group relative overflow-hidden rounded-none bg-[var(--color-ink)] px-7 py-2.5 font-mono text-sm font-medium uppercase tracking-[0.16em] text-[var(--color-paper)] transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+        className="min-h-11 rounded-lg bg-ink px-6 py-2.5 text-sm font-medium text-canvas transition-all hover:bg-ink/90 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {running ? "running…" : "▶ Run both models"}
+        {running ? "Running…" : "Run comparison"}
       </button>
-
-      <p className="max-w-xs text-xs leading-relaxed text-[var(--color-ink-soft)]">
-        Sends <span className="font-mono">/evaluate</span> to both models at the same time.
-        Each one runs the data set on its own list of applicants.
-      </p>
     </div>
   );
 }

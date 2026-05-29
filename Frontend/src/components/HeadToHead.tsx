@@ -13,57 +13,42 @@ function leader(a: number, b: number, lowerIsBetter = false): ModelKey | null {
 }
 
 function LeadPill({ winner, delta }: { winner: ModelKey | null; delta: string }) {
-  if (!winner)
-    return (
-      <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
-        tie
-      </span>
-    );
+  if (!winner) return <span className="text-[11px] text-ink-faint">even</span>;
   const color = winner === "ai" ? AI : RAG;
   return (
-    <span
-      className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.12em]"
-      style={{ color }}
-    >
-      <span aria-hidden>▲</span>
+    <span className="text-[11px] font-medium" style={{ color }}>
       {MODEL_LABELS[winner].replace(" Model", "")} {delta}
     </span>
   );
 }
 
 /** A quality metric (0..1, higher is better): paired bars on a shared scale. */
-function QualityBar({
-  label,
-  ai,
-  rag,
-}: {
-  label: string;
-  ai: number;
-  rag: number;
-}) {
+function QualityBar({ label, ai, rag }: { label: string; ai: number; rag: number }) {
   const winner = leader(ai, rag);
   const delta = `+${pct(Math.abs(ai - rag))}`;
   const Row = ({ model, value }: { model: ModelKey; value: number }) => {
     const color = model === "ai" ? AI : RAG;
     return (
-      <div className="flex items-center gap-2.5">
-        <span className="w-7 text-[10px] uppercase tracking-[0.1em] text-[var(--color-ink-soft)]">
+      <div className="flex items-center gap-3">
+        <span className="w-7 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
           {model}
         </span>
-        <div className="relative h-2 flex-1 bg-[var(--color-paper-2)]">
+        <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-subtle">
           <div
-            className="grow absolute inset-y-0 left-0"
+            className="grow absolute inset-y-0 left-0 rounded-full"
             style={{ width: `${Math.max(1, value * 100)}%`, backgroundColor: color }}
           />
         </div>
-        <span className="tnum w-10 text-right text-xs font-semibold">{pct(value)}</span>
+        <span className="tnum w-10 text-right text-[13px] font-medium text-ink">
+          {pct(value)}
+        </span>
       </div>
     );
   };
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-baseline justify-between">
-        <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+    <div className="flex flex-col gap-2.5">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
           {label}
         </span>
         <LeadPill winner={winner} delta={delta} />
@@ -94,28 +79,25 @@ function CostStat({
   const lo = Math.min(aiValue, ragValue);
   const saving = hi > 0 ? Math.round(((hi - lo) / hi) * 100) : 0;
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+    <div className="flex flex-col gap-2">
+      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
         {label}
       </span>
-      <div className="flex items-baseline gap-3">
-        <span className="tnum text-base font-semibold" style={{ color: AI }}>
+      <div className="flex items-baseline gap-2.5">
+        <span className="tnum text-xl" style={{ color: AI }}>
           {format(aiValue)}
         </span>
-        <span className="text-[var(--color-line)]">·</span>
-        <span className="tnum text-base font-semibold" style={{ color: RAG }}>
+        <span className="text-sm text-ink-faint">/</span>
+        <span className="tnum text-xl" style={{ color: RAG }}>
           {format(ragValue)}
         </span>
       </div>
       {winner ? (
-        <span
-          className="text-[10px] uppercase tracking-[0.12em]"
-          style={{ color: winner === "ai" ? AI : RAG }}
-        >
+        <span className="text-[11px]" style={{ color: winner === "ai" ? AI : RAG }}>
           {MODEL_LABELS[winner].replace(" Model", "")} {verb} {saving}% less
         </span>
       ) : (
-        <span className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-ink-soft)]">
+        <span className="text-[11px] text-ink-faint">
           {bothZero ? "no live tokens" : "even"}
         </span>
       )}
@@ -136,35 +118,32 @@ export default function HeadToHead({
   const r: EvalSummary = rag.summary;
 
   return (
-    <section className="card rise mt-8 border border-[var(--color-line)] bg-[var(--color-paper)] p-6 sm:p-7">
-      <header className="mb-5 flex flex-wrap items-baseline justify-between gap-2 border-b border-[var(--color-line)] pb-3">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold">
-          Head to head
-        </h2>
-        <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
+    <section className="card rise mt-12 rounded-card border border-line bg-surface p-7 sm:p-9">
+      <header className="mb-7 flex flex-wrap items-baseline justify-between gap-3">
+        <h2 className="font-display text-title text-ink">Head to head</h2>
+        <div className="flex items-center gap-4 text-[11px] text-ink-faint">
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2" style={{ backgroundColor: AI }} /> AI
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: AI }} /> AI
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2" style={{ backgroundColor: RAG }} /> RAG
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: RAG }} /> RAG
           </span>
-          <span className="hidden sm:inline">same 0 to 100% scale</span>
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-12 gap-y-7 md:grid-cols-3">
         <QualityBar label="Accuracy" ai={a.mean_accuracy_score} rag={r.mean_accuracy_score} />
         <QualityBar label="Confidence" ai={a.mean_confidence} rag={r.mean_confidence} />
         <QualityBar
-          label="Explanation quality"
+          label="Explanation"
           ai={a.mean_explanation_quality}
           rag={r.mean_explanation_quality}
         />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-x-10 gap-y-4 border-t border-[var(--color-line)] pt-5 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 border-t border-line pt-7 sm:grid-cols-3">
         <CostStat
-          label="Tokens (total)"
+          label="Tokens"
           aiValue={a.tokens_total}
           ragValue={r.tokens_total}
           format={int}

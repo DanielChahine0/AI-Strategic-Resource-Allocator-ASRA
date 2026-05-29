@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+// Type is the Apple system font (San Francisco) — provided by the OS, so no
+// web fonts are loaded. Hierarchy comes from size, not weight.
 import "./index.css";
 import ModelComparison from "./App";
 import DatasetViewer from "./components/DatasetViewer";

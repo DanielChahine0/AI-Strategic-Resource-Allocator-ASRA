@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { fetchDatasets, runEvaluation } from "./api";
 import ComparisonTable from "./components/ComparisonTable";
 import DatasetPicker from "./components/DatasetPicker";
 import HeadToHead from "./components/HeadToHead";
 import ModelStatusBar from "./components/ModelStatusBar";
 import SummaryCard from "./components/SummaryCards";
+import TopBar from "./components/TopBar";
 import type { ModelKey, ModelRunState } from "./types";
 
 const IDLE: ModelRunState = { status: "idle", result: null, error: null };
@@ -61,81 +61,63 @@ export default function ModelComparison() {
   const showTable = ai.status === "done" || rag.status === "done";
 
   return (
-    <div className="relative z-10 mx-auto max-w-6xl px-6 py-10 sm:px-10 sm:py-14">
-      {/* masthead */}
-      <header className="border-b-2 border-[var(--color-ink)] pb-6">
-        <div className="flex items-baseline justify-between">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[var(--color-ink-soft)]">
-            ASRA · Allocation Bench
-          </span>
-          <span className="flex items-baseline gap-4">
-            <Link
-              to="/dataset"
-              className="text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] underline-offset-4 hover:text-[var(--color-ink)] hover:underline"
-            >
-              Sample data →
-            </Link>
-            <span className="tnum text-[11px] text-[var(--color-ink-soft)]">
-              {new Date().toISOString().slice(0, 10)}
-            </span>
-          </span>
-        </div>
-        <h1 className="mt-3 font-[family-name:var(--font-display)] text-5xl font-semibold leading-[0.95] tracking-tight sm:text-6xl">
-          Model Comparison
-        </h1>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          Run the <em>AI Model</em> and the <em>RAG Model</em> on the same data set and
-          read them side by side: how much they cost, how often they are right, how sure
-          they are, and how well each one uses the applicant's own words.
-        </p>
-      </header>
+    <div className="mx-auto max-w-[1180px] px-6 sm:px-10">
+      <TopBar />
 
-      {/* live model health */}
-      <ModelStatusBar />
+      <main>
+        {/* hero */}
+        <section className="pt-10 sm:pt-16">
+          <p className="tnum text-xs text-ink-faint">
+            {new Date().toISOString().slice(0, 10)}
+          </p>
+          <h1 className="mt-3 font-display text-hero text-ink">Model comparison</h1>
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
+            Two matching engines, one dataset — read side by side.
+          </p>
+        </section>
 
-      {/* controls */}
-      <div className="pt-8">
-        <DatasetPicker
-          datasets={datasets}
-          value={dataset}
-          onChange={setDataset}
-          onRun={run}
-          running={running}
-        />
-      </div>
+        {/* live model health */}
+        <ModelStatusBar />
 
-      {/* head-to-head verdict, shown once both models have reported */}
-      <HeadToHead
-        ai={ai.status === "done" ? ai.result : null}
-        rag={rag.status === "done" ? rag.result : null}
-      />
-
-      {/* summaries, with their own loading/error per model */}
-      <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2">
-        <SummaryCard model="ai" state={ai} peer={rag} />
-        <SummaryCard model="rag" state={rag} peer={ai} />
-      </div>
-
-      {/* per-scenario ledger */}
-      {showTable && (
+        {/* controls */}
         <div className="mt-10">
-          <h2 className="mb-4 flex items-baseline gap-3 font-[family-name:var(--font-display)] text-2xl font-semibold">
-            Per-match ledger
-            <span className="text-[11px] font-normal uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
-              joined by applicant
-            </span>
-          </h2>
-          <ComparisonTable ai={ai.result} rag={rag.result} />
+          <DatasetPicker
+            datasets={datasets}
+            value={dataset}
+            onChange={setDataset}
+            onRun={run}
+            running={running}
+          />
         </div>
-      )}
 
-      <footer className="mt-14 border-t border-[var(--color-line)] pt-4 text-[11px] text-[var(--color-ink-soft)]">
-        We check answers against{" "}
-        <span className="font-mono">sample_data/ground_truth.json</span> (based on past LGT
-        decisions, still to be checked by a person). Token counts show up only when each
-        backend has a <span className="font-mono">GEMINI_API_KEY</span>. If it does not, the
-        model uses backup logic and costs 0 tokens.
-      </footer>
+        {/* head-to-head verdict, shown once both models have reported */}
+        <HeadToHead
+          ai={ai.status === "done" ? ai.result : null}
+          rag={rag.status === "done" ? rag.result : null}
+        />
+
+        {/* per-model summaries, each with its own loading / error state */}
+        <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <SummaryCard model="ai" state={ai} peer={rag} />
+          <SummaryCard model="rag" state={rag} peer={ai} />
+        </div>
+
+        {/* per-scenario ledger */}
+        {showTable && (
+          <section className="mt-20">
+            <div className="mb-5 flex items-baseline justify-between gap-3">
+              <h2 className="font-display text-title text-ink">Per-match ledger</h2>
+              <span className="text-xs text-ink-faint">joined by applicant</span>
+            </div>
+            <ComparisonTable ai={ai.result} rag={rag.result} />
+          </section>
+        )}
+
+        <footer className="mt-20 mb-16 border-t border-line-soft pt-5 text-xs text-ink-faint">
+          Scored against <span className="font-mono">ground_truth.json</span> · engines fall
+          back to deterministic logic without a <span className="font-mono">GEMINI_API_KEY</span>.
+        </footer>
+      </main>
     </div>
   );
 }
