@@ -1,13 +1,13 @@
 # ASRA | AI Strategic Resource Allocator
 
 A matching-engine prototype that pairs technology applicants with donated hardware for **Let's Get Together (LGT)**, built as part of the Riipen / ASRA project. Given an applicant's needs (collected through a short, ESL-friendly intake) and a pool of donated devices, the engine recommends the best-fit device with a transparent, auditable rationale. 
-This repository holds **three programs** — two independent implementations of the matching engine plus a placeholder for the user interface:
+This repository holds **three programs** — two independent implementations of the matching engine plus a web UI that runs and compares them:
 
 | Program | What it is | Status |
 |---|---|---|
-| [`AI Model/`](AI%20Model/) | Matching engine: deterministic rules + scoring, with **Gemini** used for three narrow tasks (intake parsing, tier recommendation, explanations). | ✅ Working MVP (53 tests) |
-| [`RAG Model/`](RAG%20Model/) | Same engine, evolved into a **retrieval-augmented** version: a ChromaDB knowledge base grounds every LLM call so each allocation cites the documents behind it. | ✅ Working MVP (32 tests) |
-| [`Frontend/`](Frontend/) | Web UI for intake + reviewer dashboard. | 🚧 Placeholder — not yet implemented |
+| [`AI Model/`](AI%20Model/) | Matching engine: deterministic rules + scoring, with **Gemini** used for narrow tasks (intake parsing, explanations; tier recommendation in the RAG variant). | ✅ Working MVP (63 tests) |
+| [`RAG Model/`](RAG%20Model/) | Same engine, evolved into a **retrieval-augmented** version: a ChromaDB knowledge base grounds every LLM call so each allocation cites the documents behind it. | ✅ Working MVP (42 tests) |
+| [`Frontend/`](Frontend/) | **Model Comparison UI** (React + Vite): runs both engines on a shared dataset and diffs them side by side, with a read-only dataset viewer. | ✅ Working (no automated tests yet) |
 
 > **Why two engines?** They are two prototype approaches to the same problem, kept side by side so LGT can compare them. The **AI Model** is the leaner, faster baseline. The **RAG Model** trades setup cost (a local vector store) for *grounded, citable* decisions — every recommendation points back to a category definition, tier spec, policy, or past-decision document the LGT team can audit. Both share the same core idea: **fit is a hard gate, scoring is pure-functional, and the LLM never overrides the rules.**
 
@@ -116,7 +116,7 @@ Each program's own README has the deep detail: full pipeline, the LLM's exact ro
 
 ## Frontend
 
-`Frontend/` is a placeholder for the planned web interface (applicant intake + LGT reviewer dashboard). It is **not implemented yet** — today both engines are driven through their CLI and the optional FastAPI endpoints, which a frontend would call.
+`Frontend/` is a working **Model Comparison UI** (React + Vite + Tailwind). It calls both engines' `/evaluate` (and `/status`) endpoints, runs them on the same dataset, and shows the results side by side — accuracy, cost, confidence, and per-applicant divergences — plus a read-only dataset viewer. Run the whole stack (both engines + the UI) with `./run.sh`, then open `http://localhost:5173/compare`. A broader applicant-intake form and an LGT reviewer dashboard are still future work; the comparison UI does not yet have automated tests.
 
 ---
 

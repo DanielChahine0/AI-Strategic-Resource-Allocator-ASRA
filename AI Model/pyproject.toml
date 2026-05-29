@@ -10,20 +10,23 @@ readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Riipen / ASRA team" }]
 license = { text = "Proprietary" }
+# Upper bounds cap the next major so a future release can't silently break the
+# install (the previous unbounded ranges had already drifted google-genai 0.3
+# -> 2.x). Lower bounds reflect the majors the code is tested against.
 dependencies = [
-    "pydantic>=2.6",
-    "google-genai>=0.3",
-    "fastapi>=0.110",
-    "uvicorn>=0.29",
-    "python-dotenv>=1.0",
+    "pydantic>=2.6,<3",
+    "google-genai>=2.0,<3",
+    "fastapi>=0.110,<1",
+    "uvicorn>=0.29,<1",
+    "python-dotenv>=1.0,<2",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=8.0",
-    "pytest-mock>=3.12",
-    "httpx>=0.27",
-    "ruff>=0.6",
+    "pytest>=8.0,<10",
+    "pytest-mock>=3.12,<4",
+    "httpx>=0.27,<1",
+    "ruff>=0.6,<1",
 ]
 
 [project.scripts]

@@ -5,7 +5,7 @@ with available inventory for **Let's Get Together (ASRA)**. Three layers:
 
 1. **Deterministic rules + scoring** (`rules.py`, `scoring.py`) — pure functions.
 2. **Retrieval** (`rag/`) — ChromaDB persistent local store, embeddings via
-   Google `text-embedding-004`.
+   Google `gemini-embedding-001`.
 3. **Generation** (`llm.py`) — Gemini 2.5 Flash Lite (`gemini-2.5-flash-lite`)
    via `google-genai`, called only with retrieved context grounding every
    prompt.
@@ -54,7 +54,7 @@ asra_matcher/
   rag/
     ingest.py       walks kb/, chunks, embeds, writes to Chroma
     store.py        one Chroma collection per namespace
-    embed.py        text-embedding-004 batched + retry
+    embed.py        gemini-embedding-001 batched + retry
     retrieve.py     query(text, namespaces, k, filters)
     prompts.py      templates w/ abstain-when-context-thin boilerplate
   llm.py            Gemini wrapper for Task A (tier rec), B (explain), C (parse)
@@ -110,7 +110,7 @@ All values intentionally live in code or `.env`, not in the KB:
 | `k_per_namespace` (Task B — explain) | `llm.explain_matches()` | `decisions=3, policies=2, tiers=2` | Decisions carry the most precedent; policies justify weight-driven choices. |
 | `k_per_namespace` (Task C — parse intake) | `llm.parse_intake()` | `categories=3, software=3` | Tight context for parsing without noise. |
 | `CHUNK_TOKENS`, `OVERLAP_TOKENS` | `rag/ingest.py` | `400 / 50` (≈4 chars/token) | Standard RAG defaults; small enough to stay in `gemini-2.5-flash-lite`'s budget. |
-| Embedding model | env `ASRA_EMBEDDING_MODEL` | `text-embedding-004` | Matches Google's recommended cost/quality point for short docs. |
+| Embedding model | env `ASRA_EMBEDDING_MODEL` | `gemini-embedding-001` | Matches Google's recommended cost/quality point for short docs. |
 | Generation model | env `ASRA_GENERATION_MODEL` | `gemini-2.5-flash-lite` | Lowest-cost Gemini 2.5 family that still handles structured JSON output. |
 | Temperatures | `llm.py` | `parse=0.1, tier=0.1, explain=0.4` | Determinism for parsing/decision; small variance for human-readable explanations. |
 | Fallback behavior | `llm.py` | conservative tier + deterministic explanation; both logged to `llm_audit.jsonl` | Pipeline never crashes on transient errors or abstentions. |
