@@ -31,13 +31,15 @@ fallback path and the audit log records when a fallback was used.
 # 1. Build the local vector store from kb/
 .venv/bin/python -m asra_matcher ingest --rebuild
 
-# 2. Interactive intake against an inventory file
-.venv/bin/python -m asra_matcher intake --inventory sample_data/inventory.json
+# 2. Interactive intake against the shared inventory (lives at the repo root)
+.venv/bin/python -m asra_matcher intake --inventory ../sample_data/inventory.json
 
-# 3. Non-interactive run against a pre-built applicant JSON
+# 3. Non-interactive run against a pre-built applicant JSON. The shared
+#    on-disk schema is the AI Model's superset; both `match` and `/evaluate`
+#    accept it (RAG converts to its native Applicant at load time).
 .venv/bin/python -m asra_matcher match \
-    sample_data/applicants/applicant_FC_multi.json \
-    --inventory sample_data/inventory.json
+    ../sample_data/applicants/app-FC-newcomer-jobsearch.json \
+    --inventory ../sample_data/inventory.json
 ```
 
 ## Project layout
@@ -69,7 +71,10 @@ kb/                 Source-of-truth knowledge base (markdown w/ YAML frontmatter
   past_decisions/   13 worked examples spanning all categories
 
 tests/              pytest — rules, scoring, splitter, RAG retrieve, engine e2e
-sample_data/        inventory.json (20 items) + 9 applicant JSONs
+../sample_data/     SHARED with the AI Model (lives at the repo root):
+                    inventory.json + 9 applicant JSONs + ground_truth.json
+                    Files use the AI Model's superset schema;
+                    eval.py adapts to RAG's Applicant on load.
 ```
 
 ## How the matcher decides

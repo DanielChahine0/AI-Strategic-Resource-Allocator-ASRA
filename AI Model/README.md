@@ -29,12 +29,16 @@ and natural-language explanation paths.
 ## Run
 
 ```bash
+# The dataset (inventory + applicants + ground truth) lives at the repo root
+# in ../sample_data/, shared with the RAG Model so both engines evaluate
+# byte-identical inputs.
+
 # Interactive intake (8 questions, ESL-friendly)
-python -m asra_matcher intake --inventory sample_data/inventory.json
+python -m asra_matcher intake --inventory ../sample_data/inventory.json
 
 # Non-interactive: run a saved applicant JSON
-python -m asra_matcher match sample_data/applicants/app-FC-newcomer-jobsearch.json \
-    --inventory sample_data/inventory.json
+python -m asra_matcher match ../sample_data/applicants/app-FC-newcomer-jobsearch.json \
+    --inventory ../sample_data/inventory.json
 
 # FastAPI server
 uvicorn asra_matcher.api:app --reload --port 8000
@@ -87,9 +91,10 @@ asra_matcher/
   engine.py       — Orchestration
   cli.py          — argparse CLI: `intake` and `match`
   api.py          — FastAPI: /match, /intake/parse, /health
-sample_data/
+../sample_data/           — SHARED with the RAG Model (lives at the repo root)
   inventory.json          — 20 fake devices across tiers, mobile, peripherals
-  applicants/             — 8 sample applicants covering A1-A3, B, C, D, F, F+C
+  applicants/             — 9 sample applicants covering A1-A3, B, C, D, F, F+C
+  ground_truth.json       — labelled allocations used by /evaluate
 tests/                    — 53 deterministic + 2 integration tests
 logs/                     — llm_audit.jsonl is written here
 intake_sessions/          — parsed applicants saved here by `intake`

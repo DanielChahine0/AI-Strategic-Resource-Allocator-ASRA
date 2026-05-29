@@ -126,4 +126,5 @@ def make_applicant_fn():
 
 @pytest.fixture
 def sample_data_dir() -> Path:
-    return Path(__file__).resolve().parent.parent / "sample_data"
+    # Shared dataset at the repo root (parents[2] == project root).
+    return Path(__file__).resolve().parents[2] / "sample_data"

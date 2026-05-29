@@ -27,6 +27,12 @@ def _load_inventory(path: str) -> list[Device]:
 
 def _load_applicant(path: str) -> Applicant:
     raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    # Accept either the RAG-native shape or the shared canonical (AI-superset)
+    # shape used by the repo-root /sample_data folder. The eval module owns the
+    # adapter; reusing it here keeps `cli match` and `/evaluate` in lockstep.
+    if "applicant_id" in raw and "id" not in raw:
+        from . import eval as eval_mod
+        return eval_mod._canonical_to_rag_applicant(raw)
     return Applicant.model_validate(raw)
 
 

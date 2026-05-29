@@ -1,8 +1,8 @@
 """Command-line interface for ASRA.
 
-Usage:
-  python -m asra_matcher intake --inventory sample_data/inventory.json
-  python -m asra_matcher match path/to/applicant.json --inventory sample_data/inventory.json
+Usage (run from this model's directory; the dataset is shared at the repo root):
+  python -m asra_matcher intake --inventory ../sample_data/inventory.json
+  python -m asra_matcher match path/to/applicant.json --inventory ../sample_data/inventory.json
 """
 
 from __future__ import annotations

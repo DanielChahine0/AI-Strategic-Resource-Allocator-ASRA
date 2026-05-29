@@ -41,16 +41,20 @@ matching system prototype/
 ├── README.md            ← you are here (overview of all three programs)
 ├── LICENSE
 ├── .gitignore
+├── sample_data/         ← SHARED dataset both engines evaluate against
+│   ├── inventory.json   ← 20 devices (tiers, mobile, peripherals)
+│   ├── applicants/      ← 9 sample applicants (A1–F, F+C)
+│   └── ground_truth.json← labelled allocations for /evaluate
 ├── AI Model/            ← engine #1: deterministic + Gemini  (see AI Model/README.md)
 │   ├── asra_matcher/    ← package: taxonomy, models, rules, scoring, llm, engine, cli, api
-│   ├── sample_data/     ← inventory.json + 9 sample applicants (A1–F, F+C)
 │   └── tests/
 ├── RAG Model/           ← engine #2: + ChromaDB retrieval  (see RAG Model/README.md)
 │   ├── asra_matcher/    ← adds rag/ (ingest, store, embed, retrieve, prompts)
+│   │                      and an adapter that maps the canonical applicant
+│   │                      shape (AI superset) onto RAG's Applicant at load.
 │   ├── kb/              ← markdown knowledge base: categories, tiers, policies, past decisions
-│   ├── sample_data/
 │   └── tests/
-└── Frontend/            ← placeholder for the web UI
+└── Frontend/            ← React + Vite Model Comparison UI
 ```
 
 ---
@@ -74,11 +78,11 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 cp .env.example .env            # then add GEMINI_API_KEY (optional)
 
-# Interactive intake (8 questions) against the sample inventory
-python -m asra_matcher intake --inventory sample_data/inventory.json
+# Interactive intake (8 questions) against the shared inventory at the repo root
+python -m asra_matcher intake --inventory ../sample_data/inventory.json
 
 # Or score a saved applicant non-interactively
-python -m asra_matcher match sample_data/applicants/app-FC-newcomer-jobsearch.json --inventory sample_data/inventory.json
+python -m asra_matcher match ../sample_data/applicants/app-FC-newcomer-jobsearch.json --inventory ../sample_data/inventory.json
 
 # Optional FastAPI server: POST /match, POST /intake/parse, GET /health
 uvicorn asra_matcher.api:app --reload --port 8000
@@ -98,10 +102,10 @@ cp .env.example .env            # then add GEMINI_API_KEY (optional)
 .venv/bin/python -m asra_matcher ingest --rebuild
 
 # 2. Interactive intake (7 questions)
-.venv/bin/python -m asra_matcher intake --inventory sample_data/inventory.json
+.venv/bin/python -m asra_matcher intake --inventory ../sample_data/inventory.json
 
-# 3. Or run a saved applicant
-.venv/bin/python -m asra_matcher match sample_data/applicants/applicant_FC_multi.json --inventory sample_data/inventory.json
+# 3. Or run a saved applicant from the shared dataset
+.venv/bin/python -m asra_matcher match ../sample_data/applicants/app-FC-newcomer-jobsearch.json --inventory ../sample_data/inventory.json
 
 .venv/bin/pytest -v             # 32 tests (LLM + embeddings mocked)
 ```

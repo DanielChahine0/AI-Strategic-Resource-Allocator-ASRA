@@ -25,20 +25,25 @@ from __future__ import annotations
 import json
 import time
 import uuid
-from datetime import date
+from datetime import date, datetime, time as dtime
 from pathlib import Path
+from typing import Any
 
 from pydantic import BaseModel, Field
 
 from . import engine, llm
-from .models import Applicant, Device, MatchResult
+from .models import Applicant, CurrentTechAccess, Device, IntakeAnswers, MatchResult
+from .taxonomy import DeviceSituation
 
 # Fixed "today" so timing scores (and the whole run) are reproducible.
 # Device.available_from is a date, and the engine subtracts it from `today`,
 # so this must be a date (not datetime).
 EVAL_TODAY = date(2026, 5, 20)
 
-_DATA_DIR = Path(__file__).resolve().parent.parent / "sample_data"
+# Shared sample data lives at the repo root so the AI Model and the RAG Model
+# evaluate against byte-identical applicants, inventory, and ground truth.
+# eval.py is at <root>/RAG Model/asra_matcher/eval.py → three parents up == <root>.
+_DATA_DIR = Path(__file__).resolve().parents[2] / "sample_data"
 _DATASETS = {"sample-v1": _DATA_DIR}
 
 
@@ -121,6 +126,94 @@ def available_datasets() -> list[str]:
     return sorted(_DATASETS)
 
 
+# --- canonical (AI-superset) → RAG Applicant adapter -----------------------
+#
+# Both backends now read from the same /sample_data folder at the repo root.
+# The on-disk schema is the AI Model's (a strict superset of what RAG needs);
+# this adapter peels off the fields the RAG model doesn't model and reshapes
+# the three that differ structurally:
+#
+#   • `applicant_id` (AI) → `id` (RAG)
+#   • `submitted_at` date → datetime at 00:00
+#   • `intake.main_usage`: list[str] → ", "-joined string
+#   • `intake.current_tech_access`: enum string → CurrentTechAccess object
+#   • `intake.program_name` → `intake.a3_program_name`
+#
+# Engine semantics are unchanged — the engine still receives a fully-formed
+# RAG `Applicant`; only the load step reads a wider on-disk shape.
+
+# AI's TechAccess enum → (has_internet, DeviceSituation) for RAG.
+# `has_internet` is True for all situations (the applicant filled out an online
+# form), and unknown ("None") only for the explicit "none" case where the AI
+# schema doesn't encode it.
+_TECH_ACCESS_MAP: dict[str, tuple[bool | None, DeviceSituation | None]] = {
+    "none": (None, DeviceSituation.NONE),
+    "phone_only": (True, DeviceSituation.PHONE_ONLY),
+    "shared_device": (True, DeviceSituation.SHARED_DEVICE),
+    "outdated_device": (True, DeviceSituation.OUTDATED_DEVICE),
+    # RAG's DeviceSituation enum has no "internet_only"; report as unknown
+    # device situation so we don't lie about which bucket they fall in.
+    "internet_only": (True, None),
+}
+
+
+def _adapt_tech_access(raw: Any) -> CurrentTechAccess:
+    # Pass through if the file is already in RAG shape (defensive — for ad-hoc files).
+    if isinstance(raw, dict):
+        return CurrentTechAccess.model_validate(raw)
+    if raw is None:
+        return CurrentTechAccess()
+    has_net, situation = _TECH_ACCESS_MAP.get(str(raw), (None, None))
+    return CurrentTechAccess(has_internet=has_net, device_situation=situation)
+
+
+def _canonical_to_rag_applicant(raw: dict) -> Applicant:
+    intake_raw = dict(raw.get("intake", {}))
+
+    # Shape conversions for the three structurally divergent fields.
+    main_usage = intake_raw.get("main_usage", "")
+    if isinstance(main_usage, list):
+        main_usage = ", ".join(str(x) for x in main_usage if x)
+    intake_raw["main_usage"] = main_usage
+
+    intake_raw["current_tech_access"] = _adapt_tech_access(intake_raw.get("current_tech_access"))
+
+    if "program_name" in intake_raw and "a3_program_name" not in intake_raw:
+        intake_raw["a3_program_name"] = intake_raw.pop("program_name")
+
+    # Drop AI-only intake fields the RAG IntakeAnswers schema doesn't accept
+    # (it doesn't set `extra="ignore"`, so unknown keys would raise).
+    _AI_ONLY_INTAKE = {
+        "age_range", "year_arrived_canada", "employment_status",
+        "accessibility_needs", "language_preference", "applied_before",
+        "prior_device_status", "waitlist_days", "program_name",
+    }
+    intake = IntakeAnswers.model_validate(
+        {k: v for k, v in intake_raw.items() if k not in _AI_ONLY_INTAKE}
+    )
+
+    applicant_id = raw.get("id") or raw.get("applicant_id")
+    if not applicant_id:
+        raise ValueError(f"applicant record missing id/applicant_id: {raw!r}")
+
+    # AI ships `submitted_at` as a date; RAG's Applicant wants a datetime.
+    submitted_raw = raw.get("submitted_at")
+    if isinstance(submitted_raw, str):
+        submitted_at: datetime = (
+            datetime.fromisoformat(submitted_raw)
+            if "T" in submitted_raw
+            else datetime.combine(date.fromisoformat(submitted_raw), dtime.min)
+        )
+    elif isinstance(submitted_raw, datetime):
+        submitted_at = submitted_raw
+    elif isinstance(submitted_raw, date):
+        submitted_at = datetime.combine(submitted_raw, dtime.min)
+    else:
+        submitted_at = datetime.utcnow()
+
+    return Applicant(id=applicant_id, submitted_at=submitted_at, intake=intake)
+
+
 def _load_dataset(dataset: str) -> tuple[list[Applicant], list[Device], dict]:
     base = _DATASETS.get(dataset)
     if base is None:
@@ -128,7 +221,7 @@ def _load_dataset(dataset: str) -> tuple[list[Applicant], list[Device], dict]:
 
     applicants: list[Applicant] = []
     for path in sorted((base / "applicants").glob("*.json")):
-        applicants.append(Applicant.model_validate_json(path.read_text()))
+        applicants.append(_canonical_to_rag_applicant(json.loads(path.read_text())))
 
     inventory = [Device.model_validate(d) for d in json.loads((base / "inventory.json").read_text())]
 

@@ -36,7 +36,10 @@ from asra_matcher.models import Applicant, Device, MatchResult
 # regardless of the wall-clock date the eval is triggered on.
 EVAL_TODAY = date(2026, 5, 20)
 
-_DATA_DIR = Path(__file__).resolve().parent.parent / "sample_data"
+# Shared sample data lives at the repo root so the AI Model and the RAG Model
+# evaluate against byte-identical applicants, inventory, and ground truth.
+# eval.py is at <root>/AI Model/asra_matcher/eval.py → three parents up == <root>.
+_DATA_DIR = Path(__file__).resolve().parents[2] / "sample_data"
 _DATASETS = {"sample-v1": _DATA_DIR}
 
 
