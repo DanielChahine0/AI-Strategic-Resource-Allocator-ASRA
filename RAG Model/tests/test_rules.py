@@ -1,7 +1,9 @@
 """Direct-linking rules and fit-gate tests."""
 from __future__ import annotations
 
+import json
 from datetime import date
+from pathlib import Path
 
 from asra_matcher import rules
 from asra_matcher.models import Device
@@ -104,3 +106,43 @@ def test_software_violates_tier_handles_unknown():
 
 def test_software_violates_tier_handles_none_string():
     assert not rules.software_violates_tier(["none", ""], DeviceTier.T3)
+
+
+# ---- Shared capability matrix (cross-engine agreement) -------------------
+
+
+def _shared_matrix() -> dict[str, str]:
+    path = Path(rules.__file__).resolve().parents[2] / "sample_data" / "software_capability_matrix.json"
+    return json.loads(path.read_text())["software_min_tier"]
+
+
+def test_software_matrix_loaded_from_shared_file():
+    # The fit gate must be driven by the shared JSON, not the hard-coded fallback.
+    assert rules._MATRIX_PATH.exists()
+    assert rules.DEFAULT_SOFTWARE_MIN_TIER == {
+        k.lower(): DeviceTier(v) for k, v in _shared_matrix().items()
+    }
+
+
+def test_software_fit_matches_shared_matrix():
+    """Every entry in the shared matrix runs on a device at its min tier and is
+    rejected one tier below. This is the RAG side of the 3-way agreement with the
+    matrix and the AI engine (which runs the same assertion against the same
+    file), so the two fit gates cannot disagree."""
+    rank = {"T1": 3, "T2": 2, "T3": 1}
+    lower = {"T1": "T2", "T2": "T3"}
+    for sw, min_t in _shared_matrix().items():
+        assert not rules.software_violates_tier([sw], DeviceTier(min_t)), f"{sw!r} must run on {min_t}"
+        if rank[min_t] > 1:
+            assert rules.software_violates_tier([sw], DeviceTier(lower[min_t])), (
+                f"{sw!r} must NOT run on {lower[min_t]}"
+            )
+
+
+def test_reconciled_software_cases():
+    # The specific cross-engine reconciliations from the audit.
+    assert not rules.software_violates_tier(["Microsoft Word"], DeviceTier.T3)   # Word -> T3
+    assert not rules.software_violates_tier(["Microsoft Office"], DeviceTier.T3)  # Office -> T3
+    assert rules.software_violates_tier(["Visual Studio"], DeviceTier.T2)         # full VS -> T1
+    assert not rules.software_violates_tier(["VS Code"], DeviceTier.T2)           # VS Code -> T2
+    assert rules.software_violates_tier(["Docker"], DeviceTier.T3)                # Docker -> T1

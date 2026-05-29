@@ -5,7 +5,7 @@ tags: [software, fit-gate]
 last_reviewed: 2026-05-01
 ---
 
-The software capability matrix maps named software/tools to the minimum tier they require to run usefully. The fit gate in `rules.py` consults a Python copy of this table; the LLM uses retrieved chunks from this document to justify recommendations. Update the table here AND the constant in `rules.DEFAULT_SOFTWARE_MIN_TIER` together — they are intentionally redundant for resilience.
+The software capability matrix maps named software/tools to the minimum tier they require to run usefully. The **authoritative, machine-readable source is `sample_data/software_capability_matrix.json`** at the repo root, which BOTH engines' fit gates load at import (`rules._load_software_min_tier`) so they make identical decisions. This document is the human-readable companion the LLM retrieves to justify recommendations — keep the lists below consistent with the JSON. (Do not maintain a separate hand-edited Python table: the old `rules.DEFAULT_SOFTWARE_MIN_TIER` is now populated from the JSON, with a hard-coded fallback used only if the file is missing.)
 
 ## Tier 3 (Basic) — runs cleanly
 

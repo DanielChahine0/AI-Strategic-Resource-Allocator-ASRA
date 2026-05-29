@@ -6,6 +6,9 @@ every other category, allowed tiers are fixed here.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from asra_matcher.models import IntakeAnswers
 from asra_matcher.taxonomy import A3Subtrack, Category, DeviceTier
 
@@ -32,26 +35,83 @@ MOBILE_ELIGIBLE: set[Category] = {Category.D, Category.F}
 MOBILE_BLOCKED: set[Category] = {Category.E}
 
 
-# Software keywords that require T2 or higher.
-# Lowercased substring match against any string in `software_needed`.
-HEAVY_SOFTWARE_T1 = {
-    "vmware", "virtualbox", "vm ", "virtual machine",
-    "docker", "kubernetes",
-    "android studio", "xcode", "ios emulator",
-    "tensorflow", "pytorch", "cuda", "ml framework",
-    "premiere", "after effects", "davinci resolve",
-    "blender", "maya", "3d render",
-    "unreal engine", "unity 3d",
+# --- Software capability matrix -------------------------------------------
+# Single source of truth shared with the RAG engine: sample_data/
+# software_capability_matrix.json maps a software keyword to the minimum device
+# tier that can run it. BOTH engines load that same file and use the identical
+# matching rule in `required_software_tier`, so their fit gates agree on every
+# (software, tier) pair. The hard-coded fallback mirrors the JSON and only kicks
+# in if the file is missing.
+_MATRIX_PATH = Path(__file__).resolve().parents[2] / "sample_data" / "software_capability_matrix.json"
+
+_FALLBACK_SOFTWARE_MIN_TIER: dict[str, DeviceTier] = {
+    "microsoft 365": DeviceTier.T3, "office 365": DeviceTier.T3,
+    "microsoft office": DeviceTier.T3, "office": DeviceTier.T3,
+    "word": DeviceTier.T3, "excel": DeviceTier.T3, "powerpoint": DeviceTier.T3,
+    "google workspace": DeviceTier.T3, "google docs": DeviceTier.T3,
+    "google meet": DeviceTier.T3, "zoom": DeviceTier.T3, "teams": DeviceTier.T3,
+    "microsoft teams": DeviceTier.T3, "skype": DeviceTier.T3,
+    "chrome": DeviceTier.T3, "firefox": DeviceTier.T3, "edge": DeviceTier.T3, "safari": DeviceTier.T3,
+    "photoshop": DeviceTier.T2, "illustrator": DeviceTier.T2, "indesign": DeviceTier.T2,
+    "adobe": DeviceTier.T2, "figma": DeviceTier.T2,
+    "vs code": DeviceTier.T2, "visual studio code": DeviceTier.T2,
+    "intellij": DeviceTier.T2, "pycharm": DeviceTier.T2, "webstorm": DeviceTier.T2,
+    "matlab": DeviceTier.T2, "rstudio": DeviceTier.T2, "r studio": DeviceTier.T2,
+    "jupyter": DeviceTier.T2, "autocad": DeviceTier.T2, "solidworks": DeviceTier.T2,
+    "fusion 360": DeviceTier.T2,
+    "premiere": DeviceTier.T1, "premiere pro": DeviceTier.T1, "after effects": DeviceTier.T1,
+    "final cut": DeviceTier.T1, "davinci resolve": DeviceTier.T1,
+    "android studio": DeviceTier.T1, "xcode": DeviceTier.T1,
+    "docker": DeviceTier.T1, "docker desktop": DeviceTier.T1,
+    "virtualbox": DeviceTier.T1, "vmware": DeviceTier.T1, "vm": DeviceTier.T1, "vms": DeviceTier.T1,
+    "virtual machine": DeviceTier.T1, "kubernetes": DeviceTier.T1, "visual studio": DeviceTier.T1,
+    "unity": DeviceTier.T1, "unreal": DeviceTier.T1, "unreal engine": DeviceTier.T1,
+    "pytorch": DeviceTier.T1, "tensorflow": DeviceTier.T1, "cuda": DeviceTier.T1,
+    "blender": DeviceTier.T1, "maya": DeviceTier.T1, "3d render": DeviceTier.T1,
 }
 
-MEDIUM_SOFTWARE_T2 = {
-    "photoshop", "illustrator", "indesign", "adobe",
-    "autocad", "solidworks", "fusion 360",
-    "matlab", "spss", "stata", "r studio", "rstudio",
-    "intellij", "pycharm", "webstorm", "visual studio",
-    "office", "excel", "powerpoint", "word",
-    "zoom", "teams", "google meet",
-}
+
+def _load_software_min_tier() -> dict[str, DeviceTier]:
+    try:
+        raw = json.loads(_MATRIX_PATH.read_text())
+        table = {
+            str(k).strip().lower(): DeviceTier(str(v))
+            for k, v in raw["software_min_tier"].items()
+        }
+        if table:
+            return table
+    except Exception:
+        pass
+    return dict(_FALLBACK_SOFTWARE_MIN_TIER)
+
+
+SOFTWARE_MIN_TIER: dict[str, DeviceTier] = _load_software_min_tier()
+
+_TIER_RANK = {DeviceTier.T1: 3, DeviceTier.T2: 2, DeviceTier.T3: 1, DeviceTier.OTHER: 0}
+
+
+def required_software_tier(software_needed: list[str]) -> DeviceTier:
+    """Minimum device tier that can run *all* the requested software.
+
+    For each item, the longest matrix key that is a substring of the item wins
+    (so "visual studio code" -> T2, not the shorter "visual studio" -> T1); the
+    result is the highest tier any single item requires. Items absent from the
+    matrix add no constraint. The RAG engine carries the identical algorithm so
+    the two fit gates never disagree.
+    """
+    required = DeviceTier.T3
+    for s in software_needed:
+        key = s.strip().lower()
+        if not key or key == "none":
+            continue
+        best: DeviceTier | None = None
+        best_len = -1
+        for mk, mv in SOFTWARE_MIN_TIER.items():
+            if mk in key and len(mk) > best_len:
+                best, best_len = mv, len(mk)
+        if best is not None and _TIER_RANK[best] > _TIER_RANK[required]:
+            required = best
+    return required
 
 
 def allowed_tiers(category: Category, intake: IntakeAnswers) -> set[DeviceTier]:
@@ -75,10 +135,9 @@ def allowed_tiers(category: Category, intake: IntakeAnswers) -> set[DeviceTier]:
 
 def _a3_allowed(intake: IntakeAnswers) -> set[DeviceTier]:
     track = intake.a3_subtrack
-    software_blob = " ".join(intake.software_needed).lower()
 
     if track == A3Subtrack.SOFTWARE_ENGINEERING:
-        if any(kw in software_blob for kw in HEAVY_SOFTWARE_T1):
+        if required_software_tier(intake.software_needed) == DeviceTier.T1:
             return {DeviceTier.T1, DeviceTier.T2}
         return {DeviceTier.T2}
     if track in {A3Subtrack.ARTS, A3Subtrack.SCIENCE, A3Subtrack.BUSINESS}:
@@ -105,24 +164,14 @@ def needed_tier(category: Category, intake: IntakeAnswers) -> DeviceTier:
 def device_meets_software(device_tier: DeviceTier | None, software_needed: list[str]) -> bool:
     """Return True if the device tier can plausibly run the requested software.
 
-    Hard rule: T3 cannot run any heavy or medium-weight software.
-    T2 can run medium but not heavy.
-    T1 runs everything.
-    None (non-computer device) returns True — software fit is judged elsewhere.
+    A computer tier passes iff it is at least the minimum tier the software
+    requires (see `required_software_tier`, shared with the RAG engine). A None
+    or OTHER tier (non-computer device) returns True — software fit for those is
+    judged elsewhere.
     """
     if device_tier is None or device_tier == DeviceTier.OTHER:
         return True
-    blob = " ".join(software_needed).lower()
-    if not blob.strip() or blob.strip() == "none":
-        return True
-    has_heavy = any(kw in blob for kw in HEAVY_SOFTWARE_T1)
-    has_medium = any(kw in blob for kw in MEDIUM_SOFTWARE_T2)
-    if device_tier == DeviceTier.T1:
-        return True
-    if device_tier == DeviceTier.T2:
-        return not has_heavy
-    # T3
-    return not (has_heavy or has_medium)
+    return _TIER_RANK[device_tier] >= _TIER_RANK[required_software_tier(software_needed)]
 
 
 def mobile_allowed(category: Category) -> bool:
