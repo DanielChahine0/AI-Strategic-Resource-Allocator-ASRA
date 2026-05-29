@@ -174,7 +174,7 @@ def ingest(
     if rebuild:
         store_mod.reset_all(client=client)
 
-    embed_fn = embed_fn or embed_mod.embed_texts
+    embed_fn = embed_fn or embed_mod.embed_documents
 
     # Group by namespace.
     by_ns: dict[str, list[Chunk]] = {ns: [] for ns in store_mod.NAMESPACES}

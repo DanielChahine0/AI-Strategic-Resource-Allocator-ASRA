@@ -23,7 +23,7 @@ def query(
     `filters` is keyed by namespace and contains a Chroma `where` clause.
     Results are returned sorted by similarity descending.
     """
-    embed_fn = embed_fn or embed_mod.embed_texts
+    embed_fn = embed_fn or embed_mod.embed_query
     [vec] = embed_fn([text])
     chunks: list[RetrievedChunk] = []
     for ns in namespaces:

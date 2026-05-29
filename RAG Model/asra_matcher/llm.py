@@ -53,6 +53,15 @@ def _model() -> str:
     return os.environ.get("ASRA_GENERATION_MODEL", DEFAULT_GEN_MODEL)
 
 
+def _thinking_budget() -> int:
+    """Token budget for model 'thinking'. 0 disables it (the default for these
+    extraction/classification tasks). Override via ASRA_THINKING_BUDGET."""
+    try:
+        return int(os.environ.get("ASRA_THINKING_BUDGET", "0"))
+    except ValueError:
+        return 0
+
+
 def _audit_path() -> Path:
     return Path(os.environ.get("ASRA_LLM_AUDIT_LOG", "./logs/llm_audit.jsonl"))
 
@@ -394,6 +403,12 @@ def _generate(
                 cfg_kwargs["response_mime_type"] = "application/json"
             if response_schema is not None:
                 cfg_kwargs["response_schema"] = response_schema
+            # These tasks are narrow extraction/classification — no model
+            # "thinking" needed. Thinking tokens bill at the (4x) output rate,
+            # so disable by default; override budget via env.
+            cfg_kwargs["thinking_config"] = types.ThinkingConfig(
+                thinking_budget=_thinking_budget()
+            )
             cfg = types.GenerateContentConfig(**cfg_kwargs)
             ratelimit.wait_generation()
             resp = client.models.generate_content(
@@ -406,6 +421,11 @@ def _generate(
             return text
         except Exception as exc:
             last_exc = exc
+            # Don't re-send the (large) prompt on non-transient errors: quota
+            # and auth failures won't succeed on retry and just double the
+            # input-token spend. Let the caller fall back deterministically.
+            if _classify_error(str(exc)) in ("rate_limit", "auth"):
+                break
             time.sleep(0.5)
     assert last_exc is not None
     _record_failure(last_exc)

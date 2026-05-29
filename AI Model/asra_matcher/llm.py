@@ -60,6 +60,16 @@ def _max_output_tokens() -> int:
         return 1024
 
 
+def _thinking_budget() -> int:
+    """Token budget for model 'thinking'. 0 disables it (the default for these
+    narrow extraction/classification tasks; thinking tokens bill at the 4x
+    output rate). Override via ASRA_THINKING_BUDGET."""
+    try:
+        return int(os.environ.get("ASRA_THINKING_BUDGET", "0"))
+    except ValueError:
+        return 0
+
+
 # ---------------------------------------------------------------------------
 # Token capture (used by the evaluation harness — see asra_matcher.eval)
 # ---------------------------------------------------------------------------
@@ -336,6 +346,9 @@ def _generate_json(prompt: str, system: str | None = None, schema: Any | None = 
         config_kwargs["system_instruction"] = system
     if schema is not None:
         config_kwargs["response_schema"] = schema
+    config_kwargs["thinking_config"] = genai_types.ThinkingConfig(  # type: ignore
+        thinking_budget=_thinking_budget()
+    )
     config = genai_types.GenerateContentConfig(**config_kwargs)  # type: ignore
 
     last_err: Exception | None = None
@@ -362,6 +375,9 @@ def _generate_json(prompt: str, system: str | None = None, schema: Any | None = 
             return data
         except Exception as exc:
             last_err = exc
+            # Quota/auth errors won't recover on retry — don't re-bill the prompt.
+            if _classify_error(str(exc)) in ("rate_limit", "auth"):
+                break
             time.sleep(0.3)
     _record_failure(last_err)  # type: ignore[arg-type]
     _audit({"task": "json_call_failed", "error": str(last_err), "prompt": prompt[:2000]})
@@ -382,6 +398,9 @@ def _generate_text(prompt: str, system: str | None = None) -> str:
     }
     if system:
         config_kwargs["system_instruction"] = system
+    config_kwargs["thinking_config"] = genai_types.ThinkingConfig(  # type: ignore
+        thinking_budget=_thinking_budget()
+    )
     config = genai_types.GenerateContentConfig(**config_kwargs)  # type: ignore
 
     last_err: Exception | None = None
@@ -406,6 +425,9 @@ def _generate_text(prompt: str, system: str | None = None) -> str:
             return text
         except Exception as exc:
             last_err = exc
+            # Quota/auth errors won't recover on retry — don't re-bill the prompt.
+            if _classify_error(str(exc)) in ("rate_limit", "auth"):
+                break
             time.sleep(0.3)
     _record_failure(last_err)  # type: ignore[arg-type]
     _audit({"task": "text_call_failed", "error": str(last_err)})
