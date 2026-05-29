@@ -17,7 +17,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 
 def _enabled() -> bool:
@@ -41,7 +41,7 @@ def make_key(*parts: Any) -> str:
     return h.hexdigest()
 
 
-def get(kind: str, key: str) -> Optional[Any]:
+def get(kind: str, key: str) -> Any | None:
     """Return the cached value for (kind, key), or None on miss/disabled."""
     if not _enabled():
         return None

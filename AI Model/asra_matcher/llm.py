@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import os
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -42,9 +42,9 @@ except Exception:  # pragma: no cover
     _GENAI_IMPORT_OK = False
 
 
-from asra_matcher.models import Application, Device, IntakeAnswers, MatchResult
-from asra_matcher.taxonomy import DeviceTier
 from asra_matcher import cache, ratelimit
+from asra_matcher.models import Application, IntakeAnswers, MatchResult
+from asra_matcher.taxonomy import DeviceTier
 
 MODEL_ID = "gemini-2.5-flash-lite"
 TEMPERATURE = 0.2
@@ -121,7 +121,7 @@ def _audit(record: dict[str, Any]) -> None:
     """Append one JSONL line to the audit log. Never raises."""
     try:
         AUDIT_LOG.parent.mkdir(parents=True, exist_ok=True)
-        record = {"ts": datetime.now(timezone.utc).isoformat(), **record}
+        record = {"ts": datetime.now(UTC).isoformat(), **record}
         with AUDIT_LOG.open("a", encoding="utf-8") as f:
             f.write(json.dumps(record, default=str) + "\n")
     except Exception:
@@ -231,7 +231,7 @@ def _record_failure(exc: Exception) -> None:
 def _iso(ts: float | None) -> str | None:
     if not ts:
         return None
-    return datetime.fromtimestamp(ts, timezone.utc).isoformat()
+    return datetime.fromtimestamp(ts, UTC).isoformat()
 
 
 def model_status(probe: bool = False) -> dict[str, Any]:

@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import os
-from typing import Any, Iterable, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 NAMESPACES = ("categories", "tiers", "software", "policies", "decisions")
 

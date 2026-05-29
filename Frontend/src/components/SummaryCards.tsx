@@ -117,7 +117,9 @@ function Loaded({
             {pct(summary.mean_accuracy_score)}
           </span>
           <span className="text-[11px] text-[var(--color-ink-soft)]">
-            cat {pct(summary.category_accuracy)} · tier {pct(summary.tier_accuracy)}
+            cat {pct(summary.category_accuracy)} · tier {pct(summary.tier_accuracy)} · over{" "}
+            {summary.n_scored} labelled
+            {summary.error_count > 0 ? ` (${summary.error_count} unserved = 0)` : ""}
           </span>
         </div>
         <Bar value={summary.mean_accuracy_score} color={color} />

@@ -7,12 +7,10 @@ fallbacks (no network), so these results are reproducible.
 from __future__ import annotations
 
 import json
-from datetime import date
 
 from asra_matcher import engine
 from asra_matcher.models import Applicant, Device
 from asra_matcher.taxonomy import Category, DeviceTier
-
 from tests.conftest import FIXED_TODAY
 
 

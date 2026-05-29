@@ -1,10 +1,11 @@
 """FastAPI app exposing match / parse / reingest / evaluate endpoints."""
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -18,13 +19,50 @@ from .rag import ingest as ingest_mod
 
 app = FastAPI(title="ASRA Matcher", version="0.1.0")
 
-# Allow the local Model Comparison frontend (Vite dev server) to call us.
+# CORS: default to the local Vite dev-server origins; override with a
+# comma-separated ASRA_CORS_ORIGINS for other deployments. A wildcard "*" let
+# any website the user visited drive this PII-handling API from their browser.
+_DEFAULT_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
+_CORS_ORIGINS = [
+    o.strip() for o in os.getenv("ASRA_CORS_ORIGINS", _DEFAULT_ORIGINS).split(",") if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_CORS_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "X-API-Key"],
 )
+
+
+def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Optional API-key gate for mutating / LLM-spending routes.
+
+    Enforced only when ASRA_API_KEY is set in the environment, so the local
+    one-command demo runs with no key. When a key IS configured, requests must
+    send a matching `X-API-Key` header or get a 401.
+    """
+    key = os.getenv("ASRA_API_KEY", "").strip()
+    if not key:
+        return
+    if x_api_key != key:
+        raise HTTPException(status_code=401, detail="missing or invalid API key")
+
+
+def require_admin_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
+    """Strict, fail-closed gate for the destructive reingest endpoint.
+
+    Unlike `require_api_key`, this denies by default: if no ASRA_API_KEY is
+    configured the endpoint is disabled entirely, so a fresh deployment cannot
+    have its whole vector store wiped by an unauthenticated caller.
+    """
+    key = os.getenv("ASRA_API_KEY", "").strip()
+    if not key:
+        raise HTTPException(
+            status_code=503,
+            detail="admin endpoint disabled: set ASRA_API_KEY to enable reingest over HTTP",
+        )
+    if x_api_key != key:
+        raise HTTPException(status_code=401, detail="missing or invalid API key")
 
 
 class MatchRequest(BaseModel):
@@ -44,12 +82,12 @@ class IntakeParseResponse(BaseModel):
     fallback_used: bool
 
 
-@app.post("/match", response_model=FinalMatchResult)
+@app.post("/match", response_model=FinalMatchResult, dependencies=[Depends(require_api_key)])
 def match(req: MatchRequest) -> FinalMatchResult:
     return engine_mod.match(req.applicant, req.inventory)
 
 
-@app.post("/intake/parse", response_model=IntakeParseResponse)
+@app.post("/intake/parse", response_model=IntakeParseResponse, dependencies=[Depends(require_api_key)])
 def parse_intake(req: IntakeParseRequest) -> IntakeParseResponse:
     res = llm_mod.parse_intake(req.raw_answers, applicant_id=req.applicant_id)
     return IntakeParseResponse(
@@ -60,7 +98,7 @@ def parse_intake(req: IntakeParseRequest) -> IntakeParseResponse:
     )
 
 
-@app.post("/admin/reingest")
+@app.post("/admin/reingest", dependencies=[Depends(require_admin_key)])
 def reingest(rebuild: bool = False) -> dict[str, int]:
     try:
         return ingest_mod.ingest(rebuild=rebuild)
@@ -73,7 +111,7 @@ class EvaluateRequest(BaseModel):
     limit: int | None = None
 
 
-@app.post("/evaluate", response_model=eval_mod.EvalResult)
+@app.post("/evaluate", response_model=eval_mod.EvalResult, dependencies=[Depends(require_api_key)])
 def evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
     return eval_mod.run_eval(dataset=req.dataset, limit=req.limit)
 

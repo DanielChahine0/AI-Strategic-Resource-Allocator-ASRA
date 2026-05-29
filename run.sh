@@ -41,7 +41,9 @@ start_backend() {
     exit 1
   fi
   echo "→ starting $label on :$port (logs → $LOG_DIR/$label.log)"
-  ( cd "$dir" && exec "$py" -m uvicorn asra_matcher.api:app --port "$port" ) \
+  # Bind to localhost only — these engines have no auth by default and handle
+  # applicant PII; do not expose them on all interfaces.
+  ( cd "$dir" && exec "$py" -m uvicorn asra_matcher.api:app --host 127.0.0.1 --port "$port" ) \
     >"$LOG_DIR/$label.log" 2>&1 &
   PIDS+=("$!")
 }

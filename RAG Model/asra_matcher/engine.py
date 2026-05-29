@@ -1,8 +1,8 @@
 """End-to-end engine: split → fit-gate → RAG-narrow tier → score → rank → explain."""
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable
 from datetime import date
-from typing import Callable, Iterable
 
 from . import rules as rules_mod
 from . import scoring as scoring_mod
@@ -10,7 +10,11 @@ from . import splitter as splitter_mod
 from .llm import (
     MatchExplanation,
     TierRecommendation,
+)
+from .llm import (
     explain_matches as llm_explain_matches,
+)
+from .llm import (
     recommend_tier as llm_recommend_tier,
 )
 from .models import (

@@ -8,10 +8,9 @@ is then sent to `llm.parse_intake` which returns a validated IntakeAnswers.
 
 from __future__ import annotations
 
-import json
+from collections.abc import Callable
 from datetime import datetime
 from pathlib import Path
-from typing import Callable
 
 from asra_matcher import llm
 from asra_matcher.models import Applicant, IntakeAnswers

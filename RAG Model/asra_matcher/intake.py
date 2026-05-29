@@ -10,12 +10,11 @@ import sys
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, TextIO
+from typing import TextIO
 
 from . import llm as llm_mod
-from .models import Applicant, IntakeAnswers
+from .models import Applicant
 from .taxonomy import A3SubTrack, Category
-
 
 QUESTIONS = {
     "q1": {
@@ -121,11 +120,11 @@ def _ask(qkey: str, *, in_stream: TextIO, out_stream: TextIO) -> str:
 
 def run_intake(
     *,
-    in_stream: Optional[TextIO] = None,
-    out_stream: Optional[TextIO] = None,
+    in_stream: TextIO | None = None,
+    out_stream: TextIO | None = None,
     sessions_dir: Path | None = None,
     parser=None,
-    applicant_id: Optional[str] = None,
+    applicant_id: str | None = None,
 ) -> tuple[Applicant, dict]:
     """Run the 7-question interactive intake. Returns (Applicant, raw_answers)."""
     in_stream = in_stream or sys.stdin

@@ -90,6 +90,7 @@ class EvalRow(BaseModel):
 
 class EvalSummary(BaseModel):
     n: int
+    n_scored: int = 0
     tokens_input_total: int = 0
     tokens_output_total: int = 0
     tokens_total: int = 0
@@ -262,14 +263,34 @@ def score_explanation_quality(
 # ---------------------------------------------------------------------------
 
 
+def _failed_accuracy(truth: dict | None) -> AccuracyResult | None:
+    """Accuracy for an applicant the engine could not serve.
+
+    A labelled applicant that gets no allocation is a wrong outcome, so it
+    scores 0 on every accuracy axis and is counted against the engine in
+    `_summarize` rather than dropped from the denominator (which would reward
+    an engine for failing to allocate). Unlabelled applicants stay unscored.
+    """
+    if not truth:
+        return None
+    return AccuracyResult(
+        category_correct=False, tier_correct=False, device_acceptable=None, score=0.0
+    )
+
+
 def _evaluate_one(applicant: Applicant, inventory: list[Device], truth: dict) -> EvalRow:
     scenario = truth.get("scenario", applicant.applicant_id)
-    ledger = llm.start_token_capture()
+    llm.start_token_capture()
     try:
         result = engine.match(applicant, inventory, today=EVAL_TODAY)
     except Exception as exc:  # pragma: no cover - defensive: never fail the whole run
         llm.stop_token_capture()
-        return EvalRow(applicant_id=applicant.applicant_id, scenario=scenario, error=repr(exc))
+        return EvalRow(
+            applicant_id=applicant.applicant_id,
+            scenario=scenario,
+            error=repr(exc),
+            accuracy=_failed_accuracy(truth),
+        )
     finally:
         captured = llm.read_token_capture() or {}
         llm.stop_token_capture()
@@ -293,6 +314,7 @@ def _evaluate_one(applicant: Applicant, inventory: list[Device], truth: dict) ->
             scenario=scenario,
             chosen_category=selected.application.category.value,
             tokens=tokens,
+            accuracy=_failed_accuracy(truth),
             fallback_used=fallback_used,
             error="no device passed the fit gate",
         )
@@ -330,8 +352,15 @@ def _evaluate_one(applicant: Applicant, inventory: list[Device], truth: dict) ->
 
 def _summarize(rows: list[EvalRow]) -> EvalSummary:
     n = len(rows)
-    scored = [r for r in rows if r.error is None]
-    with_acc = [r for r in scored if r.accuracy is not None]
+    # Rows where the engine produced an allocation. Confidence and explanation
+    # quality are conditional-on-allocation signals, so they average over these.
+    allocated = [r for r in rows if r.error is None]
+    # Accuracy is scored over every applicant carrying a ground-truth label,
+    # whether or not the engine allocated a device. A labelled applicant the
+    # engine failed to serve scores 0 (see `_failed_accuracy`); treating it as
+    # an absent data point would reward a failing engine with a smaller
+    # denominator and make the two engines comparable over different row counts.
+    scored = [r for r in rows if r.accuracy is not None]
 
     def mean(values: list[float]) -> float:
         return round(sum(values) / len(values), 3) if values else 0.0
@@ -342,22 +371,23 @@ def _summarize(rows: list[EvalRow]) -> EvalSummary:
 
     return EvalSummary(
         n=n,
+        n_scored=len(scored),
         tokens_input_total=tok_in,
         tokens_output_total=tok_out,
         tokens_total=tok_total,
         avg_tokens_per_match=round(tok_total / n, 1) if n else 0.0,
-        category_accuracy=mean([float(r.accuracy.category_correct) for r in with_acc]),
-        tier_accuracy=mean([float(r.accuracy.tier_correct) for r in with_acc]),
+        category_accuracy=mean([float(r.accuracy.category_correct) for r in scored]),
+        tier_accuracy=mean([float(r.accuracy.tier_correct) for r in scored]),
         device_accuracy=mean(
-            [float(r.accuracy.device_acceptable) for r in with_acc if r.accuracy.device_acceptable is not None]
+            [float(r.accuracy.device_acceptable) for r in scored if r.accuracy.device_acceptable is not None]
         ),
-        mean_accuracy_score=mean([r.accuracy.score for r in with_acc]),
-        mean_confidence=mean([r.confidence for r in scored]),
+        mean_accuracy_score=mean([r.accuracy.score for r in scored]),
+        mean_confidence=mean([r.confidence for r in allocated]),
         mean_explanation_quality=mean(
-            [r.explanation_quality.score for r in scored if r.explanation_quality is not None]
+            [r.explanation_quality.score for r in allocated if r.explanation_quality is not None]
         ),
         fallback_rate=mean([float(r.fallback_used) for r in rows]),
-        error_count=n - len(scored),
+        error_count=n - len(allocated),
     )
 
 

@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from datetime import date
 
-import pytest
-
 from asra_matcher import rules
 from asra_matcher.models import Device
 from asra_matcher.splitter import split

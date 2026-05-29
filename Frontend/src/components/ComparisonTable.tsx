@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { dec, SCENARIO_LABELS, sortScenarios } from "../lib/format";
+import { dec, SCENARIO_LABELS, SCENARIO_ORDER } from "../lib/format";
 import type { EvalResult, EvalRow, ModelKey } from "../types";
 import RowDetail from "./RowDetail";
 
@@ -9,21 +9,33 @@ const ACCENT: Record<ModelKey, string> = {
 };
 
 interface Joined {
+  applicant_id: string;
   scenario: string;
   ai?: EvalRow;
   rag?: EvalRow;
 }
 
+// Join the two models' rows on `applicant_id` — the stable per-applicant
+// identity. Keying on `scenario` (as this once did) silently collapses two
+// distinct applicants into one row if they ever share a scenario string, and
+// drops the loser's result. The scenario is kept only as a display label.
 function join(ai: EvalResult | null, rag: EvalResult | null): Joined[] {
   const map = new Map<string, Joined>();
   const add = (r: EvalRow, key: ModelKey) => {
-    const j = map.get(r.scenario) ?? { scenario: r.scenario };
+    const j = map.get(r.applicant_id) ?? {
+      applicant_id: r.applicant_id,
+      scenario: r.scenario,
+    };
     j[key] = r;
-    map.set(r.scenario, j);
+    map.set(r.applicant_id, j);
   };
   ai?.rows.forEach((r) => add(r, "ai"));
   rag?.rows.forEach((r) => add(r, "rag"));
-  return sortScenarios([...map.keys()]).map((s) => map.get(s)!);
+  return [...map.values()].sort((a, b) => {
+    const ia = SCENARIO_ORDER.indexOf(a.scenario);
+    const ib = SCENARIO_ORDER.indexOf(b.scenario);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib) || a.applicant_id.localeCompare(b.applicant_id);
+  });
 }
 
 function diverges(a?: EvalRow, b?: EvalRow): boolean {
@@ -109,11 +121,11 @@ export default function ComparisonTable({
       </div>
 
       {rows.map((j, idx) => {
-        const isOpen = open === j.scenario;
+        const isOpen = open === j.applicant_id;
         const div = diverges(j.ai, j.rag);
         return (
           <div
-            key={j.scenario}
+            key={j.applicant_id}
             className="border-b border-[var(--color-line)] last:border-b-0"
             style={
               div
@@ -125,7 +137,7 @@ export default function ComparisonTable({
             }
           >
             <button
-              onClick={() => setOpen(isOpen ? null : j.scenario)}
+              onClick={() => setOpen(isOpen ? null : j.applicant_id)}
               aria-expanded={isOpen}
               className="group grid w-full grid-cols-[1.1fr_1.4fr_1.4fr] items-stretch text-left transition-colors hover:bg-[var(--color-paper-2)]"
               style={isOpen ? { backgroundColor: "var(--color-paper-2)" } : undefined}

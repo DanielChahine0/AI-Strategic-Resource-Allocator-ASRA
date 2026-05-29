@@ -12,7 +12,6 @@ import pytest
 
 from asra_matcher import llm
 from asra_matcher.taxonomy import Category, DeviceTier
-
 from tests.conftest import make_applicant
 
 

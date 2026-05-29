@@ -1,11 +1,10 @@
 """Direct-linking rules and fit gate. Deterministic; the LLM cannot override these."""
 from __future__ import annotations
 
-from typing import Iterable
+from collections.abc import Iterable
 
 from .models import Application, Device
-from .taxonomy import Category, DeviceTier, ItemType, PERIPHERAL_TYPES
-
+from .taxonomy import PERIPHERAL_TYPES, Category, DeviceTier, ItemType
 
 # Default software → minimum tier mapping. Re-loaded at runtime from
 # kb/software_capability_matrix.md if available; this hard-coded fallback keeps

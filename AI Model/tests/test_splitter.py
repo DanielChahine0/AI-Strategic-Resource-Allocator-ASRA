@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from asra_matcher import splitter
 from asra_matcher.taxonomy import Category
-
 from tests.conftest import make_applicant
 
 

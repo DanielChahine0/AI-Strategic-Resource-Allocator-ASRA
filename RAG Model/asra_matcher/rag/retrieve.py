@@ -1,7 +1,8 @@
 """Vector retrieval across one or more namespaces."""
 from __future__ import annotations
 
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 from ..models import RetrievedChunk
 from . import embed as embed_mod

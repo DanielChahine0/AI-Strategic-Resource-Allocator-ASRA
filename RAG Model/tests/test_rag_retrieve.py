@@ -1,8 +1,6 @@
 """Retrieval tests: ingest a fake KB, verify namespace + filter scoping."""
 from __future__ import annotations
 
-import pytest
-
 from asra_matcher.rag import ingest as ingest_mod
 from asra_matcher.rag import retrieve as retrieve_mod
 

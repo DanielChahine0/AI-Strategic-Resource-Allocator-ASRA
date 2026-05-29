@@ -98,3 +98,26 @@ def test_run_eval_category_accuracy_is_high():
 def test_limit_truncates_dataset():
     result = eval_mod.run_eval("sample-v1", limit=3)
     assert len(result.rows) == 3
+
+
+def test_failed_allocation_scored_as_zero_not_dropped():
+    """Regression for the unequal-denominator bug: a labelled applicant the
+    engine cannot serve must score 0 and stay in the accuracy denominator,
+    otherwise an engine that fails to allocate is rewarded with a smaller
+    denominator than its peer."""
+    result = eval_mod.run_eval("sample-v1")
+    failed = [r for r in result.rows if r.error is not None]
+    assert failed, "expected at least one fit-gate failure in the RAG sample run"
+    for r in failed:
+        assert r.accuracy is not None, "a labelled failure must carry an accuracy result"
+        assert r.accuracy.score == 0.0
+        assert not r.accuracy.category_correct and not r.accuracy.tier_correct
+
+    # Every labelled row is scored; the denominator equals the labelled count.
+    labelled = [r for r in result.rows if r.accuracy is not None]
+    assert result.summary.n_scored == len(labelled)
+    assert result.summary.error_count == len(failed)
+    # Accuracy is averaged over all labelled rows, failures included.
+    assert result.summary.mean_accuracy_score == round(
+        sum(r.accuracy.score for r in labelled) / len(labelled), 3
+    )

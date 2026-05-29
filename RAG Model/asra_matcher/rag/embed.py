@@ -14,7 +14,7 @@ from __future__ import annotations
 import os
 import re
 import time
-from typing import Iterable
+from collections.abc import Iterable
 
 from .. import cache, ratelimit
 
@@ -69,7 +69,7 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     miss_texts = list(miss_index.keys())
     if miss_texts:
         vectors = _embed_uncached(miss_texts)
-        for t, vec in zip(miss_texts, vectors):
+        for t, vec in zip(miss_texts, vectors, strict=False):
             cache.put("embed", cache.make_key(_model(), t), vec)
             for i in miss_index[t]:
                 results[i] = vec

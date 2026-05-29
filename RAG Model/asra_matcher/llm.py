@@ -16,12 +16,13 @@ import os
 import re
 import time
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel
 
+from . import cache, ratelimit
 from .models import (
     Application,
     Device,
@@ -29,9 +30,9 @@ from .models import (
     RagContext,
     RetrievedChunk,
 )
-from .rag import prompts, retrieve as retrieve_mod
+from .rag import prompts
+from .rag import retrieve as retrieve_mod
 from .taxonomy import Category, DeviceTier
-from . import cache, ratelimit
 
 DEFAULT_GEN_MODEL = "gemini-2.5-flash-lite"
 TEMP_PARSE = 0.1
@@ -274,7 +275,7 @@ def _record_failure(exc: Exception) -> None:
 def _iso(ts: float | None) -> str | None:
     if not ts:
         return None
-    return datetime.fromtimestamp(ts, timezone.utc).isoformat()
+    return datetime.fromtimestamp(ts, UTC).isoformat()
 
 
 def model_status(probe: bool = False) -> dict[str, Any]:
@@ -381,7 +382,7 @@ def _generate(
         return hit
 
     last_exc: Exception | None = None
-    for attempt in range(2):
+    for _attempt in range(2):
         try:
             client = _client()
             cfg_kwargs: dict[str, Any] = {
@@ -483,7 +484,7 @@ def recommend_tier(
     *,
     retrieve_fn=None,
     generate_fn=None,
-    today: Optional[datetime] = None,
+    today: datetime | None = None,
 ) -> TierRecommendation:
     """RAG-augmented tier recommendation for A3 / C applications."""
     retrieve_fn = retrieve_fn or retrieve_mod.query

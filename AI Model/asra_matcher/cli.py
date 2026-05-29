@@ -11,7 +11,6 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any
 
 from asra_matcher import engine, intake
 from asra_matcher.models import Applicant, Device, FinalMatchResult

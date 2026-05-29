@@ -40,7 +40,7 @@ def match(
     # Ask the LLM for explanations on the winning top-2 only.
     if winner.top2:
         explanations = llm.explain_matches(winner.application, winner.top2)
-        for match_obj, explanation in zip(winner.top2, explanations):
+        for match_obj, explanation in zip(winner.top2, explanations, strict=False):
             match_obj.explanation = explanation
 
     return FinalMatchResult(

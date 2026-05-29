@@ -21,7 +21,6 @@ def _device(tier: DeviceTier, *, condition: int = 4, available_from=date(2026, 5
 
 
 def test_priority_scaling_with_urgency(make_applicant):
-    today = date(2026, 5, 12)
     app = split(make_applicant(Category.E, urgency=Urgency.LOW))[0]
     assert scoring.priority_score(app) == 0.25
 

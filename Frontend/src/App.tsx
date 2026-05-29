@@ -122,7 +122,7 @@ export default function ModelComparison() {
           <h2 className="mb-4 flex items-baseline gap-3 font-[family-name:var(--font-display)] text-2xl font-semibold">
             Per-match ledger
             <span className="text-[11px] font-normal uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
-              joined by scenario
+              joined by applicant
             </span>
           </h2>
           <ComparisonTable ai={ai.result} rag={rag.result} />

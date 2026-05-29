@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from ..models import Application, Device, RagContext
 
-
 SYSTEM_BOILERPLATE = (
     "You are an allocation assistant for Let's Get Together. Answer ONLY using "
     "the provided context. If the context does not contain enough information "

@@ -5,7 +5,6 @@ from datetime import date
 
 from asra_matcher import engine as engine_mod
 from asra_matcher.llm import MatchExplanation, TierRecommendation
-from asra_matcher.splitter import split
 from asra_matcher.taxonomy import Category, DeviceTier, Urgency
 
 

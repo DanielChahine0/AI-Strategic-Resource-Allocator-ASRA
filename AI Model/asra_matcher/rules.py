@@ -7,7 +7,7 @@ every other category, allowed tiers are fixed here.
 from __future__ import annotations
 
 from asra_matcher.models import IntakeAnswers
-from asra_matcher.taxonomy import A3Subtrack, Category, DeviceTier, ItemType
+from asra_matcher.taxonomy import A3Subtrack, Category, DeviceTier
 
 ALL_COMPUTER_TIERS: set[DeviceTier] = {DeviceTier.T1, DeviceTier.T2, DeviceTier.T3}
 

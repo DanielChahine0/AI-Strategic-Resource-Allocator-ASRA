@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 from datetime import date, datetime
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -18,16 +18,16 @@ from .taxonomy import (
 
 
 class CurrentTechAccess(BaseModel):
-    has_internet: Optional[bool] = None
-    device_situation: Optional[DeviceSituation] = None
-    notes: Optional[str] = None
+    has_internet: bool | None = None
+    device_situation: DeviceSituation | None = None
+    notes: str | None = None
 
 
 class IntakeAnswers(BaseModel):
     who_needs_it: str
     purpose: list[Category]
-    a3_subtrack: Optional[A3SubTrack] = None
-    a3_program_name: Optional[str] = None
+    a3_subtrack: A3SubTrack | None = None
+    a3_program_name: str | None = None
     main_usage: str
     software_needed: list[str] = Field(default_factory=list)
     shared_user_count: int = 1
@@ -69,12 +69,12 @@ class Application(BaseModel):
 class Device(BaseModel):
     id: str
     item_type: ItemType
-    tier: Optional[DeviceTier] = None  # required for computers
+    tier: DeviceTier | None = None  # required for computers
     specs: dict[str, Any] = Field(default_factory=dict)
     condition: int = Field(ge=1, le=5)
     available_from: date
-    location: Optional[str] = None
-    notes: Optional[str] = None
+    location: str | None = None
+    notes: str | None = None
 
 
 class ScoreBreakdown(BaseModel):
@@ -125,7 +125,7 @@ class MatchResult(BaseModel):
     device: Device
     application_category: Category
     breakdown: ScoreBreakdown
-    explanation: Optional[str] = None
+    explanation: str | None = None
     citations: list[str] = Field(default_factory=list)
 
 
@@ -141,4 +141,4 @@ class FinalMatchResult(BaseModel):
     notes: list[str] = Field(default_factory=list)
     # Confidence of the RAG tier recommendation for the chosen application
     # (A3 / C only; None otherwise). Additive — surfaced for the eval harness.
-    chosen_tier_confidence: Optional[float] = None
+    chosen_tier_confidence: float | None = None

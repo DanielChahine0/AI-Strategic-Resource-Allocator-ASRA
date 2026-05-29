@@ -43,6 +43,7 @@ export interface EvalRow {
 
 export interface EvalSummary {
   n: number;
+  n_scored: number;
   tokens_input_total: number;
   tokens_output_total: number;
   tokens_total: number;

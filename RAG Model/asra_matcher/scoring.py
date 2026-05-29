@@ -4,8 +4,7 @@ from __future__ import annotations
 from datetime import date
 
 from .models import Application, Device, ScoreBreakdown
-from .taxonomy import Category, DeviceTier, URGENCY_WINDOW_DAYS, TIER_RANK
-
+from .taxonomy import TIER_RANK, URGENCY_WINDOW_DAYS, Category, DeviceTier
 
 WEIGHTS = {"priority": 0.35, "timing": 0.25, "condition": 0.20, "efficiency": 0.20}
 

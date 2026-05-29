@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from asra_matcher import eval as eval_mod
 
-
 # ----- scorers -----------------------------------------------------------
 
 
@@ -95,3 +94,23 @@ def test_run_eval_category_accuracy_is_high():
 def test_limit_truncates_dataset():
     result = eval_mod.run_eval("sample-v1", limit=3)
     assert len(result.rows) == 3
+
+
+def test_failed_allocation_scored_as_zero_not_dropped():
+    """Regression for the unequal-denominator bug: a labelled applicant with no
+    allocation scores 0 and stays in the accuracy denominator, so a failing
+    engine is not rewarded by a shrinking denominator."""
+    truth = {"category": "A3", "tier": "T1"}
+    acc = eval_mod._failed_accuracy(truth)
+    assert acc is not None and acc.score == 0.0
+    assert not acc.category_correct and not acc.tier_correct
+    assert eval_mod._failed_accuracy({}) is None  # unlabelled applicants stay unscored
+
+    # In a run, every labelled row is counted (n_scored == labelled rows),
+    # whether or not the engine produced an allocation.
+    result = eval_mod.run_eval("sample-v1")
+    labelled = [r for r in result.rows if r.accuracy is not None]
+    assert result.summary.n_scored == len(labelled)
+    assert result.summary.mean_accuracy_score == round(
+        sum(r.accuracy.score for r in labelled) / len(labelled), 3
+    )
