@@ -1,0 +1,22 @@
+# Keep the Space image (and repo) lean and secret-free. The assemble script
+# already filters these, but this is a second guard for `docker build`.
+# NOTE: chroma_db is intentionally excluded — the index is built inside the
+# image (baked at build, or rebuilt by start.py), never shipped from the host.
+**/.git
+**/.env
+**/.env.*
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/venv
+**/env
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+**/chroma_db
+**/.asra_cache
+**/logs/*.jsonl
+**/intake_sessions/*.json
+**/node_modules
+**/.DS_Store
+**/tests

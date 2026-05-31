@@ -1,0 +1,5 @@
+# SPA fallback for Cloudflare Pages: the app uses BrowserRouter with client-side
+# routes (/compare, /dataset). Without this, refreshing or deep-linking those
+# paths returns 404. Real static assets are served first; only unmatched paths
+# fall through to index.html so React Router can handle them.
+/*    /index.html   200
