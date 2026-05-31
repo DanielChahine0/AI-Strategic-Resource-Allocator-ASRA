@@ -1,0 +1,31 @@
+{
+  "applicant_id": "app-v2-e-001",
+  "intake": {
+    "who_needs_it": "It's just for me, mostly email and reading the news",
+    "main_usage": [
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Chrome",
+      "Microsoft Word"
+    ],
+    "shared_user_count": 1,
+    "urgency": "low",
+    "purpose": [
+      "E"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": null,
+    "employment_status": "employed part-time",
+    "accessibility_needs": [],
+    "language_preference": "en",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 22
+  },
+  "submitted_at": "2026-03-09",
+  "notes": null
+}

@@ -1,0 +1,37 @@
+{
+  "applicant_id": "app-v2-fc-003",
+  "intake": {
+    "who_needs_it": "I am sharing one old laptop with my children and need my own for interviews",
+    "main_usage": [
+      "video calls",
+      "writing documents",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "Microsoft Word",
+      "Microsoft Teams",
+      "Zoom"
+    ],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": [
+      "F",
+      "C"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": "ACCES Employment bridging program",
+    "age_range": "40-60",
+    "year_arrived_canada": 2025,
+    "employment_status": "underemployed",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "en",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 67
+  },
+  "submitted_at": "2026-04-21",
+  "notes": "Trained accountant from Nigeria, going through CPA re-credentialing while doing virtual interviews. Needs captions on calls due to partial hearing loss. The newcomer support and the employment search are really two separate tracks for her household in Scarborough."
+}

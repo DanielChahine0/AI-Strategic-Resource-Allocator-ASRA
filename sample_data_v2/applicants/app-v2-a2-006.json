@@ -1,0 +1,37 @@
+{
+  "applicant_id": "app-v2-a2-006",
+  "intake": {
+    "who_needs_it": "myself, I'm in grade 12 and work part-time after school",
+    "main_usage": [
+      "writing documents",
+      "video calls",
+      "web browsing and email",
+      "online classes"
+    ],
+    "software_needed": [
+      "Microsoft Office",
+      "Microsoft Teams",
+      "Firefox"
+    ],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": [
+      "A2"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "13-17",
+    "year_arrived_canada": null,
+    "employment_status": "part-time",
+    "accessibility_needs": [
+      "mobility"
+    ],
+    "language_preference": "fr",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 67
+  },
+  "submitted_at": "2026-05-12",
+  "notes": "My laptop is from 2014 and freezes constantly. I balance shifts at a grocery store with finishing my diploma and need something reliable."
+}

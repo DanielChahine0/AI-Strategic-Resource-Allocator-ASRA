@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-b-002",
+  "intake": {
+    "who_needs_it": "It's for me to keep up with my mother's hospital portal and her appointments",
+    "main_usage": [
+      "government or healthcare websites",
+      "web browsing and email",
+      "video calls"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Microsoft Office"
+    ],
+    "shared_user_count": 3,
+    "urgency": "medium",
+    "purpose": [
+      "B"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": null,
+    "employment_status": "employed full-time",
+    "accessibility_needs": [],
+    "language_preference": "zh",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 31
+  },
+  "submitted_at": "2026-04-02",
+  "notes": null
+}

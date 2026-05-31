@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-b-004",
+  "intake": {
+    "who_needs_it": "For my public-health outreach role coordinating with the team on Teams",
+    "main_usage": [
+      "video calls",
+      "writing documents",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "Microsoft Teams",
+      "Microsoft Office",
+      "Zoom"
+    ],
+    "shared_user_count": 2,
+    "urgency": "medium",
+    "purpose": [
+      "B"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": "Rexdale Public Health Outreach",
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed full-time",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "so",
+    "applied_before": false,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 22
+  },
+  "submitted_at": "2026-03-28",
+  "notes": null
+}

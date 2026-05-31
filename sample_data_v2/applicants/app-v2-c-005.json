@@ -1,0 +1,37 @@
+{
+  "applicant_id": "app-v2-c-005",
+  "intake": {
+    "who_needs_it": "I just got hired for a work-from-home customer support role and need a computer to start",
+    "main_usage": [
+      "video calls",
+      "writing documents",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Microsoft Office",
+      "Microsoft Teams",
+      "Chrome"
+    ],
+    "shared_user_count": 4,
+    "urgency": "critical",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": 2019,
+    "employment_status": "newly hired remote",
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "tl",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 5
+  },
+  "submitted_at": "2026-04-21",
+  "notes": "Start date is in two weeks and they need me online for training every day. We only have one shared tablet for the whole family in Scarborough."
+}

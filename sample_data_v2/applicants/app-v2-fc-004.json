@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-fc-004",
+  "intake": {
+    "who_needs_it": "laptop to keep my coding skills sharp and apply to developer jobs",
+    "main_usage": [
+      "programming or coding",
+      "writing documents",
+      "video calls"
+    ],
+    "software_needed": [
+      "VS Code",
+      "Microsoft Word",
+      "Zoom"
+    ],
+    "shared_user_count": 1,
+    "urgency": "medium",
+    "purpose": [
+      "F",
+      "C"
+    ],
+    "current_tech_access": "internet_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": 2025,
+    "employment_status": "unemployed",
+    "accessibility_needs": [],
+    "language_preference": "pa",
+    "applied_before": false,
+    "prior_device_status": "broken",
+    "waitlist_days": 12
+  },
+  "submitted_at": "2026-05-11",
+  "notes": null
+}

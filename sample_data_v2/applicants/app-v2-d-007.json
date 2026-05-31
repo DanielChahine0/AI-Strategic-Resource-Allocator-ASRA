@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-d-007",
+  "intake": {
+    "who_needs_it": "myself, I volunteer at a food bank",
+    "main_usage": [
+      "writing documents",
+      "web browsing and email",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "Microsoft Word",
+      "Microsoft Office"
+    ],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": [
+      "D"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "60-65",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [],
+    "language_preference": "English",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 74
+  },
+  "submitted_at": "2026-05-15",
+  "notes": "I type up schedules and donor letters for the food bank, so I really need a proper keyboard and a real computer, not a tablet."
+}

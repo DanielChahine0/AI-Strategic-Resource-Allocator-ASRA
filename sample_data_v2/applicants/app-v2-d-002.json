@@ -1,0 +1,32 @@
+{
+  "applicant_id": "app-v2-d-002",
+  "intake": {
+    "who_needs_it": "myself",
+    "main_usage": [
+      "government or healthcare websites",
+      "web browsing and email",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Chrome"
+    ],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": [
+      "D"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [],
+    "language_preference": "English",
+    "applied_before": false,
+    "prior_device_status": "broken",
+    "waitlist_days": 61
+  },
+  "submitted_at": "2026-04-02",
+  "notes": null
+}

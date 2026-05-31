@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3sci-002",
+  "intake": {
+    "who_needs_it": "computer for my graduate research, mine stopped working",
+    "main_usage": [
+      "professional software",
+      "writing documents",
+      "video calls"
+    ],
+    "software_needed": [
+      "SPSS",
+      "Microsoft Office"
+    ],
+    "shared_user_count": 3,
+    "urgency": "critical",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": "science",
+    "program_name": "Psychology, York University",
+    "age_range": "25-40",
+    "year_arrived_canada": 2019,
+    "employment_status": "graduate teaching assistant",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "fa",
+    "applied_before": true,
+    "prior_device_status": "broken",
+    "waitlist_days": 61
+  },
+  "submitted_at": "2026-04-29",
+  "notes": null
+}

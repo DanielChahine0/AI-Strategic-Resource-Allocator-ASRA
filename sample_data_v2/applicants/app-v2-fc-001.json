@@ -1,0 +1,34 @@
+{
+  "applicant_id": "app-v2-fc-001",
+  "intake": {
+    "who_needs_it": "I need a computer to write my resume and do job interviews online",
+    "main_usage": [
+      "writing documents",
+      "video calls",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "Microsoft Word",
+      "Zoom"
+    ],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": [
+      "F",
+      "C"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": "COSTI newcomer settlement services",
+    "age_range": "40-60",
+    "year_arrived_canada": 2024,
+    "employment_status": "unemployed",
+    "accessibility_needs": [],
+    "language_preference": "fa",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 21
+  },
+  "submitted_at": "2026-03-09",
+  "notes": "Was a civil engineer in Iran for 18 years. Looking for engineering technologist roles in the GTA but cannot license here yet, so applying broadly. Two applications make sense: settlement support as a newcomer and the employment search. Currently does everything on a cracked phone screen in Thornhill."
+}

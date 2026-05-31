@@ -1,0 +1,32 @@
+{
+  "applicant_id": "app-v2-f-003",
+  "intake": {
+    "who_needs_it": "need to do video calls with my family back home in the Philippines",
+    "main_usage": [
+      "video calls",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Google Meet"
+    ],
+    "shared_user_count": 2,
+    "urgency": "low",
+    "purpose": [
+      "F"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "45-54",
+    "year_arrived_canada": 2025,
+    "employment_status": "employed part-time",
+    "accessibility_needs": [],
+    "language_preference": "tl",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 64
+  },
+  "submitted_at": "2026-04-05",
+  "notes": null
+}

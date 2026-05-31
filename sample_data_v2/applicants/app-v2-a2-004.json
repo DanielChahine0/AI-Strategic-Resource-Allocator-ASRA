@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a2-004",
+  "intake": {
+    "who_needs_it": "my kid in grade 8 who shares with his little sister",
+    "main_usage": [
+      "online classes",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Khan Academy",
+      "Google Docs",
+      "Google Meet"
+    ],
+    "shared_user_count": 5,
+    "urgency": "medium",
+    "purpose": [
+      "A2"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "13-17",
+    "year_arrived_canada": null,
+    "employment_status": null,
+    "accessibility_needs": [
+      "cognitive"
+    ],
+    "language_preference": "so",
+    "applied_before": false,
+    "prior_device_status": "working",
+    "waitlist_days": 30
+  },
+  "submitted_at": "2026-03-24",
+  "notes": null
+}

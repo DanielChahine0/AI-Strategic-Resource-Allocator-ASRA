@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3swe-002",
+  "intake": {
+    "who_needs_it": "for my mobile app development courses, building Android and iOS apps",
+    "main_usage": [
+      "programming or coding",
+      "graphic design or video editing"
+    ],
+    "software_needed": [
+      "Android Studio",
+      "Xcode",
+      "VS Code"
+    ],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": "software_engineering",
+    "program_name": "Computer Science, York University",
+    "age_range": "18-25",
+    "year_arrived_canada": 2022,
+    "employment_status": "part-time student worker",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "fa",
+    "applied_before": true,
+    "prior_device_status": "broken",
+    "waitlist_days": 47
+  },
+  "submitted_at": "2026-04-02",
+  "notes": null
+}

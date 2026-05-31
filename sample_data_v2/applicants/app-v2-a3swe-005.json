@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3swe-005",
+  "intake": {
+    "who_needs_it": "I'm in a web development bootcamp to change careers",
+    "main_usage": [
+      "programming or coding",
+      "online classes",
+      "video calls"
+    ],
+    "software_needed": [
+      "IntelliJ",
+      "VS Code"
+    ],
+    "shared_user_count": 3,
+    "urgency": "high",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": "software_engineering",
+    "program_name": "Full-Stack Web Development Bootcamp, Lighthouse Labs",
+    "age_range": "25-40",
+    "year_arrived_canada": 2024,
+    "employment_status": "unemployed, career changer",
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "uk",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 62
+  },
+  "submitted_at": "2026-04-29",
+  "notes": "I'm switching careers after my factory job closed. The bootcamp meets online four nights a week and I'm borrowing a relative's laptop right now."
+}

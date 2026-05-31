@@ -1,0 +1,32 @@
+{
+  "applicant_id": "app-v2-f-001",
+  "intake": {
+    "who_needs_it": "my family just arrived from Syria, we need a computer for our paperwork",
+    "main_usage": [
+      "government or healthcare websites",
+      "writing documents",
+      "video calls"
+    ],
+    "software_needed": [
+      "Google Docs"
+    ],
+    "shared_user_count": 5,
+    "urgency": "high",
+    "purpose": [
+      "F"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "35-44",
+    "year_arrived_canada": 2026,
+    "employment_status": "unemployed",
+    "accessibility_needs": [],
+    "language_preference": "ar",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 18
+  },
+  "submitted_at": "2026-03-09",
+  "notes": "Newly landed family of five; settlement worker referred them. Lots of forms to complete for IRCC and OHIP."
+}

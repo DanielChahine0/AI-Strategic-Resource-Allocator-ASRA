@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-a2-002",
+  "intake": {
+    "who_needs_it": "my daughter in grade 11, she takes a digital art elective",
+    "main_usage": [
+      "graphic design or video editing",
+      "online classes",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Adobe Photoshop",
+      "Google Docs",
+      "Zoom"
+    ],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": [
+      "A2"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "13-17",
+    "year_arrived_canada": null,
+    "employment_status": null,
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "tl",
+    "applied_before": false,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 15
+  },
+  "submitted_at": "2026-04-02",
+  "notes": "Her art teacher requires Photoshop for the portfolio project but our old laptop can't run it at all."
+}

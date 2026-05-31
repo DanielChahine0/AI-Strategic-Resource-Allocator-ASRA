@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-c-003",
+  "intake": {
+    "who_needs_it": "I drive for delivery apps and need to track my earnings and expenses properly",
+    "main_usage": [
+      "writing documents",
+      "web browsing and email",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "Excel",
+      "Chrome"
+    ],
+    "shared_user_count": 3,
+    "urgency": "medium",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": 2021,
+    "employment_status": "gig worker",
+    "accessibility_needs": [],
+    "language_preference": "pa",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 34
+  },
+  "submitted_at": "2026-04-02",
+  "notes": "Tax season was a nightmare keeping receipts on my phone. Wife and two kids share everything at home in Brampton so a laptop for the books would help a lot."
+}

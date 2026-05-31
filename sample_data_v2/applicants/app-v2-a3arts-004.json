@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3arts-004",
+  "intake": {
+    "who_needs_it": "I need it to finish my photography portfolio zine before deadline",
+    "main_usage": [
+      "graphic design or video editing",
+      "writing documents",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Adobe Photoshop",
+      "Adobe InDesign"
+    ],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": "arts",
+    "program_name": "Photography, TMU",
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "mature student, on disability support",
+    "accessibility_needs": [
+      "mobility"
+    ],
+    "language_preference": "fr",
+    "applied_before": true,
+    "prior_device_status": "broken",
+    "waitlist_days": 64
+  },
+  "submitted_at": "2026-05-11",
+  "notes": null
+}

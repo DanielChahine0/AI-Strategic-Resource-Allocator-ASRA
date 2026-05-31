@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-d-001",
+  "intake": {
+    "who_needs_it": "myself, retired",
+    "main_usage": [
+      "video calls",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Zoom"
+    ],
+    "shared_user_count": 1,
+    "urgency": "medium",
+    "purpose": [
+      "D"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "English",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 38
+  },
+  "submitted_at": "2026-03-14",
+  "notes": "I want to see my grandchildren when we talk. The phone screen is too small for my eyes."
+}

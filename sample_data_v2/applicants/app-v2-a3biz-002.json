@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-a3biz-002",
+  "intake": {
+    "who_needs_it": "a computer for myself to finish my accounting diploma",
+    "main_usage": [
+      "writing documents",
+      "web browsing and email",
+      "online classes"
+    ],
+    "software_needed": [
+      "Microsoft Office",
+      "Microsoft Word",
+      "Excel"
+    ],
+    "shared_user_count": 3,
+    "urgency": "medium",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": "business",
+    "program_name": "Accounting, Seneca",
+    "age_range": "25-40",
+    "year_arrived_canada": 2021,
+    "employment_status": "unemployed",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "tl",
+    "applied_before": true,
+    "prior_device_status": "n/a",
+    "waitlist_days": 67
+  },
+  "submitted_at": "2026-04-22",
+  "notes": null
+}

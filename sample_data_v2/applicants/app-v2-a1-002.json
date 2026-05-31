@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-a1-002",
+  "intake": {
+    "who_needs_it": "my son in grade 4 after his school closed for repairs",
+    "main_usage": [
+      "online classes",
+      "video calls",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Google Docs",
+      "Google Meet",
+      "Khan Academy"
+    ],
+    "shared_user_count": 3,
+    "urgency": "high",
+    "purpose": [
+      "A1"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": null,
+    "employment_status": "employed full-time",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "en",
+    "applied_before": false,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 12
+  },
+  "submitted_at": "2026-04-02",
+  "notes": "His class moved fully online for the rest of the term. Our old netbook can barely load the video calls and he wears hearing aids so the choppy audio is really hard for him."
+}

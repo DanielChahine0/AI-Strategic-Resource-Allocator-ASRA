@@ -1,0 +1,31 @@
+{
+  "applicant_id": "app-v2-f-005",
+  "intake": {
+    "who_needs_it": "I need to use the health and government websites on my own",
+    "main_usage": [
+      "government or healthcare websites",
+      "web browsing and email"
+    ],
+    "software_needed": [],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "purpose": [
+      "F"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-34",
+    "year_arrived_canada": 2026,
+    "employment_status": "unemployed",
+    "accessibility_needs": [
+      "screen reader compatible"
+    ],
+    "language_preference": "so",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 7
+  },
+  "submitted_at": "2026-05-02",
+  "notes": null
+}

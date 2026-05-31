@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-e-002",
+  "intake": {
+    "who_needs_it": "For me, so I can video call my daughter and grandchildren back in the Philippines",
+    "main_usage": [
+      "video calls",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Skype",
+      "Chrome"
+    ],
+    "shared_user_count": 1,
+    "urgency": "medium",
+    "purpose": [
+      "E"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "65+",
+    "year_arrived_canada": 2009,
+    "employment_status": "retired",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "tl",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 41
+  },
+  "submitted_at": "2026-04-15",
+  "notes": "Hard of hearing, so being able to see my daughter and grandkids on video really helps me follow along."
+}

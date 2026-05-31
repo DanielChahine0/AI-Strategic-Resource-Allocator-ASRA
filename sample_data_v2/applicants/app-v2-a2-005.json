@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-a2-005",
+  "intake": {
+    "who_needs_it": "my daughter in grade 10 taking an intro coding class",
+    "main_usage": [
+      "programming or coding",
+      "online classes",
+      "writing documents"
+    ],
+    "software_needed": [
+      "VS Code",
+      "Chrome",
+      "Google Docs"
+    ],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": [
+      "A2"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "13-17",
+    "year_arrived_canada": null,
+    "employment_status": null,
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "pa",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 8
+  },
+  "submitted_at": "2026-04-18",
+  "notes": "She can't write Python on a phone and the school lab is only open during class time."
+}

@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-c-007",
+  "intake": {
+    "who_needs_it": "I do bookkeeping from home for a few small businesses and my machine died",
+    "main_usage": [
+      "writing documents",
+      "professional software",
+      "video calls"
+    ],
+    "software_needed": [
+      "Microsoft Office",
+      "Excel",
+      "Microsoft Teams",
+      "Zoom"
+    ],
+    "shared_user_count": 2,
+    "urgency": "high",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": 2016,
+    "employment_status": "self-employed",
+    "accessibility_needs": [],
+    "language_preference": "zh",
+    "applied_before": false,
+    "prior_device_status": "broken",
+    "waitlist_days": 23
+  },
+  "submitted_at": "2026-05-11",
+  "notes": "My laptop's motherboard gave out right before month-end closing. I run all my clients' books in spreadsheets and I'm losing income every day I'm down."
+}

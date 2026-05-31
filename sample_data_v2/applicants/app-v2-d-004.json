@@ -1,0 +1,30 @@
+{
+  "applicant_id": "app-v2-d-004",
+  "intake": {
+    "who_needs_it": "myself at home",
+    "main_usage": [
+      "web browsing and email"
+    ],
+    "software_needed": [],
+    "shared_user_count": 1,
+    "urgency": "low",
+    "purpose": [
+      "D"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [
+      "mobility"
+    ],
+    "language_preference": "English",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 22
+  },
+  "submitted_at": "2026-04-19",
+  "notes": "I mostly just read the news and check email. Open to a tablet if that's easier to hold from my chair."
+}

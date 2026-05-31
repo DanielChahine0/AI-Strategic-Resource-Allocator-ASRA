@@ -1,0 +1,34 @@
+{
+  "applicant_id": "app-v2-b-001",
+  "intake": {
+    "who_needs_it": "I do home telehealth visits for clients in Scarborough and need a real laptop",
+    "main_usage": [
+      "video calls",
+      "government or healthcare websites",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Microsoft Office",
+      "Microsoft Teams"
+    ],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": [
+      "B"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": "Scarborough Community Health Connect",
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed part-time",
+    "accessibility_needs": [],
+    "language_preference": "tl",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 14
+  },
+  "submitted_at": "2026-03-09",
+  "notes": "Community health worker covering 8-10 home visits a week; currently borrowing the clinic front-desk computer between shifts."
+}

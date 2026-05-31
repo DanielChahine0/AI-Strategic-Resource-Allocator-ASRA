@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3arts-003",
+  "intake": {
+    "who_needs_it": "A laptop for my UX design courses",
+    "main_usage": [
+      "graphic design or video editing",
+      "writing documents",
+      "video calls",
+      "online classes"
+    ],
+    "software_needed": [
+      "Figma"
+    ],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": "arts",
+    "program_name": "Interaction Design, George Brown College",
+    "age_range": "18-25",
+    "year_arrived_canada": null,
+    "employment_status": "student, unemployed",
+    "accessibility_needs": [
+      "cognitive"
+    ],
+    "language_preference": "tl",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 12
+  },
+  "submitted_at": "2026-03-28",
+  "notes": "I do all my Figma prototyping on my phone right now which is really hard. I share the family computer with my two younger siblings doing homework."
+}

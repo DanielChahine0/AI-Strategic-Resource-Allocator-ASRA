@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-fc-002",
+  "intake": {
+    "who_needs_it": "computer for me to retrain and apply for jobs",
+    "main_usage": [
+      "online classes",
+      "writing documents",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Microsoft Word",
+      "Zoom",
+      "Coursera"
+    ],
+    "shared_user_count": 3,
+    "urgency": "medium",
+    "purpose": [
+      "F",
+      "C"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": "YMCA GTA Newcomer Information Centre",
+    "age_range": "25-40",
+    "year_arrived_canada": 2024,
+    "employment_status": "underemployed",
+    "accessibility_needs": [],
+    "language_preference": "uk",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 40
+  },
+  "submitted_at": "2026-04-02",
+  "notes": null
+}

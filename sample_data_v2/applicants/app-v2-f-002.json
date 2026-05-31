@@ -1,0 +1,32 @@
+{
+  "applicant_id": "app-v2-f-002",
+  "intake": {
+    "who_needs_it": "I came from Ukraine and want to learn English and apply for things online",
+    "main_usage": [
+      "online classes",
+      "government or healthcare websites",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Duolingo"
+    ],
+    "shared_user_count": 1,
+    "urgency": "medium",
+    "purpose": [
+      "F"
+    ],
+    "current_tech_access": "internet_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-34",
+    "year_arrived_canada": 2024,
+    "employment_status": "student",
+    "accessibility_needs": [],
+    "language_preference": "uk",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 30
+  },
+  "submitted_at": "2026-03-22",
+  "notes": null
+}

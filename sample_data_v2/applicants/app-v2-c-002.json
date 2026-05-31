@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-c-002",
+  "intake": {
+    "who_needs_it": "for myself, I got laid off and have interviews coming up on Zoom",
+    "main_usage": [
+      "video calls",
+      "writing documents",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Zoom",
+      "Microsoft Word",
+      "Chrome"
+    ],
+    "shared_user_count": 1,
+    "urgency": "high",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": null,
+    "employment_status": "recently laid off",
+    "accessibility_needs": [
+      "hearing"
+    ],
+    "language_preference": "en",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 12
+  },
+  "submitted_at": "2026-03-19",
+  "notes": null
+}

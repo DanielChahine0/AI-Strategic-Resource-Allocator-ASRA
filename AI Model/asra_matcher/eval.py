@@ -40,7 +40,8 @@ EVAL_TODAY = date(2026, 5, 20)
 # evaluate against byte-identical applicants, inventory, and ground truth.
 # eval.py is at <root>/AI Model/asra_matcher/eval.py → three parents up == <root>.
 _DATA_DIR = Path(__file__).resolve().parents[2] / "sample_data"
-_DATASETS = {"sample-v1": _DATA_DIR}
+_DATA_DIR_V2 = Path(__file__).resolve().parents[2] / "sample_data_v2"
+_DATASETS = {"sample-v1": _DATA_DIR, "sample-v2": _DATA_DIR_V2}
 
 
 # ---------------------------------------------------------------------------

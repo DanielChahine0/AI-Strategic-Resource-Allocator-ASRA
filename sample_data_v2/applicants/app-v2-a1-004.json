@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-a1-004",
+  "intake": {
+    "who_needs_it": "my grade 3 daughter who is just starting to learn English",
+    "main_usage": [
+      "online classes",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Duolingo",
+      "Khan Academy",
+      "Google Docs"
+    ],
+    "shared_user_count": 2,
+    "urgency": "medium",
+    "purpose": [
+      "A1"
+    ],
+    "current_tech_access": "internet_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": 2025,
+    "employment_status": "homemaker",
+    "accessibility_needs": [],
+    "language_preference": "ar",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 8
+  },
+  "submitted_at": "2026-04-21",
+  "notes": "We have internet at the apartment but no computer for her. Her teacher recommended Duolingo to help her catch up with the other kids."
+}

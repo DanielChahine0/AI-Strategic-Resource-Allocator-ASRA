@@ -1,0 +1,34 @@
+{
+  "applicant_id": "app-v2-c-004",
+  "intake": {
+    "who_needs_it": "myself, I'm switching careers and teaching myself to code",
+    "main_usage": [
+      "programming or coding",
+      "online classes",
+      "writing documents"
+    ],
+    "software_needed": [
+      "VS Code",
+      "Chrome",
+      "Zoom"
+    ],
+    "shared_user_count": 2,
+    "urgency": "medium",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "career switcher",
+    "accessibility_needs": [],
+    "language_preference": "es",
+    "applied_before": true,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 71
+  },
+  "submitted_at": "2026-04-14",
+  "notes": "My old laptop freezes whenever I open the code editor and a browser at the same time. I'm doing a free bootcamp at night after my retail shift."
+}

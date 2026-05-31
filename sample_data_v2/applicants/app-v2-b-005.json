@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-b-005",
+  "intake": {
+    "who_needs_it": "I'm a health-data assistant and need to build clinic dashboards from home",
+    "main_usage": [
+      "government or healthcare websites",
+      "writing documents",
+      "professional software"
+    ],
+    "software_needed": [
+      "Tableau",
+      "Microsoft Office",
+      "Microsoft Teams"
+    ],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": [
+      "B"
+    ],
+    "current_tech_access": "internet_only",
+    "a3_subtrack": null,
+    "program_name": "North York Family Health Team",
+    "age_range": "40-60",
+    "year_arrived_canada": 2014,
+    "employment_status": "employed full-time",
+    "accessibility_needs": [
+      "mobility"
+    ],
+    "language_preference": "pa",
+    "applied_before": true,
+    "prior_device_status": "working",
+    "waitlist_days": 48
+  },
+  "submitted_at": "2026-05-11",
+  "notes": "Compiles immunization and screening reports; current shared family tablet can't run Tableau, needs a standard laptop."
+}

@@ -1,0 +1,504 @@
+{
+  "dataset": "sample-v2",
+  "_note": "Expected category + tier per applicant, derived programmatically from the AI-Model rules.py (allowed_tiers + required_software_tier) by build_ground_truth.py — the same logic both engines run. tier is the most-efficient sufficient tier within the rule-allowed set; acceptable_tiers widens to OTHER only for tablet-friendly seniors/newcomers, mirroring sample-v1's precedent convention.",
+  "applicants": {
+    "app-v2-a1-001": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a1-002": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a1-003": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a1-004": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a1-005": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a1-006": {
+      "scenario": "A1",
+      "category": "A1",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-a2-001": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a2-002": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a2-003": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a2-004": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a2-005": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a2-006": {
+      "scenario": "A2",
+      "category": "A2",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3arts-001": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3arts-002": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3arts-003": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3arts-004": {
+      "scenario": "A3-arts",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3sci-001": {
+      "scenario": "A3-science",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3sci-002": {
+      "scenario": "A3-science",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3sci-003": {
+      "scenario": "A3-science",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3swe-001": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T1",
+      "acceptable_tiers": [
+        "T1"
+      ]
+    },
+    "app-v2-a3swe-002": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T1",
+      "acceptable_tiers": [
+        "T1"
+      ]
+    },
+    "app-v2-a3swe-003": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T1",
+      "acceptable_tiers": [
+        "T1"
+      ]
+    },
+    "app-v2-a3swe-004": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3swe-005": {
+      "scenario": "A3-swe",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3biz-001": {
+      "scenario": "A3-business",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3biz-002": {
+      "scenario": "A3-business",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-a3biz-003": {
+      "scenario": "A3-business",
+      "category": "A3",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-b-001": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-b-002": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-b-003": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-b-004": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-b-005": {
+      "scenario": "B",
+      "category": "B",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-c-001": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-c-002": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-c-003": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-c-004": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-c-005": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-c-006": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-c-007": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-c-008": {
+      "scenario": "C",
+      "category": "C",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-e-001": {
+      "scenario": "E",
+      "category": "E",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-e-002": {
+      "scenario": "E",
+      "category": "E",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-e-003": {
+      "scenario": "E",
+      "category": "E",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-e-004": {
+      "scenario": "E",
+      "category": "E",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-fc-001": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-fc-002": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-fc-003": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-fc-004": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T2",
+      "acceptable_tiers": [
+        "T2"
+      ]
+    },
+    "app-v2-fc-005": {
+      "scenario": "FC",
+      "category": "C",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-d-001": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-d-002": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-d-003": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-d-004": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3",
+        "OTHER"
+      ]
+    },
+    "app-v2-d-005": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3",
+        "OTHER"
+      ]
+    },
+    "app-v2-d-006": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-d-007": {
+      "scenario": "D",
+      "category": "D",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-001": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-002": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-003": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-004": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-005": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    },
+    "app-v2-f-006": {
+      "scenario": "F",
+      "category": "F",
+      "tier": "T3",
+      "acceptable_tiers": [
+        "T3"
+      ]
+    }
+  }
+}

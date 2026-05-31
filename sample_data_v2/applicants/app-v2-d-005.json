@@ -1,0 +1,28 @@
+{
+  "applicant_id": "app-v2-d-005",
+  "intake": {
+    "who_needs_it": "for myself, learning email",
+    "main_usage": [
+      "web browsing and email"
+    ],
+    "software_needed": [],
+    "shared_user_count": 1,
+    "urgency": "low",
+    "purpose": [
+      "D"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [],
+    "language_preference": "English",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 12
+  },
+  "submitted_at": "2026-05-06",
+  "notes": "I have never used a computer before and want to learn email. A tablet might be simpler for me to start with."
+}

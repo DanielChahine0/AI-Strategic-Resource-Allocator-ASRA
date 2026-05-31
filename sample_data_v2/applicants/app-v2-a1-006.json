@@ -1,0 +1,31 @@
+{
+  "applicant_id": "app-v2-a1-006",
+  "intake": {
+    "who_needs_it": "my little one in kindergarten, I only have my phone",
+    "main_usage": [
+      "online classes",
+      "video calls"
+    ],
+    "software_needed": [],
+    "shared_user_count": 4,
+    "urgency": "high",
+    "purpose": [
+      "A1"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed part-time",
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "es",
+    "applied_before": true,
+    "prior_device_status": "n/a",
+    "waitlist_days": 97
+  },
+  "submitted_at": "2026-05-14",
+  "notes": "The kindergarten sends home activities we're supposed to do on a screen but my phone is too small for him to see properly, he has low vision in one eye."
+}

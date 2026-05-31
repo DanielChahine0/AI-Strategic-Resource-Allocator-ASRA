@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-b-003",
+  "intake": {
+    "who_needs_it": "I manage diabetes and heart issues and my old laptop finally died",
+    "main_usage": [
+      "government or healthcare websites",
+      "video calls",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Microsoft Teams",
+      "Zoom"
+    ],
+    "shared_user_count": 1,
+    "urgency": "critical",
+    "purpose": [
+      "B"
+    ],
+    "current_tech_access": "none",
+    "a3_subtrack": null,
+    "program_name": "Toronto Western Telehealth Program",
+    "age_range": "65+",
+    "year_arrived_canada": null,
+    "employment_status": "retired",
+    "accessibility_needs": [
+      "vision"
+    ],
+    "language_preference": "en",
+    "applied_before": true,
+    "prior_device_status": "broken",
+    "waitlist_days": 67
+  },
+  "submitted_at": "2026-04-21",
+  "notes": "Lives alone in Parkdale; relies on virtual cardiology and endocrinology follow-ups, larger text needed for low vision."
+}

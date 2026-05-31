@@ -1,0 +1,36 @@
+{
+  "applicant_id": "app-v2-c-008",
+  "intake": {
+    "who_needs_it": "myself, I'm an electrician starting on my own and need to do job estimates and drawings",
+    "main_usage": [
+      "professional software",
+      "writing documents",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "AutoCAD",
+      "Microsoft Office",
+      "Chrome"
+    ],
+    "shared_user_count": 5,
+    "urgency": "low",
+    "purpose": [
+      "C"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": 2014,
+    "employment_status": "self-employed tradesperson",
+    "accessibility_needs": [
+      "cognitive"
+    ],
+    "language_preference": "fa",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 104
+  },
+  "submitted_at": "2026-05-16",
+  "notes": null
+}

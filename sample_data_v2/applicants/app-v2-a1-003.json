@@ -1,0 +1,32 @@
+{
+  "applicant_id": "app-v2-a1-003",
+  "intake": {
+    "who_needs_it": "my 10-year-old in grade 5, he shares one phone with his 3 younger siblings",
+    "main_usage": [
+      "online classes",
+      "web browsing and email"
+    ],
+    "software_needed": [
+      "Khan Academy",
+      "Google Docs"
+    ],
+    "shared_user_count": 5,
+    "urgency": "high",
+    "purpose": [
+      "A1"
+    ],
+    "current_tech_access": "phone_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "40-60",
+    "year_arrived_canada": null,
+    "employment_status": "unemployed",
+    "accessibility_needs": [],
+    "language_preference": "so",
+    "applied_before": true,
+    "prior_device_status": "n/a",
+    "waitlist_days": 64
+  },
+  "submitted_at": "2026-03-24",
+  "notes": null
+}

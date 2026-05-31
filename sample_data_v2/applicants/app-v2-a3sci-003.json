@@ -1,0 +1,35 @@
+{
+  "applicant_id": "app-v2-a3sci-003",
+  "intake": {
+    "who_needs_it": "laptop strong enough to run engineering software",
+    "main_usage": [
+      "programming or coding",
+      "online classes",
+      "government or healthcare websites"
+    ],
+    "software_needed": [
+      "MATLAB",
+      "Microsoft Office"
+    ],
+    "shared_user_count": 4,
+    "urgency": "medium",
+    "purpose": [
+      "A3"
+    ],
+    "current_tech_access": "outdated_device",
+    "a3_subtrack": "science",
+    "program_name": "Engineering Science, University of Toronto",
+    "age_range": "18-25",
+    "year_arrived_canada": 2022,
+    "employment_status": "student",
+    "accessibility_needs": [
+      "mobility"
+    ],
+    "language_preference": "zh",
+    "applied_before": false,
+    "prior_device_status": "outgrown",
+    "waitlist_days": 9
+  },
+  "submitted_at": "2026-05-06",
+  "notes": "My old laptop freezes whenever I open MATLAB simulations, so I share my brother's during exam season. We are four in the household using devices for school and work."
+}

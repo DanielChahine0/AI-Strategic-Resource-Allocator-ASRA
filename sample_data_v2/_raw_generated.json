@@ -1,0 +1,3408 @@
+{
+  "applicants": [
+    {
+      "applicant_id": "app-v2-a1-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "my daughter, she's 7 and in grade 2",
+        "main_usage": [
+          "online classes",
+          "web browsing and email",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Khan Academy",
+          "Google Docs"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 21,
+        "age_range": "25-40",
+        "employment_status": "employed part-time",
+        "language_preference": "en",
+        "year_arrived_canada": null,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "She does her reading practice on my work laptop in the evenings but I need it back for my own job, so the timing is always tight."
+    },
+    {
+      "applicant_id": "app-v2-a1-002",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "my son in grade 4 after his school closed for repairs",
+        "main_usage": [
+          "online classes",
+          "video calls",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Google Docs",
+          "Google Meet",
+          "Khan Academy"
+        ],
+        "shared_user_count": 3,
+        "urgency": "high",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 12,
+        "age_range": "40-60",
+        "employment_status": "employed full-time",
+        "language_preference": "en",
+        "year_arrived_canada": null,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "His class moved fully online for the rest of the term. Our old netbook can barely load the video calls and he wears hearing aids so the choppy audio is really hard for him."
+    },
+    {
+      "applicant_id": "app-v2-a1-003",
+      "submitted_at": "2026-03-24",
+      "intake": {
+        "who_needs_it": "my 10-year-old in grade 5, he shares one phone with his 3 younger siblings",
+        "main_usage": [
+          "online classes",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Khan Academy",
+          "Google Docs"
+        ],
+        "shared_user_count": 5,
+        "urgency": "high",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "n/a",
+        "waitlist_days": 64,
+        "age_range": "40-60",
+        "employment_status": "unemployed",
+        "language_preference": "so",
+        "year_arrived_canada": null,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-a1-004",
+      "submitted_at": "2026-04-21",
+      "intake": {
+        "who_needs_it": "my grade 3 daughter who is just starting to learn English",
+        "main_usage": [
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Duolingo",
+          "Khan Academy",
+          "Google Docs"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "internet_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 8,
+        "age_range": "25-40",
+        "employment_status": "homemaker",
+        "language_preference": "ar",
+        "year_arrived_canada": 2025,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "We have internet at the apartment but no computer for her. Her teacher recommended Duolingo to help her catch up with the other kids."
+    },
+    {
+      "applicant_id": "app-v2-a1-005",
+      "submitted_at": "2026-05-06",
+      "intake": {
+        "who_needs_it": "my 11-year-old in grade 6 who joined a coding club at school",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Chrome",
+          "Khan Academy"
+        ],
+        "shared_user_count": 1,
+        "urgency": "low",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "cognitive"
+        ],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 33,
+        "age_range": "40-60",
+        "employment_status": "self-employed",
+        "language_preference": "zh",
+        "year_arrived_canada": null,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "The club uses a website that runs in the browser, nothing fancy. Our old laptop died last month. He has an IEP for attention so a device of his own would help him stay focused."
+    },
+    {
+      "applicant_id": "app-v2-a1-006",
+      "submitted_at": "2026-05-14",
+      "intake": {
+        "who_needs_it": "my little one in kindergarten, I only have my phone",
+        "main_usage": [
+          "online classes",
+          "video calls"
+        ],
+        "software_needed": [],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "A1"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": true,
+        "prior_device_status": "n/a",
+        "waitlist_days": 97,
+        "age_range": "25-40",
+        "employment_status": "employed part-time",
+        "language_preference": "es",
+        "year_arrived_canada": null,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "The kindergarten sends home activities we're supposed to do on a screen but my phone is too small for him to see properly, he has low vision in one eye."
+    },
+    {
+      "applicant_id": "app-v2-a2-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "my son who just started grade 9",
+        "main_usage": [
+          "online classes",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Google Docs",
+          "Google Meet",
+          "Chrome"
+        ],
+        "shared_user_count": 3,
+        "urgency": "medium",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 22,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "es",
+        "employment_status": null,
+        "main_usage_note": null,
+        "year_arrived_canada": null
+      },
+      "notes": "He does all his essays on my phone right now and it's really hard for him to keep up."
+    },
+    {
+      "applicant_id": "app-v2-a2-002",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "my daughter in grade 11, she takes a digital art elective",
+        "main_usage": [
+          "graphic design or video editing",
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Adobe Photoshop",
+          "Google Docs",
+          "Zoom"
+        ],
+        "shared_user_count": 2,
+        "urgency": "high",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 15,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "tl",
+        "employment_status": null,
+        "year_arrived_canada": null
+      },
+      "notes": "Her art teacher requires Photoshop for the portfolio project but our old laptop can't run it at all."
+    },
+    {
+      "applicant_id": "app-v2-a2-003",
+      "submitted_at": "2026-05-05",
+      "intake": {
+        "who_needs_it": "my grandson in grade 12 applying to universities",
+        "main_usage": [
+          "writing documents",
+          "government or healthcare websites",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Microsoft 365",
+          "Chrome"
+        ],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "none",
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 41,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "zh",
+        "employment_status": null,
+        "year_arrived_canada": null
+      },
+      "notes": "OUAC application deadlines are coming up fast and his laptop screen cracked last month. He has nowhere to type his personal statement."
+    },
+    {
+      "applicant_id": "app-v2-a2-004",
+      "submitted_at": "2026-03-24",
+      "intake": {
+        "who_needs_it": "my kid in grade 8 who shares with his little sister",
+        "main_usage": [
+          "online classes",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Khan Academy",
+          "Google Docs",
+          "Google Meet"
+        ],
+        "shared_user_count": 5,
+        "urgency": "medium",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "cognitive"
+        ],
+        "applied_before": false,
+        "prior_device_status": "working",
+        "waitlist_days": 30,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "so",
+        "employment_status": null,
+        "year_arrived_canada": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-a2-005",
+      "submitted_at": "2026-04-18",
+      "intake": {
+        "who_needs_it": "my daughter in grade 10 taking an intro coding class",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "VS Code",
+          "Chrome",
+          "Google Docs"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 8,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "pa",
+        "employment_status": null,
+        "year_arrived_canada": null
+      },
+      "notes": "She can't write Python on a phone and the school lab is only open during class time."
+    },
+    {
+      "applicant_id": "app-v2-a2-006",
+      "submitted_at": "2026-05-12",
+      "intake": {
+        "who_needs_it": "myself, I'm in grade 12 and work part-time after school",
+        "main_usage": [
+          "writing documents",
+          "video calls",
+          "web browsing and email",
+          "online classes"
+        ],
+        "software_needed": [
+          "Microsoft Office",
+          "Microsoft Teams",
+          "Firefox"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "A2"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 67,
+        "age_range": "13-17",
+        "a3_subtrack": null,
+        "program_name": null,
+        "language_preference": "fr",
+        "employment_status": "part-time",
+        "year_arrived_canada": null
+      },
+      "notes": "My laptop is from 2014 and freezes constantly. I balance shifts at a grocery store with finishing my diploma and need something reliable."
+    },
+    {
+      "applicant_id": "app-v2-a3arts-001",
+      "submitted_at": "2026-03-09",
+      "notes": "My old laptop can barely open one Adobe app at a time, it crashes when I have Photoshop and Illustrator both running for layout work.",
+      "intake": {
+        "who_needs_it": "I need a computer for my graphic design program",
+        "main_usage": [
+          "graphic design or video editing",
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Adobe Photoshop",
+          "Adobe Illustrator"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "arts",
+        "program_name": "Graphic Design, OCAD University",
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 21,
+        "age_range": "18-25",
+        "language_preference": "en",
+        "employment_status": "student, part-time barista",
+        "year_arrived_canada": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3arts-002",
+      "submitted_at": "2026-04-22",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "It's for me, I'm studying illustration and my tablet isn't enough anymore",
+        "main_usage": [
+          "graphic design or video editing",
+          "online classes"
+        ],
+        "software_needed": [
+          "Affinity Photo",
+          "Adobe Photoshop"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "arts",
+        "program_name": "Illustration, Sheridan",
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "working",
+        "waitlist_days": 47,
+        "age_range": "18-25",
+        "language_preference": "zh",
+        "employment_status": "student",
+        "year_arrived_canada": 2021
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3arts-003",
+      "submitted_at": "2026-03-28",
+      "notes": "I do all my Figma prototyping on my phone right now which is really hard. I share the family computer with my two younger siblings doing homework.",
+      "intake": {
+        "who_needs_it": "A laptop for my UX design courses",
+        "main_usage": [
+          "graphic design or video editing",
+          "writing documents",
+          "video calls",
+          "online classes"
+        ],
+        "software_needed": [
+          "Figma"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "arts",
+        "program_name": "Interaction Design, George Brown College",
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "cognitive"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 12,
+        "age_range": "18-25",
+        "language_preference": "tl",
+        "employment_status": "student, unemployed",
+        "year_arrived_canada": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3arts-004",
+      "submitted_at": "2026-05-11",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "I need it to finish my photography portfolio zine before deadline",
+        "main_usage": [
+          "graphic design or video editing",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Adobe Photoshop",
+          "Adobe InDesign"
+        ],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "arts",
+        "program_name": "Photography, TMU",
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 64,
+        "age_range": "25-40",
+        "language_preference": "fr",
+        "employment_status": "mature student, on disability support",
+        "year_arrived_canada": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3sci-001",
+      "submitted_at": "2026-03-14",
+      "intake": {
+        "who_needs_it": "I need a laptop for my stats degree",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "RStudio",
+          "Jupyter",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "science",
+        "program_name": "Statistics, University of Waterloo",
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 22,
+        "age_range": "18-25",
+        "employment_status": "full-time student, part-time campus job",
+        "language_preference": "en",
+        "year_arrived_canada": null
+      },
+      "notes": "Currently borrowing a roommate's machine to run R assignments late at night when she's not using it. Co-op term starts in fall and I'll need my own setup."
+    },
+    {
+      "applicant_id": "app-v2-a3sci-002",
+      "submitted_at": "2026-04-29",
+      "intake": {
+        "who_needs_it": "computer for my graduate research, mine stopped working",
+        "main_usage": [
+          "professional software",
+          "writing documents",
+          "video calls"
+        ],
+        "software_needed": [
+          "SPSS",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 3,
+        "urgency": "critical",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "science",
+        "program_name": "Psychology, York University",
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 61,
+        "age_range": "25-40",
+        "employment_status": "graduate teaching assistant",
+        "language_preference": "fa",
+        "year_arrived_canada": 2019
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-a3sci-003",
+      "submitted_at": "2026-05-06",
+      "intake": {
+        "who_needs_it": "laptop strong enough to run engineering software",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "MATLAB",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 4,
+        "urgency": "medium",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "science",
+        "program_name": "Engineering Science, University of Toronto",
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 9,
+        "age_range": "18-25",
+        "employment_status": "student",
+        "language_preference": "zh",
+        "year_arrived_canada": 2022
+      },
+      "notes": "My old laptop freezes whenever I open MATLAB simulations, so I share my brother's during exam season. We are four in the household using devices for school and work."
+    },
+    {
+      "applicant_id": "app-v2-a3swe-001",
+      "submitted_at": "2026-03-09",
+      "notes": "Capstone demo is in April and I have to run our whole microservices stack locally to present. My old laptop freezes when I open more than one container.",
+      "intake": {
+        "who_needs_it": "I need it for my final-year software engineering capstone project",
+        "main_usage": [
+          "programming or coding",
+          "video calls",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Docker",
+          "VirtualBox",
+          "IntelliJ"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "software_engineering",
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 21,
+        "age_range": "18-25",
+        "language_preference": "en",
+        "employment_status": "student",
+        "program_name": "Software Engineering, University of Waterloo",
+        "year_arrived_canada": null,
+        "main_usage_count": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3swe-002",
+      "submitted_at": "2026-04-02",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "for my mobile app development courses, building Android and iOS apps",
+        "main_usage": [
+          "programming or coding",
+          "graphic design or video editing"
+        ],
+        "software_needed": [
+          "Android Studio",
+          "Xcode",
+          "VS Code"
+        ],
+        "shared_user_count": 2,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "software_engineering",
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 47,
+        "age_range": "18-25",
+        "language_preference": "fa",
+        "employment_status": "part-time student worker",
+        "program_name": "Computer Science, York University",
+        "year_arrived_canada": 2022,
+        "main_usage_count": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3swe-003",
+      "submitted_at": "2026-05-11",
+      "notes": "My research lab gives us cloud credits but they run out fast, so I really need to train smaller models on my own machine overnight.",
+      "intake": {
+        "who_needs_it": "I'm doing a machine learning thesis and need to train models",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "PyTorch",
+          "CUDA",
+          "Jupyter",
+          "TensorFlow"
+        ],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "software_engineering",
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 8,
+        "age_range": "25-40",
+        "language_preference": "zh",
+        "employment_status": "graduate student",
+        "program_name": "Computer Engineering, University of Toronto",
+        "year_arrived_canada": 2023,
+        "main_usage_count": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3swe-004",
+      "submitted_at": "2026-03-24",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "for my second year programming classes, mostly Python assignments",
+        "main_usage": [
+          "programming or coding",
+          "writing documents",
+          "online classes"
+        ],
+        "software_needed": [
+          "VS Code"
+        ],
+        "shared_user_count": 4,
+        "urgency": "medium",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "software_engineering",
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 33,
+        "age_range": "18-25",
+        "language_preference": "es",
+        "employment_status": "student",
+        "program_name": "Computer Science, Toronto Metropolitan University",
+        "year_arrived_canada": null,
+        "main_usage_count": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3swe-005",
+      "submitted_at": "2026-04-29",
+      "notes": "I'm switching careers after my factory job closed. The bootcamp meets online four nights a week and I'm borrowing a relative's laptop right now.",
+      "intake": {
+        "who_needs_it": "I'm in a web development bootcamp to change careers",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "video calls"
+        ],
+        "software_needed": [
+          "IntelliJ",
+          "VS Code"
+        ],
+        "shared_user_count": 3,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "software_engineering",
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 62,
+        "age_range": "25-40",
+        "language_preference": "uk",
+        "employment_status": "unemployed, career changer",
+        "program_name": "Full-Stack Web Development Bootcamp, Lighthouse Labs",
+        "year_arrived_canada": 2024,
+        "main_usage_count": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-a3biz-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "a laptop for me, I'm in my second year of commerce",
+        "main_usage": [
+          "writing documents",
+          "online classes",
+          "professional software"
+        ],
+        "software_needed": [
+          "Excel",
+          "Tableau",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "business",
+        "program_name": "Commerce, Toronto Metropolitan University",
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 21,
+        "age_range": "18-25",
+        "employment_status": "part-time retail",
+        "language_preference": "en",
+        "year_arrived_canada": null
+      },
+      "notes": "My old laptop died over reading week and midterms are coming. I've been borrowing a friend's to submit Excel assignments but it's getting hard."
+    },
+    {
+      "applicant_id": "app-v2-a3biz-002",
+      "submitted_at": "2026-04-22",
+      "intake": {
+        "who_needs_it": "a computer for myself to finish my accounting diploma",
+        "main_usage": [
+          "writing documents",
+          "web browsing and email",
+          "online classes"
+        ],
+        "software_needed": [
+          "Microsoft Office",
+          "Microsoft Word",
+          "Excel"
+        ],
+        "shared_user_count": 3,
+        "urgency": "medium",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "business",
+        "program_name": "Accounting, Seneca",
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "n/a",
+        "waitlist_days": 67,
+        "age_range": "25-40",
+        "employment_status": "unemployed",
+        "language_preference": "tl",
+        "year_arrived_canada": 2021
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-a3biz-003",
+      "submitted_at": "2026-05-11",
+      "intake": {
+        "who_needs_it": "a machine that can handle my data visualization coursework",
+        "main_usage": [
+          "professional software",
+          "online classes",
+          "video calls",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Tableau",
+          "Excel",
+          "Stata"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "A3"
+        ],
+        "a3_subtrack": "business",
+        "program_name": "Business Analytics, Schulich",
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 5,
+        "age_range": "18-25",
+        "employment_status": "full-time student",
+        "language_preference": "zh",
+        "year_arrived_canada": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-b-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "I do home telehealth visits for clients in Scarborough and need a real laptop",
+        "main_usage": [
+          "video calls",
+          "government or healthcare websites",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Microsoft Office",
+          "Microsoft Teams"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "B"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 14,
+        "a3_subtrack": null,
+        "age_range": "25-40",
+        "employment_status": "employed part-time",
+        "language_preference": "tl",
+        "program_name": "Scarborough Community Health Connect",
+        "year_arrived_canada": null,
+        "main_usage_note": null
+      },
+      "notes": "Community health worker covering 8-10 home visits a week; currently borrowing the clinic front-desk computer between shifts."
+    },
+    {
+      "applicant_id": "app-v2-b-002",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "It's for me to keep up with my mother's hospital portal and her appointments",
+        "main_usage": [
+          "government or healthcare websites",
+          "web browsing and email",
+          "video calls"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 3,
+        "urgency": "medium",
+        "purpose": [
+          "B"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 31,
+        "a3_subtrack": null,
+        "age_range": "40-60",
+        "employment_status": "employed full-time",
+        "language_preference": "zh",
+        "program_name": null,
+        "year_arrived_canada": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-b-003",
+      "submitted_at": "2026-04-21",
+      "intake": {
+        "who_needs_it": "I manage diabetes and heart issues and my old laptop finally died",
+        "main_usage": [
+          "government or healthcare websites",
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Microsoft Teams",
+          "Zoom"
+        ],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "B"
+        ],
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 67,
+        "a3_subtrack": null,
+        "age_range": "65+",
+        "employment_status": "retired",
+        "language_preference": "en",
+        "program_name": "Toronto Western Telehealth Program",
+        "year_arrived_canada": null
+      },
+      "notes": "Lives alone in Parkdale; relies on virtual cardiology and endocrinology follow-ups, larger text needed for low vision."
+    },
+    {
+      "applicant_id": "app-v2-b-004",
+      "submitted_at": "2026-03-28",
+      "intake": {
+        "who_needs_it": "For my public-health outreach role coordinating with the team on Teams",
+        "main_usage": [
+          "video calls",
+          "writing documents",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "Microsoft Teams",
+          "Microsoft Office",
+          "Zoom"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "B"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": false,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 22,
+        "a3_subtrack": null,
+        "age_range": "25-40",
+        "employment_status": "employed full-time",
+        "language_preference": "so",
+        "program_name": "Rexdale Public Health Outreach",
+        "year_arrived_canada": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-b-005",
+      "submitted_at": "2026-05-11",
+      "intake": {
+        "who_needs_it": "I'm a health-data assistant and need to build clinic dashboards from home",
+        "main_usage": [
+          "government or healthcare websites",
+          "writing documents",
+          "professional software"
+        ],
+        "software_needed": [
+          "Tableau",
+          "Microsoft Office",
+          "Microsoft Teams"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "B"
+        ],
+        "current_tech_access": "internet_only",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": true,
+        "prior_device_status": "working",
+        "waitlist_days": 48,
+        "a3_subtrack": null,
+        "age_range": "40-60",
+        "employment_status": "employed full-time",
+        "language_preference": "pa",
+        "program_name": "North York Family Health Team",
+        "year_arrived_canada": 2014
+      },
+      "notes": "Compiles immunization and screening reports; current shared family tablet can't run Tableau, needs a standard laptop."
+    },
+    {
+      "applicant_id": "app-v2-c-001",
+      "submitted_at": "2026-03-04",
+      "intake": {
+        "who_needs_it": "I need a computer to apply for jobs, I only have my phone right now",
+        "main_usage": [
+          "web browsing and email",
+          "writing documents",
+          "video calls"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Zoom",
+          "Chrome"
+        ],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 0,
+        "age_range": "25-40",
+        "language_preference": "en",
+        "employment_status": "unemployed",
+        "year_arrived_canada": null,
+        "program_name": null
+      },
+      "notes": "Lost my warehouse job last month and EI is running out. Applying to anything I can but doing it all on a cracked phone screen is impossible for resumes."
+    },
+    {
+      "applicant_id": "app-v2-c-002",
+      "submitted_at": "2026-03-19",
+      "intake": {
+        "who_needs_it": "for myself, I got laid off and have interviews coming up on Zoom",
+        "main_usage": [
+          "video calls",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Microsoft Word",
+          "Chrome"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 12,
+        "age_range": "40-60",
+        "language_preference": "en",
+        "employment_status": "recently laid off",
+        "year_arrived_canada": null,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-c-003",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "I drive for delivery apps and need to track my earnings and expenses properly",
+        "main_usage": [
+          "writing documents",
+          "web browsing and email",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "Excel",
+          "Chrome"
+        ],
+        "shared_user_count": 3,
+        "urgency": "medium",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 34,
+        "age_range": "25-40",
+        "language_preference": "pa",
+        "employment_status": "gig worker",
+        "year_arrived_canada": 2021,
+        "program_name": null
+      },
+      "notes": "Tax season was a nightmare keeping receipts on my phone. Wife and two kids share everything at home in Brampton so a laptop for the books would help a lot."
+    },
+    {
+      "applicant_id": "app-v2-c-004",
+      "submitted_at": "2026-04-14",
+      "intake": {
+        "who_needs_it": "myself, I'm switching careers and teaching myself to code",
+        "main_usage": [
+          "programming or coding",
+          "online classes",
+          "writing documents"
+        ],
+        "software_needed": [
+          "VS Code",
+          "Chrome",
+          "Zoom"
+        ],
+        "shared_user_count": 2,
+        "urgency": "medium",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 71,
+        "age_range": "25-40",
+        "language_preference": "es",
+        "employment_status": "career switcher",
+        "year_arrived_canada": null,
+        "program_name": null
+      },
+      "notes": "My old laptop freezes whenever I open the code editor and a browser at the same time. I'm doing a free bootcamp at night after my retail shift."
+    },
+    {
+      "applicant_id": "app-v2-c-005",
+      "submitted_at": "2026-04-21",
+      "intake": {
+        "who_needs_it": "I just got hired for a work-from-home customer support role and need a computer to start",
+        "main_usage": [
+          "video calls",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Microsoft Office",
+          "Microsoft Teams",
+          "Chrome"
+        ],
+        "shared_user_count": 4,
+        "urgency": "critical",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 5,
+        "age_range": "40-60",
+        "language_preference": "tl",
+        "employment_status": "newly hired remote",
+        "year_arrived_canada": 2019,
+        "program_name": null
+      },
+      "notes": "Start date is in two weeks and they need me online for training every day. We only have one shared tablet for the whole family in Scarborough."
+    },
+    {
+      "applicant_id": "app-v2-c-006",
+      "submitted_at": "2026-05-06",
+      "intake": {
+        "who_needs_it": "for me, I'm a freelance graphic designer trying to get back to taking client work",
+        "main_usage": [
+          "graphic design or video editing",
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Figma",
+          "Adobe Photoshop",
+          "Zoom"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 88,
+        "age_range": "25-40",
+        "language_preference": "en",
+        "employment_status": "freelancer",
+        "year_arrived_canada": null,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-c-007",
+      "submitted_at": "2026-05-11",
+      "intake": {
+        "who_needs_it": "I do bookkeeping from home for a few small businesses and my machine died",
+        "main_usage": [
+          "writing documents",
+          "professional software",
+          "video calls"
+        ],
+        "software_needed": [
+          "Microsoft Office",
+          "Excel",
+          "Microsoft Teams",
+          "Zoom"
+        ],
+        "shared_user_count": 2,
+        "urgency": "high",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "none",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 23,
+        "age_range": "40-60",
+        "language_preference": "zh",
+        "employment_status": "self-employed",
+        "year_arrived_canada": 2016,
+        "program_name": null
+      },
+      "notes": "My laptop's motherboard gave out right before month-end closing. I run all my clients' books in spreadsheets and I'm losing income every day I'm down."
+    },
+    {
+      "applicant_id": "app-v2-c-008",
+      "submitted_at": "2026-05-16",
+      "intake": {
+        "who_needs_it": "myself, I'm an electrician starting on my own and need to do job estimates and drawings",
+        "main_usage": [
+          "professional software",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "AutoCAD",
+          "Microsoft Office",
+          "Chrome"
+        ],
+        "shared_user_count": 5,
+        "urgency": "low",
+        "purpose": [
+          "C"
+        ],
+        "a3_subtrack": null,
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [
+          "cognitive"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 104,
+        "age_range": "40-60",
+        "language_preference": "fa",
+        "employment_status": "self-employed tradesperson",
+        "year_arrived_canada": 2014,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-e-001",
+      "submitted_at": "2026-03-09",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "It's just for me, mostly email and reading the news",
+        "main_usage": [
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Chrome",
+          "Microsoft Word"
+        ],
+        "shared_user_count": 1,
+        "urgency": "low",
+        "purpose": [
+          "E"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 22,
+        "a3_subtrack": null,
+        "age_range": "40-60",
+        "language_preference": "en",
+        "year_arrived_canada": null,
+        "employment_status": "employed part-time",
+        "program_name": null,
+        "main_usage_count": 1
+      }
+    },
+    {
+      "applicant_id": "app-v2-e-002",
+      "submitted_at": "2026-04-15",
+      "notes": "Hard of hearing, so being able to see my daughter and grandkids on video really helps me follow along.",
+      "intake": {
+        "who_needs_it": "For me, so I can video call my daughter and grandchildren back in the Philippines",
+        "main_usage": [
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Skype",
+          "Chrome"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "E"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 41,
+        "a3_subtrack": null,
+        "age_range": "65+",
+        "language_preference": "tl",
+        "year_arrived_canada": 2009,
+        "employment_status": "retired",
+        "program_name": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-e-003",
+      "submitted_at": "2026-05-02",
+      "notes": null,
+      "intake": {
+        "who_needs_it": "A computer for me to keep researching our family tree online",
+        "main_usage": [
+          "web browsing and email",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Firefox",
+          "Google Docs"
+        ],
+        "shared_user_count": 2,
+        "urgency": "low",
+        "purpose": [
+          "E"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 68,
+        "a3_subtrack": null,
+        "age_range": "65+",
+        "language_preference": "en",
+        "year_arrived_canada": null,
+        "employment_status": "retired",
+        "program_name": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-e-004",
+      "submitted_at": "2026-03-27",
+      "notes": "Our old desktop finally died over the winter and we have not been able to replace it.",
+      "intake": {
+        "who_needs_it": "Something for the whole household to use now that our old computer stopped working",
+        "main_usage": [
+          "web browsing and email",
+          "video calls"
+        ],
+        "software_needed": [
+          "Chrome",
+          "Google Meet",
+          "Microsoft 365"
+        ],
+        "shared_user_count": 4,
+        "urgency": "medium",
+        "purpose": [
+          "E"
+        ],
+        "current_tech_access": "internet_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 15,
+        "a3_subtrack": null,
+        "age_range": "25-40",
+        "language_preference": "es",
+        "year_arrived_canada": null,
+        "employment_status": "employed full-time",
+        "program_name": null
+      }
+    },
+    {
+      "applicant_id": "app-v2-fc-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "I need a computer to write my resume and do job interviews online",
+        "main_usage": [
+          "writing documents",
+          "video calls",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Zoom"
+        ],
+        "shared_user_count": 2,
+        "urgency": "high",
+        "purpose": [
+          "F",
+          "C"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 21,
+        "age_range": "40-60",
+        "language_preference": "fa",
+        "employment_status": "unemployed",
+        "year_arrived_canada": 2024,
+        "program_name": "COSTI newcomer settlement services",
+        "a3_subtrack": null
+      },
+      "notes": "Was a civil engineer in Iran for 18 years. Looking for engineering technologist roles in the GTA but cannot license here yet, so applying broadly. Two applications make sense: settlement support as a newcomer and the employment search. Currently does everything on a cracked phone screen in Thornhill."
+    },
+    {
+      "applicant_id": "app-v2-fc-002",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "computer for me to retrain and apply for jobs",
+        "main_usage": [
+          "online classes",
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Zoom",
+          "Coursera"
+        ],
+        "shared_user_count": 3,
+        "urgency": "medium",
+        "purpose": [
+          "F",
+          "C"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 40,
+        "age_range": "25-40",
+        "language_preference": "uk",
+        "employment_status": "underemployed",
+        "year_arrived_canada": 2024,
+        "program_name": "YMCA GTA Newcomer Information Centre",
+        "a3_subtrack": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-fc-003",
+      "submitted_at": "2026-04-21",
+      "intake": {
+        "who_needs_it": "I am sharing one old laptop with my children and need my own for interviews",
+        "main_usage": [
+          "video calls",
+          "writing documents",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Microsoft Teams",
+          "Zoom"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "F",
+          "C"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 67,
+        "age_range": "40-60",
+        "language_preference": "en",
+        "employment_status": "underemployed",
+        "year_arrived_canada": 2025,
+        "program_name": "ACCES Employment bridging program",
+        "a3_subtrack": null
+      },
+      "notes": "Trained accountant from Nigeria, going through CPA re-credentialing while doing virtual interviews. Needs captions on calls due to partial hearing loss. The newcomer support and the employment search are really two separate tracks for her household in Scarborough."
+    },
+    {
+      "applicant_id": "app-v2-fc-004",
+      "submitted_at": "2026-05-11",
+      "intake": {
+        "who_needs_it": "laptop to keep my coding skills sharp and apply to developer jobs",
+        "main_usage": [
+          "programming or coding",
+          "writing documents",
+          "video calls"
+        ],
+        "software_needed": [
+          "VS Code",
+          "Microsoft Word",
+          "Zoom"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "F",
+          "C"
+        ],
+        "current_tech_access": "internet_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 12,
+        "age_range": "25-40",
+        "language_preference": "pa",
+        "employment_status": "unemployed",
+        "year_arrived_canada": 2025,
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-fc-005",
+      "submitted_at": "2026-03-28",
+      "intake": {
+        "who_needs_it": "necesito una computadora para buscar trabajo en almacenes y tiendas",
+        "main_usage": [
+          "writing documents",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Microsoft Word"
+        ],
+        "shared_user_count": 5,
+        "urgency": "critical",
+        "purpose": [
+          "F",
+          "C"
+        ],
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 8,
+        "age_range": "18-25",
+        "language_preference": "es",
+        "employment_status": "unemployed",
+        "year_arrived_canada": 2025,
+        "program_name": "Working Women Community Centre",
+        "a3_subtrack": null
+      },
+      "notes": "Recently arrived from Colombia with family of five, no device at all in the household. Applying to warehouse and retail jobs that require online applications. Counts as newcomer settlement plus active job search."
+    },
+    {
+      "applicant_id": "app-v2-d-001",
+      "submitted_at": "2026-03-14",
+      "intake": {
+        "who_needs_it": "myself, retired",
+        "main_usage": [
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "phone_only",
+        "age_range": "65+",
+        "year_arrived_canada": null,
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 38,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "I want to see my grandchildren when we talk. The phone screen is too small for my eyes."
+    },
+    {
+      "applicant_id": "app-v2-d-002",
+      "submitted_at": "2026-04-02",
+      "intake": {
+        "who_needs_it": "myself",
+        "main_usage": [
+          "government or healthcare websites",
+          "web browsing and email",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Chrome"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "outdated_device",
+        "age_range": "65+",
+        "year_arrived_canada": null,
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "broken",
+        "waitlist_days": 61,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-d-003",
+      "submitted_at": "2026-03-27",
+      "intake": {
+        "who_needs_it": "for me, I'm hard of hearing",
+        "main_usage": [
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Google Meet"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "phone_only",
+        "age_range": "60-65",
+        "year_arrived_canada": null,
+        "accessibility_needs": [
+          "hearing"
+        ],
+        "applied_before": true,
+        "prior_device_status": "broken",
+        "waitlist_days": 90,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-d-004",
+      "submitted_at": "2026-04-19",
+      "intake": {
+        "who_needs_it": "myself at home",
+        "main_usage": [
+          "web browsing and email"
+        ],
+        "software_needed": [],
+        "shared_user_count": 1,
+        "urgency": "low",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "none",
+        "age_range": "65+",
+        "year_arrived_canada": null,
+        "accessibility_needs": [
+          "mobility"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 22,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "I mostly just read the news and check email. Open to a tablet if that's easier to hold from my chair."
+    },
+    {
+      "applicant_id": "app-v2-d-005",
+      "submitted_at": "2026-05-06",
+      "intake": {
+        "who_needs_it": "for myself, learning email",
+        "main_usage": [
+          "web browsing and email"
+        ],
+        "software_needed": [],
+        "shared_user_count": 1,
+        "urgency": "low",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "none",
+        "age_range": "65+",
+        "year_arrived_canada": null,
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 12,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "I have never used a computer before and want to learn email. A tablet might be simpler for me to start with."
+    },
+    {
+      "applicant_id": "app-v2-d-006",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "myself, widowed",
+        "main_usage": [
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Skype"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "phone_only",
+        "age_range": "65+",
+        "year_arrived_canada": null,
+        "accessibility_needs": [
+          "vision"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 47,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "Since my husband passed I just want to stay connected with family. A tablet would be fine, whatever is easiest."
+    },
+    {
+      "applicant_id": "app-v2-d-007",
+      "submitted_at": "2026-05-15",
+      "intake": {
+        "who_needs_it": "myself, I volunteer at a food bank",
+        "main_usage": [
+          "writing documents",
+          "web browsing and email",
+          "government or healthcare websites"
+        ],
+        "software_needed": [
+          "Microsoft Word",
+          "Microsoft Office"
+        ],
+        "shared_user_count": 1,
+        "urgency": "high",
+        "purpose": [
+          "D"
+        ],
+        "current_tech_access": "shared_device",
+        "age_range": "60-65",
+        "year_arrived_canada": null,
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 74,
+        "language_preference": "English",
+        "employment_status": "retired",
+        "program_name": null,
+        "a3_subtrack": null
+      },
+      "notes": "I type up schedules and donor letters for the food bank, so I really need a proper keyboard and a real computer, not a tablet."
+    },
+    {
+      "applicant_id": "app-v2-f-001",
+      "submitted_at": "2026-03-09",
+      "intake": {
+        "who_needs_it": "my family just arrived from Syria, we need a computer for our paperwork",
+        "main_usage": [
+          "government or healthcare websites",
+          "writing documents",
+          "video calls"
+        ],
+        "software_needed": [
+          "Google Docs"
+        ],
+        "shared_user_count": 5,
+        "urgency": "high",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 18,
+        "age_range": "35-44",
+        "employment_status": "unemployed",
+        "language_preference": "ar",
+        "year_arrived_canada": 2026,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": "Newly landed family of five; settlement worker referred them. Lots of forms to complete for IRCC and OHIP."
+    },
+    {
+      "applicant_id": "app-v2-f-002",
+      "submitted_at": "2026-03-22",
+      "intake": {
+        "who_needs_it": "I came from Ukraine and want to learn English and apply for things online",
+        "main_usage": [
+          "online classes",
+          "government or healthcare websites",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Duolingo"
+        ],
+        "shared_user_count": 1,
+        "urgency": "medium",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "internet_only",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 30,
+        "age_range": "25-34",
+        "employment_status": "student",
+        "language_preference": "uk",
+        "year_arrived_canada": 2024,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-f-003",
+      "submitted_at": "2026-04-05",
+      "intake": {
+        "who_needs_it": "need to do video calls with my family back home in the Philippines",
+        "main_usage": [
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Zoom",
+          "Google Meet"
+        ],
+        "shared_user_count": 2,
+        "urgency": "low",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "outdated_device",
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "outgrown",
+        "waitlist_days": 64,
+        "age_range": "45-54",
+        "employment_status": "employed part-time",
+        "language_preference": "tl",
+        "year_arrived_canada": 2025,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-f-004",
+      "submitted_at": "2026-04-18",
+      "intake": {
+        "who_needs_it": "my kids need a computer for their online ESL classes",
+        "main_usage": [
+          "online classes",
+          "video calls",
+          "writing documents"
+        ],
+        "software_needed": [
+          "Google Meet",
+          "Google Docs"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "shared_device",
+        "accessibility_needs": [],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 12,
+        "age_range": "35-44",
+        "employment_status": "homemaker",
+        "language_preference": "fa",
+        "year_arrived_canada": 2025,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": "Family from Afghanistan; two children enrolled in board-run online ESL. Currently sharing one old laptop between everyone."
+    },
+    {
+      "applicant_id": "app-v2-f-005",
+      "submitted_at": "2026-05-02",
+      "intake": {
+        "who_needs_it": "I need to use the health and government websites on my own",
+        "main_usage": [
+          "government or healthcare websites",
+          "web browsing and email"
+        ],
+        "software_needed": [],
+        "shared_user_count": 1,
+        "urgency": "critical",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "none",
+        "accessibility_needs": [
+          "screen reader compatible"
+        ],
+        "applied_before": false,
+        "prior_device_status": "n/a",
+        "waitlist_days": 7,
+        "age_range": "25-34",
+        "employment_status": "unemployed",
+        "language_preference": "so",
+        "year_arrived_canada": 2026,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": null
+    },
+    {
+      "applicant_id": "app-v2-f-006",
+      "submitted_at": "2026-05-15",
+      "intake": {
+        "who_needs_it": "the four of us share one phone and it is hard for everything",
+        "main_usage": [
+          "government or healthcare websites",
+          "online classes",
+          "video calls",
+          "web browsing and email"
+        ],
+        "software_needed": [
+          "Duolingo",
+          "Google Docs"
+        ],
+        "shared_user_count": 4,
+        "urgency": "high",
+        "purpose": [
+          "F"
+        ],
+        "current_tech_access": "phone_only",
+        "accessibility_needs": [],
+        "applied_before": true,
+        "prior_device_status": "n/a",
+        "waitlist_days": 41,
+        "age_range": "35-44",
+        "employment_status": "unemployed",
+        "language_preference": "es",
+        "year_arrived_canada": 2024,
+        "a3_subtrack": null,
+        "program_name": null
+      },
+      "notes": "Venezuelan family of four sharing a single phone; reapplied after first application timed out."
+    }
+  ],
+  "devices": [
+    {
+      "id": "DEV-V2-T1-001",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 5,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": "Donated by a downtown architecture firm refreshing workstations",
+      "specs": {
+        "cpu": "Intel i9 (13th gen)",
+        "ram_gb": 64,
+        "storage_gb": 2000,
+        "gpu": "RTX 4070",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-002",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-05-12",
+      "location": "Mississauga",
+      "notes": "Surplus from a game studio closure",
+      "specs": {
+        "cpu": "AMD Ryzen 9 7900",
+        "ram_gb": 64,
+        "storage_gb": 2000,
+        "gpu": "RTX 4070",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-003",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Markham",
+      "notes": null,
+      "specs": {
+        "cpu": "Apple M3 Max",
+        "ram_gb": 64,
+        "storage_gb": 2000,
+        "form_factor": "laptop",
+        "screen_in": 16
+      }
+    },
+    {
+      "id": "DEV-V2-T1-004",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-05-20",
+      "location": "North York",
+      "notes": "Corporate IT lease return",
+      "specs": {
+        "cpu": "Intel i7 (12th gen)",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "gpu": "RTX 3070",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-005",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 3,
+      "available_from": "2026-06-10",
+      "location": "Scarborough",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 7 5800X",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "gpu": "RTX 3060",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-006",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 5,
+      "available_from": "2026-05-15",
+      "location": "Vaughan",
+      "notes": "Donated by a video production house",
+      "specs": {
+        "cpu": "Apple M2 Pro",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T1-007",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Toronto",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i9 (14th gen)",
+        "ram_gb": 64,
+        "storage_gb": 2000,
+        "gpu": "RTX 4060",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-008",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-05-28",
+      "location": "Etobicoke",
+      "notes": "From a CAD engineering consultancy",
+      "specs": {
+        "cpu": "Intel i7 (13th gen)",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "gpu": "RTX 4060",
+        "form_factor": "laptop",
+        "screen_in": 15
+      }
+    },
+    {
+      "id": "DEV-V2-T1-009",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 3,
+      "available_from": "2026-06-05",
+      "location": "Brampton",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 7 7700X",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "gpu": "RTX 3080",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-010",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 5,
+      "available_from": "2026-05-11",
+      "location": "Richmond Hill",
+      "notes": "Donated by a fintech startup downsizing office",
+      "specs": {
+        "cpu": "Apple M3 Pro",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T1-011",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-06-12",
+      "location": "Oakville",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 9 5900X",
+        "ram_gb": 64,
+        "storage_gb": 2000,
+        "gpu": "RTX 3070",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T1-012",
+      "item_type": "computer",
+      "tier": "T1",
+      "condition": 4,
+      "available_from": "2026-05-22",
+      "location": "Toronto",
+      "notes": "University lab equipment rotation",
+      "specs": {
+        "cpu": "Intel i7 (11th gen)",
+        "ram_gb": 32,
+        "storage_gb": 1000,
+        "gpu": "RTX 3060",
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-001",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-07",
+      "location": "Toronto",
+      "notes": "Bulk donation from an insurance company office refresh",
+      "specs": {
+        "cpu": "Intel i5 (10th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-002",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Mississauga",
+      "notes": null,
+      "specs": {
+        "cpu": "Apple M1",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-003",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-05-14",
+      "location": "Scarborough",
+      "notes": "School board surplus",
+      "specs": {
+        "cpu": "Intel i5 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T2-004",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Brampton",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 5 5600G",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-005",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Markham",
+      "notes": "Accounting firm hardware rotation",
+      "specs": {
+        "cpu": "Intel i7 (9th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-006",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-13",
+      "location": "North York",
+      "notes": null,
+      "specs": {
+        "cpu": "Apple M2",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-007",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-06-08",
+      "location": "Etobicoke",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-008",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-11",
+      "location": "Vaughan",
+      "notes": "Law office desktop fleet retirement",
+      "specs": {
+        "cpu": "Intel i5 (11th gen)",
+        "ram_gb": 16,
+        "storage_gb": 1000,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-009",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 5 3600",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-010",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-16",
+      "location": "Richmond Hill",
+      "notes": "Donated by a marketing agency",
+      "specs": {
+        "cpu": "Apple M1",
+        "ram_gb": 16,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-011",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-06-14",
+      "location": "Oakville",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (9th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 15
+      }
+    },
+    {
+      "id": "DEV-V2-T2-012",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-12",
+      "location": "Pickering",
+      "notes": "Municipal office equipment refresh",
+      "specs": {
+        "cpu": "Intel i7 (8th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-013",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-07",
+      "location": "Mississauga",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (10th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T2-014",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-06-20",
+      "location": "Scarborough",
+      "notes": "Community center decommissioned lab",
+      "specs": {
+        "cpu": "Intel i5 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-015",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-10",
+      "location": "Toronto",
+      "notes": null,
+      "specs": {
+        "cpu": "Apple M2",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-016",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-15",
+      "location": "North York",
+      "notes": "Real estate brokerage donation",
+      "specs": {
+        "cpu": "AMD Ryzen 5 5500",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-017",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Brampton",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i7 (10th gen)",
+        "ram_gb": 16,
+        "storage_gb": 1000,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-018",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-07-01",
+      "location": "Markham",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T2-019",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-13",
+      "location": "Etobicoke",
+      "notes": "Nonprofit partner office upgrade",
+      "specs": {
+        "cpu": "Intel i5 (11th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-020",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-11",
+      "location": "Vaughan",
+      "notes": null,
+      "specs": {
+        "cpu": "Apple M1",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-021",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": "Bank branch hardware decommission",
+      "specs": {
+        "cpu": "Intel i5 (10th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-022",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-06-18",
+      "location": "Pickering",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (9th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-023",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-14",
+      "location": "Mississauga",
+      "notes": "Logistics company laptop fleet refresh",
+      "specs": {
+        "cpu": "Intel i5 (12th gen)",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "laptop",
+        "screen_in": 14
+      }
+    },
+    {
+      "id": "DEV-V2-T2-024",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Richmond Hill",
+      "notes": null,
+      "specs": {
+        "cpu": "AMD Ryzen 5 4500",
+        "ram_gb": 16,
+        "storage_gb": 512,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T2-025",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 5,
+      "available_from": "2026-05-12",
+      "location": "Oakville",
+      "notes": "Donated by a design studio",
+      "specs": {
+        "cpu": "Apple M2",
+        "ram_gb": 16,
+        "storage_gb": 1000,
+        "form_factor": "laptop",
+        "screen_in": 13
+      }
+    },
+    {
+      "id": "DEV-V2-T2-026",
+      "item_type": "computer",
+      "tier": "T2",
+      "condition": 3,
+      "available_from": "2026-08-15",
+      "location": "Scarborough",
+      "notes": null,
+      "specs": {
+        "cpu": "Intel i5 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      }
+    },
+    {
+      "id": "DEV-V2-T3-001",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Toronto",
+      "notes": "Battery holds ~3h; charger included."
+    },
+    {
+      "id": "DEV-V2-T3-002",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (10th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Mississauga",
+      "notes": "Like new, original box."
+    },
+    {
+      "id": "DEV-V2-T3-003",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Celeron N4020",
+        "ram_gb": 4,
+        "storage_gb": 64,
+        "form_factor": "laptop",
+        "screen_in": 11.6
+      },
+      "condition": 3,
+      "available_from": "2026-05-12",
+      "location": "Brampton",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-004",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Celeron N4500",
+        "ram_gb": 8,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 15.6,
+        "low_vision_friendly": true
+      },
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Scarborough",
+      "notes": "Large 15.6-inch screen, good for low-vision users."
+    },
+    {
+      "id": "DEV-V2-T3-005",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Pentium Silver",
+        "ram_gb": 8,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Markham",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-006",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i5 (4th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 3,
+      "available_from": "2026-05-14",
+      "location": "Toronto",
+      "notes": "Minor scuffs on lid; works well."
+    },
+    {
+      "id": "DEV-V2-T3-007",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i5 (5th gen)",
+        "ram_gb": 8,
+        "storage_gb": 500,
+        "form_factor": "laptop",
+        "screen_in": 15.6,
+        "low_vision_friendly": true
+      },
+      "condition": 4,
+      "available_from": "2026-05-07",
+      "location": "Vaughan",
+      "notes": "15.6-inch display suits low-vision users; roomy 500GB drive."
+    },
+    {
+      "id": "DEV-V2-T3-008",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD A9",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 15.6,
+        "low_vision_friendly": true
+      },
+      "condition": 3,
+      "available_from": "2026-05-13",
+      "location": "Richmond Hill",
+      "notes": "Large screen, helpful for low-vision applicants."
+    },
+    {
+      "id": "DEV-V2-T3-009",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD A6",
+        "ram_gb": 4,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 3,
+      "available_from": "2026-05-20",
+      "location": "Oakville",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-010",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD Athlon",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-11",
+      "location": "Toronto",
+      "notes": "Recently wiped and reinstalled."
+    },
+    {
+      "id": "DEV-V2-T3-011",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (6th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 13.3
+      },
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Burlington",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-012",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (7th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Mississauga",
+      "notes": "Excellent condition, fast SSD."
+    },
+    {
+      "id": "DEV-V2-T3-013",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Celeron N4020",
+        "ram_gb": 8,
+        "storage_gb": 64,
+        "form_factor": "laptop",
+        "screen_in": 11.6
+      },
+      "condition": 3,
+      "available_from": "2026-05-16",
+      "location": "Pickering",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-014",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Pentium Silver",
+        "ram_gb": 8,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Ajax",
+      "notes": "Charger included."
+    },
+    {
+      "id": "DEV-V2-T3-015",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i5 (6th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 17,
+        "low_vision_friendly": true
+      },
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": "Extra-large 17-inch screen, ideal for low-vision users."
+    },
+    {
+      "id": "DEV-V2-T3-016",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD A9",
+        "ram_gb": 4,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 3,
+      "available_from": "2026-05-22",
+      "location": "Brampton",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-017",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (8th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      },
+      "condition": 4,
+      "available_from": "2026-05-12",
+      "location": "Scarborough",
+      "notes": "Tower only; monitor not included."
+    },
+    {
+      "id": "DEV-V2-T3-018",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (9th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 5,
+      "available_from": "2026-05-07",
+      "location": "Markham",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-019",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Celeron N4500",
+        "ram_gb": 4,
+        "storage_gb": 64,
+        "form_factor": "laptop",
+        "screen_in": 11.6
+      },
+      "condition": 3,
+      "available_from": "2026-05-25",
+      "location": "Toronto",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-020",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i5 (5th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-11",
+      "location": "Etobicoke",
+      "notes": "Good for documents and video calls."
+    },
+    {
+      "id": "DEV-V2-T3-021",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD Athlon",
+        "ram_gb": 4,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 2,
+      "available_from": "2026-05-30",
+      "location": "Oshawa",
+      "notes": "Worn keyboard but fully functional."
+    },
+    {
+      "id": "DEV-V2-T3-022",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Pentium Silver",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Mississauga",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-023",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (10th gen)",
+        "ram_gb": 8,
+        "storage_gb": 500,
+        "form_factor": "laptop",
+        "screen_in": 15.6,
+        "low_vision_friendly": true
+      },
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Toronto",
+      "notes": "15.6-inch screen and large drive; great for low-vision seniors."
+    },
+    {
+      "id": "DEV-V2-T3-024",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i5 (4th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "desktop"
+      },
+      "condition": 3,
+      "available_from": "2026-05-14",
+      "location": "Newmarket",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-025",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel Celeron N4020",
+        "ram_gb": 4,
+        "storage_gb": 64,
+        "form_factor": "laptop",
+        "screen_in": 11.6
+      },
+      "condition": 3,
+      "available_from": "2026-06-02",
+      "location": "Brampton",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-026",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "AMD A6",
+        "ram_gb": 8,
+        "storage_gb": 128,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-05-13",
+      "location": "Whitby",
+      "notes": "Charger and sleeve included."
+    },
+    {
+      "id": "DEV-V2-T3-027",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (6th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 14
+      },
+      "condition": 4,
+      "available_from": "2026-06-20",
+      "location": "Toronto",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-T3-028",
+      "item_type": "computer",
+      "tier": "T3",
+      "specs": {
+        "cpu": "Intel i3 (7th gen)",
+        "ram_gb": 8,
+        "storage_gb": 256,
+        "form_factor": "laptop",
+        "screen_in": 13.3
+      },
+      "condition": 4,
+      "available_from": "2026-08-15",
+      "location": "Mississauga",
+      "notes": "Available later in summer; donor pickup pending."
+    },
+    {
+      "id": "DEV-V2-MOB-001",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "iPad 9th gen",
+        "ram_gb": 3,
+        "storage_gb": 64
+      },
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": "Good for seniors; comes with charger."
+    },
+    {
+      "id": "DEV-V2-MOB-002",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "iPad 10th gen",
+        "ram_gb": 4,
+        "storage_gb": 64
+      },
+      "condition": 5,
+      "available_from": "2026-05-06",
+      "location": "Mississauga",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-MOB-003",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "Samsung Galaxy Tab A8",
+        "ram_gb": 4,
+        "storage_gb": 64
+      },
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Brampton",
+      "notes": "Easy for newcomers; includes case."
+    },
+    {
+      "id": "DEV-V2-MOB-004",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "HP Chromebook 11",
+        "ram_gb": 4,
+        "storage_gb": 32
+      },
+      "condition": 3,
+      "available_from": "2026-05-12",
+      "location": "Scarborough",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-MOB-005",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "Lenovo Chromebook",
+        "ram_gb": 4,
+        "storage_gb": 64
+      },
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Markham",
+      "notes": "Light and simple; good for basic web use."
+    },
+    {
+      "id": "DEV-V2-MOB-006",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "Acer Chromebook",
+        "ram_gb": 4,
+        "storage_gb": 32
+      },
+      "condition": 3,
+      "available_from": "2026-05-15",
+      "location": "Vaughan",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-MOB-007",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "Samsung Galaxy A53 phone",
+        "ram_gb": 6,
+        "storage_gb": 128
+      },
+      "condition": 4,
+      "available_from": "2026-05-11",
+      "location": "Toronto",
+      "notes": "Unlocked; suitable for newcomers needing a phone."
+    },
+    {
+      "id": "DEV-V2-MOB-008",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "Google Pixel 6a phone",
+        "ram_gb": 6,
+        "storage_gb": 128
+      },
+      "condition": 4,
+      "available_from": "2026-05-13",
+      "location": "Oakville",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-MOB-009",
+      "item_type": "mobile",
+      "tier": null,
+      "specs": {
+        "device": "iPad 9th gen",
+        "ram_gb": 3,
+        "storage_gb": 256
+      },
+      "condition": 5,
+      "available_from": "2026-06-25",
+      "location": "Richmond Hill",
+      "notes": "Larger storage; great for seniors."
+    },
+    {
+      "id": "DEV-V2-DISP-001",
+      "item_type": "display",
+      "tier": null,
+      "specs": {
+        "size_in": 24,
+        "resolution": "1920x1080"
+      },
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Toronto",
+      "notes": "HDMI cable included."
+    },
+    {
+      "id": "DEV-V2-DISP-002",
+      "item_type": "display",
+      "tier": null,
+      "specs": {
+        "size_in": 22,
+        "resolution": "1920x1080"
+      },
+      "condition": 3,
+      "available_from": "2026-05-12",
+      "location": "Mississauga",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-DISP-003",
+      "item_type": "display",
+      "tier": null,
+      "specs": {
+        "size_in": 27,
+        "resolution": "2560x1440"
+      },
+      "condition": 5,
+      "available_from": "2026-05-07",
+      "location": "Markham",
+      "notes": "Large screen, helpful for low-vision users."
+    },
+    {
+      "id": "DEV-V2-DISP-004",
+      "item_type": "display",
+      "tier": null,
+      "specs": {
+        "size_in": 24,
+        "resolution": "1920x1080"
+      },
+      "condition": 4,
+      "available_from": "2026-05-14",
+      "location": "Brampton",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-INP-001",
+      "item_type": "input",
+      "tier": null,
+      "specs": {
+        "device": "Logitech wireless keyboard + mouse combo"
+      },
+      "condition": 4,
+      "available_from": "2026-05-09",
+      "location": "Toronto",
+      "notes": "Batteries included."
+    },
+    {
+      "id": "DEV-V2-INP-002",
+      "item_type": "input",
+      "tier": null,
+      "specs": {
+        "device": "Ergonomic keyboard"
+      },
+      "condition": 3,
+      "available_from": "2026-05-13",
+      "location": "Scarborough",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-AUD-001",
+      "item_type": "audio",
+      "tier": null,
+      "specs": {
+        "device": "USB headset with mic"
+      },
+      "condition": 4,
+      "available_from": "2026-05-08",
+      "location": "Mississauga",
+      "notes": "Good for video calls and interviews."
+    },
+    {
+      "id": "DEV-V2-AUD-002",
+      "item_type": "audio",
+      "tier": null,
+      "specs": {
+        "device": "Bluetooth headphones"
+      },
+      "condition": 3,
+      "available_from": "2026-05-15",
+      "location": "Toronto",
+      "notes": null
+    },
+    {
+      "id": "DEV-V2-CON-001",
+      "item_type": "connectivity",
+      "tier": null,
+      "specs": {
+        "device": "USB-C hub + charger"
+      },
+      "condition": 4,
+      "available_from": "2026-05-10",
+      "location": "Toronto",
+      "notes": "Adds HDMI and USB-A ports."
+    }
+  ]
+}

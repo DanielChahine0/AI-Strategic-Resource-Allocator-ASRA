@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-e-004",
+  "intake": {
+    "who_needs_it": "Something for the whole household to use now that our old computer stopped working",
+    "main_usage": [
+      "web browsing and email",
+      "video calls"
+    ],
+    "software_needed": [
+      "Chrome",
+      "Google Meet",
+      "Microsoft 365"
+    ],
+    "shared_user_count": 4,
+    "urgency": "medium",
+    "purpose": [
+      "E"
+    ],
+    "current_tech_access": "internet_only",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed full-time",
+    "accessibility_needs": [],
+    "language_preference": "es",
+    "applied_before": false,
+    "prior_device_status": "broken",
+    "waitlist_days": 15
+  },
+  "submitted_at": "2026-03-27",
+  "notes": "Our old desktop finally died over the winter and we have not been able to replace it."
+}

@@ -1,0 +1,33 @@
+{
+  "applicant_id": "app-v2-a1-001",
+  "intake": {
+    "who_needs_it": "my daughter, she's 7 and in grade 2",
+    "main_usage": [
+      "online classes",
+      "web browsing and email",
+      "writing documents"
+    ],
+    "software_needed": [
+      "Khan Academy",
+      "Google Docs"
+    ],
+    "shared_user_count": 2,
+    "urgency": "medium",
+    "purpose": [
+      "A1"
+    ],
+    "current_tech_access": "shared_device",
+    "a3_subtrack": null,
+    "program_name": null,
+    "age_range": "25-40",
+    "year_arrived_canada": null,
+    "employment_status": "employed part-time",
+    "accessibility_needs": [],
+    "language_preference": "en",
+    "applied_before": false,
+    "prior_device_status": "n/a",
+    "waitlist_days": 21
+  },
+  "submitted_at": "2026-03-09",
+  "notes": "She does her reading practice on my work laptop in the evenings but I need it back for my own job, so the timing is always tight."
+}
