@@ -32,6 +32,40 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+# Pick a Python 3.11+ interpreter for creating venvs.
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  echo "✗ no '$PYTHON_BIN' on PATH — install Python 3.11+ (or set PYTHON_BIN)" >&2
+  exit 1
+fi
+
+# Bootstrap one backend's environment if it isn't ready yet. Idempotent:
+# each step is skipped when its output already exists, so re-runs are cheap.
+# $1 = label, $2 = directory.
+bootstrap_backend() {
+  local label="$1" dir="$2"
+  local py="$ROOT/$dir/.venv/bin/python"
+
+  # 1. Create the virtualenv if it's missing.
+  if [[ ! -x "$py" ]]; then
+    echo "→ $label: creating virtualenv ($PYTHON_BIN)"
+    "$PYTHON_BIN" -m venv "$ROOT/$dir/.venv"
+  fi
+
+  # 2. Install the package (editable, with dev extras) if it isn't importable.
+  if ! ( cd "$ROOT/$dir" && "$py" -c "import asra_matcher" ) >/dev/null 2>&1; then
+    echo "→ $label: installing dependencies (pip install -e '.[dev]')"
+    "$py" -m pip install --quiet --upgrade pip
+    ( cd "$ROOT/$dir" && "$py" -m pip install -e ".[dev]" )
+  fi
+
+  # 3. Seed .env from the example so the engine has its config file.
+  if [[ ! -f "$ROOT/$dir/.env" && -f "$ROOT/$dir/.env.example" ]]; then
+    echo "→ $label: creating .env from .env.example (add GEMINI_API_KEY to enable LLM)"
+    cp "$ROOT/$dir/.env.example" "$ROOT/$dir/.env"
+  fi
+}
+
 # Start one backend. $1 = label, $2 = directory, $3 = port.
 start_backend() {
   local label="$1" dir="$2" port="$3"
@@ -64,6 +98,16 @@ wait_for() {
   done
   echo " ✓"
 }
+
+# Ensure both backends are installed and configured before launching.
+bootstrap_backend "ai-model"  "AI Model"
+bootstrap_backend "rag-model" "RAG Model"
+
+# The RAG engine needs its local vector store. Build it once if absent.
+if [[ ! -d "$ROOT/RAG Model/chroma_db" ]]; then
+  echo "→ rag-model: building vector store (asra_matcher ingest --rebuild)"
+  ( cd "$ROOT/RAG Model" && exec "$ROOT/RAG Model/.venv/bin/python" -m asra_matcher ingest --rebuild )
+fi
 
 start_backend "ai-model"  "AI Model"  "$AI_PORT"
 start_backend "rag-model" "RAG Model" "$RAG_PORT"
