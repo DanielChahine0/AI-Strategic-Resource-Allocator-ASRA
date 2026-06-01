@@ -104,9 +104,18 @@ bootstrap_backend "ai-model"  "AI Model"
 bootstrap_backend "rag-model" "RAG Model"
 
 # The RAG engine needs its local vector store. Build it once if absent.
+# This embeds the whole kb/ over the Gemini API and prints nothing until done,
+# so we tee output to a log and warn that it's network-bound, not frozen.
 if [[ ! -d "$ROOT/RAG Model/chroma_db" ]]; then
-  echo "→ rag-model: building vector store (asra_matcher ingest --rebuild)"
-  ( cd "$ROOT/RAG Model" && exec "$ROOT/RAG Model/.venv/bin/python" -m asra_matcher ingest --rebuild )
+  echo "→ rag-model: building vector store — embedding kb/ via the Gemini API."
+  echo "  This is network-bound and can take 1–3 min with no output. Not frozen."
+  echo "  (needs GEMINI_API_KEY in 'RAG Model/.env' + internet; log → $LOG_DIR/ingest.log)"
+  if ! ( cd "$ROOT/RAG Model" && "$ROOT/RAG Model/.venv/bin/python" -m asra_matcher ingest --rebuild ) \
+        2>&1 | tee "$LOG_DIR/ingest.log"; then
+    echo "✗ rag-model: vector-store build failed — see $LOG_DIR/ingest.log" >&2
+    echo "  Common causes: missing/invalid GEMINI_API_KEY, or no network access." >&2
+    exit 1
+  fi
 fi
 
 start_backend "ai-model"  "AI Model"  "$AI_PORT"
