@@ -127,10 +127,10 @@ export default function HeadToHead({
         <h2 className="font-display text-title text-ink">Head to head</h2>
         <div className="flex items-center gap-4 text-[11px] text-ink-faint">
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: AI }} /> AI
+            <span className="block h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: AI }} /> AI
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: RAG }} /> RAG
+            <span className="block h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: RAG }} /> RAG
           </span>
         </div>
       </header>

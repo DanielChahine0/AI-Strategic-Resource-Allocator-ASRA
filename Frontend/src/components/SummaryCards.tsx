@@ -115,13 +115,18 @@ function Loaded({
           </span>
           <Delta mine={summary.mean_accuracy_score} peer={peer?.mean_accuracy_score} fmt={pct} />
         </div>
-        <div className="flex items-baseline gap-3">
-          <span className="tnum text-metric text-ink">{pct(summary.mean_accuracy_score)}</span>
-          <span className="text-[11px] leading-snug text-ink-faint">
-            cat {pct(summary.category_accuracy)} · tier {pct(summary.tier_accuracy)}
-            <br />
-            over {summary.n_scored} labelled
-            {summary.error_count > 0 ? ` · ${summary.error_count} unserved` : ""}
+        <div className="flex items-end gap-3">
+          <span className="tnum text-metric leading-none text-ink">
+            {pct(summary.mean_accuracy_score)}
+          </span>
+          <span className="flex flex-col gap-0.5 pb-1 text-[11px] leading-snug text-ink-faint">
+            <span>
+              cat <span className="tnum">{pct(summary.category_accuracy)}</span> · tier{" "}
+              <span className="tnum">{pct(summary.tier_accuracy)}</span>
+            </span>
+            <span>
+              over <span className="tnum">{summary.n_scored}</span> labelled
+            </span>
           </span>
         </div>
         <Bar value={summary.mean_accuracy_score} color={color} />
@@ -211,7 +216,7 @@ export default function SummaryCard({
       <header className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span
-            className="mt-1 h-2 w-2 shrink-0 rounded-full"
+            className="h-2 w-2 shrink-0 rounded-full"
             style={{ backgroundColor: accent.color }}
             aria-hidden
           />
