@@ -7,6 +7,14 @@ const ACCENT: Record<ModelKey, string> = {
   rag: "var(--color-rag)",
 };
 
+// Title-Case each space-delimited word of the applicant's own phrases.
+// Anchor values arrive lowercased from the backend; this restores
+// reader-friendly casing for the chips. Uses (^|\s)\w — not \b\w — so
+// hyphenated tool names (e.g. "final-cut") aren't capitalized mid-word.
+function titleCase(s: string): string {
+  return s.replace(/(^|\s)\w/g, (m) => m.toUpperCase());
+}
+
 function Anchors({ row }: { row: EvalRow }) {
   const eq = row.explanation_quality;
   if (!eq) return null;
@@ -18,6 +26,13 @@ function Anchors({ row }: { row: EvalRow }) {
     <div className="flex flex-wrap gap-2">
       {eq.anchors_expected.map((a) => {
         const hit = present.has(a);
+        // usage:/urgency: -> strip the prefix entirely (existing behavior).
+        // tier: -> keep a "Tier: " label with a space after the colon.
+        // bare software anchors carry no prefix and pass straight through.
+        const tierMatch = a.match(/^tier:(.+)$/);
+        const label = tierMatch
+          ? `Tier: ${titleCase(tierMatch[1])}`
+          : titleCase(a.replace(/^(usage|urgency):/, ""));
         return (
           <span
             key={a}
@@ -25,7 +40,7 @@ function Anchors({ row }: { row: EvalRow }) {
               hit ? "border-line text-ink" : "border-line-soft text-ink-faint opacity-70"
             }`}
           >
-            {a.replace(/^(usage|urgency):/, "")}
+            {label}
           </span>
         );
       })}
@@ -41,7 +56,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
     );
   }
   return (
-    <div className="flex flex-col gap-4 p-6" style={{ borderTop: `2px solid ${color}` }}>
+    <div className="flex h-full flex-col gap-4 p-6" style={{ borderTop: `2px solid ${color}` }}>
       <div className="flex items-center justify-between">
         <span
           className="font-mono text-[11px] uppercase tracking-[0.18em]"
@@ -86,7 +101,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
             </div>
           )}
 
-          <dl className="grid grid-cols-3 gap-3 border-t border-line pt-3.5 text-[11px]">
+          <dl className="mt-auto grid grid-cols-3 gap-3 border-t border-line pt-3.5 text-[11px]">
             <div>
               <dt className="text-ink-faint">runner-up</dt>
               <dd className="tnum text-ink">{row.runner_up_device_id ?? "n/a"}</dd>
@@ -115,7 +130,7 @@ function Panel({ model, row }: { model: ModelKey; row?: EvalRow }) {
 
 export default function RowDetail({ ai, rag }: { ai?: EvalRow; rag?: EvalRow }) {
   return (
-    <div className="grid grid-cols-1 divide-y divide-line bg-subtle/50 md:grid-cols-2 md:divide-x md:divide-y-0">
+    <div className="grid grid-cols-1 items-stretch divide-y divide-line bg-subtle/50 md:grid-cols-2 md:divide-x md:divide-y-0">
       <Panel model="ai" row={ai} />
       <Panel model="rag" row={rag} />
     </div>
