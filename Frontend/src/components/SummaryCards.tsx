@@ -67,7 +67,7 @@ function Metric({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
           {label}
         </span>
         <span className="flex items-baseline gap-2">
@@ -84,7 +84,7 @@ function Metric({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-ink-faint">
+      <span className="font-mono text-[12px] font-medium uppercase tracking-[0.16em] text-ink-soft">
         {children}
       </span>
       <span className="h-px flex-1 bg-line-soft" />
@@ -110,7 +110,7 @@ function Loaded({
       {/* hero: accuracy leads the card */}
       <div className="flex flex-col gap-3">
         <div className="flex items-end justify-between gap-3">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
+          <span className="font-mono text-[12px] font-medium uppercase tracking-[0.16em] text-ink-soft">
             Accuracy
           </span>
           <Delta mine={summary.mean_accuracy_score} peer={peer?.mean_accuracy_score} fmt={pct} />

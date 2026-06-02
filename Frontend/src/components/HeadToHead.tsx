@@ -52,7 +52,7 @@ function QualityBar({ label, ai, rag }: { label: string; ai: number; rag: number
   return (
     <div className="flex flex-col gap-2.5">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
+        <span className="font-mono text-[12px] font-medium uppercase tracking-[0.16em] text-ink-soft">
           {label}
         </span>
         <LeadPill winner={winner} delta={delta} />
