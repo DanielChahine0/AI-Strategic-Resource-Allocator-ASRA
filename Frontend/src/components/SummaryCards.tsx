@@ -32,12 +32,16 @@ function Delta({
 }) {
   if (peer === null || peer === undefined) return null;
   const diff = mine - peer;
-  if (diff === 0) return <span className="tnum text-[11px] text-ink-faint">even</span>;
+  if (diff === 0)
+    return (
+      <span className="tnum rounded-md px-1.5 py-0.5 text-[11px] text-ink-faint">even</span>
+    );
   const better = lowerIsBetter ? mine < peer : mine > peer;
   return (
     <span
-      className="tnum text-[11px]"
-      style={{ color: better ? "var(--color-ink)" : "var(--color-ink-faint)" }}
+      className={`tnum rounded-md px-1.5 py-0.5 text-[11px] font-medium ${
+        better ? "bg-good-soft text-good" : "bg-signal-soft text-signal"
+      }`}
       title="vs. the other model"
     >
       {better ? "↑" : "↓"} {fmt(Math.abs(diff))}

@@ -13,10 +13,14 @@ function leader(a: number, b: number, lowerIsBetter = false): ModelKey | null {
 }
 
 function LeadPill({ winner, delta }: { winner: ModelKey | null; delta: string }) {
-  if (!winner) return <span className="text-[11px] text-ink-faint">even</span>;
-  const color = winner === "ai" ? AI : RAG;
+  if (!winner)
+    return (
+      <span className="rounded-md px-1.5 py-0.5 text-[11px] text-ink-faint">even</span>
+    );
+  // The pill always names the winner, so it carries the shared green win color
+  // (not the model accent — the bars below already carry model identity).
   return (
-    <span className="text-[11px] font-medium" style={{ color }}>
+    <span className="rounded-md bg-good-soft px-1.5 py-0.5 text-[11px] font-medium text-good">
       {MODEL_LABELS[winner].replace(" Model", "")} {delta}
     </span>
   );
