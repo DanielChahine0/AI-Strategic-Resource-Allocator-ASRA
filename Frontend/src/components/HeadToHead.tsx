@@ -83,11 +83,11 @@ function CostStat({
   const lo = Math.min(aiValue, ragValue);
   const saving = hi > 0 ? Math.round(((hi - lo) / hi) * 100) : 0;
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col items-center gap-2 text-center">
       <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
         {label}
       </span>
-      <div className="flex items-baseline gap-2.5">
+      <div className="flex items-baseline justify-center gap-2.5">
         <span className="tnum text-xl" style={{ color: AI }}>
           {format(aiValue)}
         </span>
@@ -97,11 +97,11 @@ function CostStat({
         </span>
       </div>
       {winner ? (
-        <span className="text-[11px]" style={{ color: winner === "ai" ? AI : RAG }}>
+        <span className="inline-flex w-fit items-center rounded-md bg-good-soft px-1.5 py-0.5 text-[11px] font-medium text-good">
           {MODEL_LABELS[winner].replace(" Model", "")} {verb} {saving}% less
         </span>
       ) : (
-        <span className="text-[11px] text-ink-faint">
+        <span className="inline-flex w-fit items-center rounded-md px-1.5 py-0.5 text-[11px] text-ink-faint">
           {bothZero ? "no live tokens" : "even"}
         </span>
       )}
