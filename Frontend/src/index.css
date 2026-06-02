@@ -36,8 +36,14 @@
   --color-ai-soft: #f1e7e1;
   --color-rag: #3d6b6d; /* slate-teal — RAG Model */
   --color-rag-soft: #e2ebea;
-  --color-signal: #cf2436; /* divergence / error — a true red, far in hue from clay */
+  --color-signal: #bd1e2e; /* divergence / error — a true red, far in hue from clay */
   --color-signal-soft: #f8dee1;
+
+  /* Win/loss only — editorial green, scoped STRICTLY to comparison delta pills.
+     Never recolors bars, big numbers, or model accents. AA-normal on its own
+     tint and on white/subtle. */
+  --color-good: #267347; /* winner-pill text */
+  --color-good-soft: #e3f3ea; /* winner-pill background */
 
   /* Type families — Apple system fonts (San Francisco), OS-provided */
   --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;

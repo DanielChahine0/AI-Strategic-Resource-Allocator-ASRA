@@ -32,12 +32,16 @@ function Delta({
 }) {
   if (peer === null || peer === undefined) return null;
   const diff = mine - peer;
-  if (diff === 0) return <span className="tnum text-[11px] text-ink-faint">even</span>;
+  if (diff === 0)
+    return (
+      <span className="tnum rounded-md px-1.5 py-0.5 text-[11px] text-ink-faint">even</span>
+    );
   const better = lowerIsBetter ? mine < peer : mine > peer;
   return (
     <span
-      className="tnum text-[11px]"
-      style={{ color: better ? "var(--color-ink)" : "var(--color-ink-faint)" }}
+      className={`tnum rounded-md px-1.5 py-0.5 text-[11px] font-medium ${
+        better ? "bg-good-soft text-good" : "bg-signal-soft text-signal"
+      }`}
       title="vs. the other model"
     >
       {better ? "↑" : "↓"} {fmt(Math.abs(diff))}
@@ -63,7 +67,7 @@ function Metric({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
+        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
           {label}
         </span>
         <span className="flex items-baseline gap-2">
@@ -80,7 +84,7 @@ function Metric({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-ink-faint">
+      <span className="font-mono text-[12px] font-medium uppercase tracking-[0.16em] text-ink-soft">
         {children}
       </span>
       <span className="h-px flex-1 bg-line-soft" />
@@ -93,31 +97,34 @@ function Loaded({
   color,
   wall,
   peer,
-  peerWall,
 }: {
   summary: EvalSummary;
   color: string;
   wall: number;
   peer?: EvalSummary | null;
-  peerWall?: number | null;
 }) {
   return (
     <div className="flex flex-col gap-7">
       {/* hero: accuracy leads the card */}
       <div className="flex flex-col gap-3">
         <div className="flex items-end justify-between gap-3">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
+          <span className="font-mono text-[12px] font-medium uppercase tracking-[0.16em] text-ink-soft">
             Accuracy
           </span>
           <Delta mine={summary.mean_accuracy_score} peer={peer?.mean_accuracy_score} fmt={pct} />
         </div>
-        <div className="flex items-baseline gap-3">
-          <span className="tnum text-metric text-ink">{pct(summary.mean_accuracy_score)}</span>
-          <span className="text-[11px] leading-snug text-ink-faint">
-            cat {pct(summary.category_accuracy)} · tier {pct(summary.tier_accuracy)}
-            <br />
-            over {summary.n_scored} labelled
-            {summary.error_count > 0 ? ` · ${summary.error_count} unserved` : ""}
+        <div className="flex items-end gap-3">
+          <span className="tnum text-metric leading-none text-ink">
+            {pct(summary.mean_accuracy_score)}
+          </span>
+          <span className="flex flex-col gap-0.5 pb-1 text-[11px] leading-snug text-ink-faint">
+            <span>
+              cat <span className="tnum">{pct(summary.category_accuracy)}</span> · tier{" "}
+              <span className="tnum">{pct(summary.tier_accuracy)}</span>
+            </span>
+            <span>
+              over <span className="tnum">{summary.n_scored}</span> labelled
+            </span>
           </span>
         </div>
         <Bar value={summary.mean_accuracy_score} color={color} />
@@ -160,29 +167,18 @@ function Loaded({
             value={summary.fallback_rate}
             color={color}
             hint={summary.fallback_rate > 0 ? "used backup logic" : "used live AI"}
-            delta={
-              <Delta mine={summary.fallback_rate} peer={peer?.fallback_rate} lowerIsBetter fmt={pct} />
-            }
           />
           <Metric
             label="Tokens"
             display={int(summary.tokens_total)}
             color={color}
             hint={`avg ${dec(summary.avg_tokens_per_match, 0)}/match`}
-            delta={
-              <Delta mine={summary.tokens_total} peer={peer?.tokens_total} lowerIsBetter fmt={int} />
-            }
           />
           <Metric
             label="Wall time"
             display={ms(wall)}
             color={color}
             hint={`${summary.n} applicants · ${summary.error_count} errors`}
-            delta={
-              peerWall !== null && peerWall !== undefined ? (
-                <Delta mine={wall} peer={peerWall} lowerIsBetter fmt={ms} />
-              ) : undefined
-            }
           />
         </div>
       </div>
@@ -201,13 +197,12 @@ export default function SummaryCard({
 }) {
   const accent = ACCENT[model];
   const peerSummary = peer?.status === "done" ? peer.result?.summary : null;
-  const peerWall = peer?.status === "done" ? peer.result?.wall_time_ms : null;
   return (
     <section className="card card-lift rise flex flex-col gap-7 rounded-card border border-line bg-surface p-7">
       <header className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span
-            className="mt-1 h-2 w-2 shrink-0 rounded-full"
+            className="h-2 w-2 shrink-0 rounded-full"
             style={{ backgroundColor: accent.color }}
             aria-hidden
           />
@@ -262,7 +257,6 @@ export default function SummaryCard({
           color={accent.color}
           wall={state.result.wall_time_ms}
           peer={peerSummary}
-          peerWall={peerWall}
         />
       )}
     </section>
