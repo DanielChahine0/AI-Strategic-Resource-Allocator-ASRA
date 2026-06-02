@@ -97,13 +97,11 @@ function Loaded({
   color,
   wall,
   peer,
-  peerWall,
 }: {
   summary: EvalSummary;
   color: string;
   wall: number;
   peer?: EvalSummary | null;
-  peerWall?: number | null;
 }) {
   return (
     <div className="flex flex-col gap-7">
@@ -169,29 +167,18 @@ function Loaded({
             value={summary.fallback_rate}
             color={color}
             hint={summary.fallback_rate > 0 ? "used backup logic" : "used live AI"}
-            delta={
-              <Delta mine={summary.fallback_rate} peer={peer?.fallback_rate} lowerIsBetter fmt={pct} />
-            }
           />
           <Metric
             label="Tokens"
             display={int(summary.tokens_total)}
             color={color}
             hint={`avg ${dec(summary.avg_tokens_per_match, 0)}/match`}
-            delta={
-              <Delta mine={summary.tokens_total} peer={peer?.tokens_total} lowerIsBetter fmt={int} />
-            }
           />
           <Metric
             label="Wall time"
             display={ms(wall)}
             color={color}
             hint={`${summary.n} applicants · ${summary.error_count} errors`}
-            delta={
-              peerWall !== null && peerWall !== undefined ? (
-                <Delta mine={wall} peer={peerWall} lowerIsBetter fmt={ms} />
-              ) : undefined
-            }
           />
         </div>
       </div>
@@ -210,7 +197,6 @@ export default function SummaryCard({
 }) {
   const accent = ACCENT[model];
   const peerSummary = peer?.status === "done" ? peer.result?.summary : null;
-  const peerWall = peer?.status === "done" ? peer.result?.wall_time_ms : null;
   return (
     <section className="card card-lift rise flex flex-col gap-7 rounded-card border border-line bg-surface p-7">
       <header className="flex items-start justify-between gap-3">
@@ -271,7 +257,6 @@ export default function SummaryCard({
           color={accent.color}
           wall={state.result.wall_time_ms}
           peer={peerSummary}
-          peerWall={peerWall}
         />
       )}
     </section>

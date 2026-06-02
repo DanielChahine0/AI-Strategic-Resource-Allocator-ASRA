@@ -77,9 +77,6 @@ function Alloc({ row, model }: { row?: EvalRow; model: ModelKey }) {
           <Mark ok={row.accuracy?.category_correct} />
           <Mark ok={row.accuracy?.tier_correct} />
         </span>
-        <span className="tnum w-8 text-right text-ink-faint" title="composite">
-          {dec(row.composite)}
-        </span>
         <span className="tnum w-8 text-right" style={{ color: accent.color }} title="confidence">
           {dec(row.confidence)}
         </span>
@@ -174,7 +171,6 @@ export default function ComparisonTable({
         <span>
           <Mark ok /> <Mark ok={false} /> category · tier vs answer key
         </span>
-        <span className="tnum">0.00 composite</span>
         <span className="tnum">0.00 confidence (per engine)</span>
       </div>
     </div>
