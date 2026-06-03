@@ -4,18 +4,18 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // Type is the Apple system font (San Francisco) — provided by the OS, so no
 // web fonts are loaded. Hierarchy comes from size, not weight.
 import "./index.css";
-import ModelComparison from "./App";
-import DatasetViewer from "./components/DatasetViewer";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Impact from "./components/Impact";
+import InventoryView from "./components/InventoryView";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
         <Routes>
-          <Route path="/compare" element={<ModelComparison />} />
-          <Route path="/dataset" element={<DatasetViewer />} />
-          <Route path="*" element={<Navigate to="/compare" replace />} />
+          <Route path="/impact" element={<Impact />} />
+          <Route path="/inventory" element={<InventoryView />} />
+          <Route path="*" element={<Navigate to="/impact" replace />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>

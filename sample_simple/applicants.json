@@ -1,0 +1,145 @@
+[
+  {
+    "applicant_id": "etob-001",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-02T09:14:00",
+    "intake": {
+      "os_choice": "windows",
+      "main_needs": "job applications, email, and video interviews",
+      "software": "Microsoft Word, Zoom, Chrome",
+      "challenge": "I lost my job and only have a cracked phone, so I can't apply for work or do interviews from home."
+    }
+  },
+  {
+    "applicant_id": "etob-002",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-03T11:40:00",
+    "intake": {
+      "os_choice": "ubuntu",
+      "main_needs": "learning to code and building small web projects",
+      "software": "VS Code, Docker, Python, Git",
+      "challenge": "I am self-teaching software development from library computers but the time limits make it impossible to finish projects."
+    }
+  },
+  {
+    "applicant_id": "etob-003",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-04T08:05:00",
+    "intake": {
+      "os_choice": "both",
+      "main_needs": "online high-school classes and homework",
+      "software": "Google Docs, Khan Academy, Zoom",
+      "challenge": "My two kids share my work laptop in the evenings and it is never enough for both of them to finish assignments."
+    }
+  },
+  {
+    "applicant_id": "etob-004",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-05T15:22:00",
+    "intake": {
+      "os_choice": "windows",
+      "main_needs": "browsing government and healthcare websites, video calls with family",
+      "software": "Chrome, Zoom",
+      "challenge": "I am a senior with no computer and rely on a neighbour to book medical appointments online for me."
+    }
+  },
+  {
+    "applicant_id": "etob-005",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-06T10:11:00",
+    "intake": {
+      "os_choice": "ubuntu",
+      "main_needs": "graphic design and photo editing for a small business",
+      "software": "Photoshop, Illustrator, Figma",
+      "challenge": "I run a one-person print shop from my phone and cannot take on design work without a real computer."
+    }
+  },
+  {
+    "applicant_id": "etob-006",
+    "area": "Etobicoke",
+    "submitted_at": "2026-02-07T13:48:00",
+    "intake": {
+      "os_choice": "both",
+      "main_needs": "newcomer settlement, ESL classes, and writing documents",
+      "software": "Google Docs, Chrome, Zoom",
+      "challenge": "I arrived in Canada three months ago and need a computer to attend language classes and apply for services."
+    }
+  },
+  {
+    "applicant_id": "scar-001",
+    "area": "Scarborough",
+    "submitted_at": "2026-02-02T14:30:00",
+    "intake": {
+      "os_choice": "windows",
+      "main_needs": "university coursework and writing essays",
+      "software": "Microsoft Office, Zoom, Chrome",
+      "challenge": "I am a first-year student doing all my work on my phone, which makes assignments take twice as long."
+    }
+  },
+  {
+    "applicant_id": "scar-002",
+    "area": "Scarborough",
+    "submitted_at": "2026-02-08T09:00:00",
+    "intake": {
+      "os_choice": "ubuntu",
+      "main_needs": "data science coursework and running notebooks",
+      "software": "Jupyter, Python, VS Code",
+      "challenge": "My old laptop died and I cannot run the analysis tools my program requires."
+    }
+  },
+  {
+    "applicant_id": "nyork-001",
+    "area": "North York",
+    "submitted_at": "2026-02-03T16:20:00",
+    "intake": {
+      "os_choice": "both",
+      "main_needs": "email, browsing, and staying in touch with family overseas",
+      "software": "Chrome, Zoom, WhatsApp",
+      "challenge": "I share one outdated tablet with my whole household and it is too slow for video calls."
+    }
+  },
+  {
+    "applicant_id": "nyork-002",
+    "area": "North York",
+    "submitted_at": "2026-02-09T12:05:00",
+    "intake": {
+      "os_choice": "windows",
+      "main_needs": "remote administrative work and spreadsheets",
+      "software": "Microsoft Excel, Word, Teams",
+      "challenge": "I got a remote bookkeeping job but have no computer to actually do the work."
+    }
+  },
+  {
+    "applicant_id": "down-001",
+    "area": "Downtown Toronto",
+    "submitted_at": "2026-02-04T10:45:00",
+    "intake": {
+      "os_choice": "ubuntu",
+      "main_needs": "light browsing and online forms",
+      "software": "Firefox",
+      "challenge": "I am in transitional housing and need to fill out benefit and housing applications online."
+    }
+  },
+  {
+    "applicant_id": "miss-001",
+    "area": "Mississauga",
+    "submitted_at": "2026-02-05T09:30:00",
+    "intake": {
+      "os_choice": "both",
+      "main_needs": "video editing for a community youth program",
+      "software": "Premiere Pro, DaVinci Resolve",
+      "challenge": "Our youth program has no equipment to teach editing and the kids have nowhere to practice."
+    }
+  },
+  {
+    "applicant_id": "miss-002",
+    "area": "Mississauga",
+    "submitted_at": "2026-02-10T11:15:00",
+    "intake": {
+      "os_choice": "windows",
+      "main_needs": "elementary school reading and math practice",
+      "software": "Khan Academy, Google Docs",
+      "challenge": "My daughter in grade 3 does her reading practice on my phone and struggles to see the screen."
+    }
+  }
+]

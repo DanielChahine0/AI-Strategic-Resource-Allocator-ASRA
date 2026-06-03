@@ -1,21 +1,19 @@
-"""Direct-linking rules and fit gate. Deterministic; the LLM cannot override these."""
+"""Deterministic software-capability matrix (shared with the AI engine).
+
+Maps a software keyword to the minimum device tier that can run it, sourced from
+the shared sample_data/software_capability_matrix.json with a hard-coded
+fallback. The category/tier direct-linking rules and fit gate were removed in
+the Phase-5 simplification — the simplified allocator's only hard rule is the
+software-capability check in `asra_matcher.simple`.
+"""
 from __future__ import annotations
 
 import json
 from collections.abc import Iterable
 from pathlib import Path
 
-from .models import Application, Device
-from .taxonomy import PERIPHERAL_TYPES, Category, DeviceTier, ItemType
+from .taxonomy import DeviceTier
 
-# --- Software capability matrix -------------------------------------------
-# Single source of truth shared with the AI engine: sample_data/
-# software_capability_matrix.json maps a software keyword to the minimum device
-# tier that can run it. BOTH engines load that same file and use the identical
-# longest-match rule in `_required_tier`, so their fit gates agree on every
-# (software, tier) pair. The hard-coded fallback mirrors the JSON and only
-# applies if the file is missing. (The human-readable kb/software_capability_
-# matrix.md tracks the same data for retrieval/justification.)
 _MATRIX_PATH = Path(__file__).resolve().parents[2] / "sample_data" / "software_capability_matrix.json"
 
 _FALLBACK_SOFTWARE_MIN_TIER: dict[str, DeviceTier] = {
@@ -59,50 +57,20 @@ def _load_software_min_tier() -> dict[str, DeviceTier]:
     return dict(_FALLBACK_SOFTWARE_MIN_TIER)
 
 
-# Public name kept for back-compat; now sourced from the shared matrix file.
 DEFAULT_SOFTWARE_MIN_TIER: dict[str, DeviceTier] = _load_software_min_tier()
-
-
-# Direct-linking allowed tier sets, per spec. None entries mean "RAG decides".
-_ALLOWED_TIERS: dict[Category, set[DeviceTier] | None] = {
-    Category.A1: {DeviceTier.T3},
-    Category.A2: {DeviceTier.T2},
-    Category.A3: None,  # RAG-decided based on sub-track + software
-    Category.B: {DeviceTier.T2, DeviceTier.T3},
-    Category.C: None,   # RAG-decided
-    Category.D: {DeviceTier.T3},  # mobile handled separately via item_type
-    Category.E: {DeviceTier.T3},
-    Category.F: {DeviceTier.T3},  # mobile handled separately via item_type
-}
-
-
-# Categories where Mobile items are an acceptable alternative to a tiered computer.
-_MOBILE_ELIGIBLE = {Category.D, Category.F}
-
-
-def allowed_tiers(category: Category) -> set[DeviceTier] | None:
-    """Return the direct-linking allowed tier set, or None if RAG must decide."""
-    return _ALLOWED_TIERS[category]
-
-
-def mobile_eligible(category: Category) -> bool:
-    return category in _MOBILE_ELIGIBLE
 
 
 def _tier_rank(t: DeviceTier) -> int:
     return {DeviceTier.T1: 3, DeviceTier.T2: 2, DeviceTier.T3: 1, DeviceTier.OTHER: 0}[t]
 
 
-def _required_tier(
-    software_needed: Iterable[str], table: dict[str, DeviceTier]
-) -> DeviceTier:
+def _required_tier(software_needed: Iterable[str], table: dict[str, DeviceTier]) -> DeviceTier:
     """Minimum device tier that can run *all* the requested software.
 
     For each item, the longest matrix key that is a substring of the item wins
     (so "visual studio code" -> T2, not the shorter "visual studio" -> T1); the
     result is the highest tier any single item requires. Items absent from the
-    matrix add no constraint. The AI engine carries the identical algorithm
-    (rules.required_software_tier) so the two fit gates never disagree.
+    matrix add no constraint.
     """
     required = DeviceTier.T3
     for s in software_needed:
@@ -117,64 +85,3 @@ def _required_tier(
         if best is not None and _tier_rank(best) > _tier_rank(required):
             required = best
     return required
-
-
-def software_violates_tier(
-    software_needed: Iterable[str],
-    device_tier: DeviceTier | None,
-    software_min_tier: dict[str, DeviceTier] | None = None,
-) -> bool:
-    """True if any requested software exceeds the device's tier capability.
-
-    Uses the shared capability matrix and the identical longest-match rule as
-    the AI engine, so the two fit gates agree on every (software, tier) pair.
-    """
-    if device_tier is None or device_tier == DeviceTier.OTHER:
-        return False  # peripheral / unknown; software gating doesn't apply here
-    table = software_min_tier or DEFAULT_SOFTWARE_MIN_TIER
-    required = _required_tier(software_needed, table)
-    return _tier_rank(device_tier) < _tier_rank(required)
-
-
-def fit_gate(
-    device: Device,
-    application: Application,
-    *,
-    rag_allowed_tiers: set[DeviceTier] | None = None,
-    software_min_tier: dict[str, DeviceTier] | None = None,
-) -> bool:
-    """Hard fit gate. Returns False if the device cannot serve this application.
-
-    `rag_allowed_tiers` narrows the candidate tier set for categories where the
-    rules layer defers to RAG (A3, C). When provided, it intersects with the
-    rule-level allowed set.
-    """
-    category = application.category
-    rule_set = allowed_tiers(category)
-
-    if device.item_type == ItemType.MOBILE:
-        return mobile_eligible(category)
-
-    if device.item_type in PERIPHERAL_TYPES:
-        # Peripherals are not standalone matches in the MVP. They could be
-        # bundled later, but the fit gate blocks them here.
-        return False
-
-    if device.item_type != ItemType.COMPUTER:
-        return False
-
-    if device.tier is None or device.tier == DeviceTier.OTHER:
-        return False
-
-    candidate_tiers = rule_set if rule_set is not None else set(DeviceTier) - {DeviceTier.OTHER}
-    if rag_allowed_tiers is not None:
-        candidate_tiers = candidate_tiers & rag_allowed_tiers
-    if device.tier not in candidate_tiers:
-        return False
-
-    if software_violates_tier(
-        application.intake.software_needed, device.tier, software_min_tier
-    ):
-        return False
-
-    return True

@@ -1,69 +1,19 @@
-"""Pydantic models for applicants, devices, intake answers, and match results."""
+"""Pydantic models for the simplified RAG allocator.
+
+Shared models are :class:`Device` (inventory) and the retrieval types
+(:class:`RetrievedChunk`, :class:`RagContext`). Applicant intake and match
+results live in :mod:`asra_matcher.simple` (the Q1–Q4 model). The legacy
+priority/category models were removed in the Phase-5 simplification.
+"""
 from __future__ import annotations
 
 import os
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 
-from .taxonomy import (
-    A3SubTrack,
-    Category,
-    DeviceSituation,
-    DeviceTier,
-    ItemType,
-    Urgency,
-)
-
-
-class CurrentTechAccess(BaseModel):
-    has_internet: bool | None = None
-    device_situation: DeviceSituation | None = None
-    notes: str | None = None
-
-
-class IntakeAnswers(BaseModel):
-    who_needs_it: str
-    purpose: list[Category]
-    a3_subtrack: A3SubTrack | None = None
-    a3_program_name: str | None = None
-    main_usage: str
-    software_needed: list[str] = Field(default_factory=list)
-    shared_user_count: int = 1
-    urgency: Urgency
-    current_tech_access: CurrentTechAccess = Field(default_factory=CurrentTechAccess)
-
-    @field_validator("purpose")
-    @classmethod
-    def _ensure_purpose(cls, v: list[Category]) -> list[Category]:
-        if not v:
-            raise ValueError("at least one purpose category is required")
-        return list(dict.fromkeys(v))
-
-    @field_validator("shared_user_count")
-    @classmethod
-    def _check_shared(cls, v: int) -> int:
-        if v < 1:
-            raise ValueError("shared_user_count must be >= 1")
-        return v
-
-
-class Applicant(BaseModel):
-    """Top-level applicant. Holds intake + identity + submission time for tiebreaks."""
-
-    id: str
-    submitted_at: datetime = Field(default_factory=datetime.utcnow)
-    intake: IntakeAnswers
-
-
-class Application(BaseModel):
-    """An applicant split to a single category. The engine operates on Applications."""
-
-    applicant_id: str
-    submitted_at: datetime
-    category: Category
-    intake: IntakeAnswers
+from .taxonomy import DeviceTier, ItemType
 
 
 class Device(BaseModel):
@@ -75,16 +25,6 @@ class Device(BaseModel):
     available_from: date
     location: str | None = None
     notes: str | None = None
-
-
-class ScoreBreakdown(BaseModel):
-    fit: bool
-    priority: float
-    timing: float
-    condition: float
-    efficiency: float
-    composite: float
-    weights: dict[str, float]
 
 
 class RetrievedChunk(BaseModel):
@@ -117,28 +57,3 @@ class RagContext(BaseModel):
                 f"[{i}] source={c.source_path} namespace={c.namespace} similarity={c.similarity:.3f}\n{text}"
             )
         return "\n\n---\n\n".join(parts)
-
-
-class MatchResult(BaseModel):
-    """A single device's score for a single Application."""
-
-    device: Device
-    application_category: Category
-    breakdown: ScoreBreakdown
-    explanation: str | None = None
-    citations: list[str] = Field(default_factory=list)
-
-
-class FinalMatchResult(BaseModel):
-    """The engine's final answer for an applicant: best application + top 2 devices."""
-
-    applicant_id: str
-    chosen_application: Application
-    top_matches: list[MatchResult]
-    discarded_applications: list[Application] = Field(default_factory=list)
-    retrieval_trace: dict[str, list[RetrievedChunk]] = Field(default_factory=dict)
-    explanations: dict[str, str] = Field(default_factory=dict)
-    notes: list[str] = Field(default_factory=list)
-    # Confidence of the RAG tier recommendation for the chosen application
-    # (A3 / C only; None otherwise). Additive — surfaced for the eval harness.
-    chosen_tier_confidence: float | None = None

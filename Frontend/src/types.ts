@@ -1,127 +1,6 @@
-// Mirrors the shared /evaluate contract returned by BOTH backends
-// (AI Model/asra_matcher/eval.py and RAG Model/asra_matcher/eval.py).
-
-export interface TokenUsage {
-  input: number;
-  output: number;
-  total: number;
-}
-
-export interface AccuracyResult {
-  category_correct: boolean;
-  tier_correct: boolean;
-  device_acceptable: boolean | null;
-  score: number;
-}
-
-export interface ExplanationQuality {
-  score: number;
-  anchors_expected: string[];
-  anchors_present: string[];
-  cites_applicant_field: boolean;
-}
-
-export interface EvalRow {
-  applicant_id: string;
-  scenario: string;
-  chosen_category: string | null;
-  chosen_device_id: string | null;
-  chosen_tier: string | null;
-  composite: number;
-  runner_up_device_id: string | null;
-  runner_up_composite: number | null;
-  tokens: TokenUsage;
-  accuracy: AccuracyResult | null;
-  confidence: number;
-  explanation: string | null;
-  explanation_quality: ExplanationQuality | null;
-  citations: string[];
-  tier_recommendation_confidence: number | null;
-  fallback_used: boolean;
-  error: string | null;
-}
-
-export interface EvalSummary {
-  n: number;
-  n_scored: number;
-  tokens_input_total: number;
-  tokens_output_total: number;
-  tokens_total: number;
-  avg_tokens_per_match: number;
-  category_accuracy: number;
-  tier_accuracy: number;
-  device_accuracy: number;
-  mean_accuracy_score: number;
-  mean_confidence: number;
-  mean_explanation_quality: number;
-  fallback_rate: number;
-  error_count: number;
-}
-
-export interface EvalResult {
-  model: "ai" | "rag";
-  dataset: string;
-  run_id: string;
-  wall_time_ms: number;
-  rows: EvalRow[];
-  summary: EvalSummary;
-}
+// Contracts for the simplified Q1–Q4 pipeline (both backends).
 
 export type ModelKey = "ai" | "rag";
-
-// Mirrors the /status contract returned by BOTH backends
-// (AI Model/asra_matcher/llm.py:model_status and RAG Model equivalent).
-export type ModelStateName =
-  | "live"
-  | "ready"
-  | "rate_limited"
-  | "auth_error"
-  | "no_api_key"
-  | "sdk_missing"
-  | "degraded";
-
-export interface ModelStatus {
-  model: string;
-  embedding_model?: string;
-  embeddings_ok?: boolean | null;
-  provider: string;
-  sdk_installed: boolean;
-  api_key_configured: boolean;
-  state: ModelStateName;
-  live: boolean;
-  using_fallback: boolean;
-  detail: string;
-  retry_after_seconds: number | null;
-  quota: { limit?: number; quota_id?: string; metric?: string } | null;
-  session: {
-    total_calls: number;
-    successes: number;
-    failures: number;
-    fallback_rate: number;
-    consecutive_failures: number;
-  };
-  last_success: string | null;
-  last_call: string | null;
-  last_error: string | null;
-  last_error_kind: string | null;
-}
-
-// Per-model async state, kept separate so one model can load or fail
-// without affecting the other.
-export interface ModelRunState {
-  status: "idle" | "loading" | "done" | "error";
-  result: EvalResult | null;
-  error: string | null;
-}
-
-// ---------------------------------------------------------------------------
-// Raw labelled dataset, served read-only by GET /eval/dataset/{name} on both
-// backends. The two models DIVERGE on the applicant intake shape (the RAG
-// model nests `current_tech_access` as an object and `main_usage` as a string;
-// the AI model flattens both and adds demographic fields), so the intake type
-// stays deliberately loose and the viewer normalizes at render time. Inventory
-// and ground-truth shapes are identical across both backends.
-// ---------------------------------------------------------------------------
 
 export interface DeviceSpecs {
   cpu?: string;
@@ -185,4 +64,87 @@ export interface DatasetPayload {
   applicants: DatasetApplicant[];
   inventory: DatasetDevice[];
   ground_truth: Record<string, GroundTruthLabel>;
+}
+
+// ---------------------------------------------------------------------------
+// Simplified Q1–Q4 pipeline contracts: GET /inventory, POST /impact (both
+// backends). The impact report bundles a BatchResult whose items carry the
+// per-step token ledger (TokenStep[]) so the UI can show exactly where tokens
+// were spent — 0 at the deterministic steps, all of it at the one AI call.
+// ---------------------------------------------------------------------------
+
+export interface InventoryResponse {
+  devices: DatasetDevice[];
+  counts: { raw_rows?: number; refurbished?: number; machines?: number; source?: string };
+}
+
+export type TokenStepKind = "algorithm" | "ai" | "cache" | "fallback";
+
+export interface TokenStep {
+  step: string;
+  kind: TokenStepKind;
+  input_tokens: number;
+  output_tokens: number;
+  total_tokens: number;
+  cumulative_total: number;
+  detail: string;
+}
+
+export interface BatchItem {
+  applicant_id: string;
+  area: string | null;
+  group: string;
+  matched_device_id: string | null;
+  matched_tier: string | null;
+  composite: number;
+  used_ai: boolean;
+  tokens_total: number;
+  token_steps: TokenStep[];
+  explanation: string | null;
+}
+
+export interface KeyState {
+  key_tail: string;
+  cooling: boolean;
+  cooldown_seconds: number;
+}
+
+export interface BatchResult {
+  total: number;
+  batches: number;
+  batch_size: number;
+  group_by: string;
+  groups: Record<string, number>;
+  tokens_total: number;
+  avg_tokens_per_applicant: number;
+  used_ai_count: number;
+  fallback_count: number;
+  unmatched_count: number;
+  wall_time_ms: number;
+  items: BatchItem[];
+  key_pool: KeyState[];
+}
+
+export interface ImpactReport {
+  dataset: string;
+  area_filter: string | null;
+  applicants: number;
+  matched: number;
+  unmatched: number;
+  match_rate: number;
+  inventory_available: number;
+  tokens_total: number;
+  avg_tokens_per_applicant: number;
+  resolved_with_ai: number;
+  resolved_deterministically: number;
+  by_area: Record<string, number>;
+  by_matched_tier: Record<string, number>;
+  wall_time_ms: number;
+  batch: BatchResult;
+}
+
+export interface ImpactRunState {
+  status: "idle" | "loading" | "done" | "error";
+  result: ImpactReport | null;
+  error: string | null;
 }

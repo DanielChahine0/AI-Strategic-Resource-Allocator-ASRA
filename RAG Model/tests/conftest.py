@@ -8,13 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from asra_matcher.models import Applicant, Device, IntakeAnswers
-from asra_matcher.taxonomy import (
-    Category,
-    DeviceTier,
-    ItemType,
-    Urgency,
-)
+from asra_matcher.models import Device
+from asra_matcher.taxonomy import DeviceTier, ItemType
 
 EMBED_DIM = 64
 
@@ -59,31 +54,5 @@ def sample_inventory() -> list[Device]:
     return [
         Device(id="DEV-T1A", item_type=ItemType.COMPUTER, tier=DeviceTier.T1, specs={}, condition=5, available_from=date(2026, 5, 15)),
         Device(id="DEV-T2A", item_type=ItemType.COMPUTER, tier=DeviceTier.T2, specs={}, condition=4, available_from=date(2026, 5, 14)),
-        Device(id="DEV-T2B", item_type=ItemType.COMPUTER, tier=DeviceTier.T2, specs={}, condition=3, available_from=date(2026, 5, 20)),
         Device(id="DEV-T3A", item_type=ItemType.COMPUTER, tier=DeviceTier.T3, specs={}, condition=4, available_from=date(2026, 5, 12)),
-        Device(id="DEV-T3B", item_type=ItemType.COMPUTER, tier=DeviceTier.T3, specs={}, condition=5, available_from=date(2026, 5, 13)),
-        Device(id="DEV-MOB", item_type=ItemType.MOBILE, specs={"form": "tablet"}, condition=4, available_from=date(2026, 5, 12)),
-        Device(id="DEV-MON", item_type=ItemType.DISPLAY, specs={}, condition=4, available_from=date(2026, 5, 12)),
     ]
-
-
-def _make_applicant(category: Category, **intake_overrides) -> Applicant:
-    intake_defaults = dict(
-        who_needs_it="Me",
-        purpose=[category],
-        main_usage="general use",
-        software_needed=[],
-        shared_user_count=1,
-        urgency=Urgency.MEDIUM,
-        current_tech_access={"has_internet": True, "device_situation": None, "notes": None},
-    )
-    intake_defaults.update(intake_overrides)
-    return Applicant(
-        id=f"APP-{category.value}-TEST",
-        intake=IntakeAnswers(**intake_defaults),
-    )
-
-
-@pytest.fixture
-def make_applicant():
-    return _make_applicant

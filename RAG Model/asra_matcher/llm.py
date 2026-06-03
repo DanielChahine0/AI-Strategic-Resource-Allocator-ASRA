@@ -20,24 +20,38 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+# Load .env so GEMINI_API_KEY is available no matter how the engine is entered
+# (HTTP server, CLI, tests, ad-hoc scripts) — mirrors the AI Model's llm.py.
+# Previously only api.py called load_dotenv(), so any non-server entry point saw
+# no key and silently ran on deterministic fallbacks (the "no_api_key" state).
+try:
+    from dotenv import load_dotenv  # type: ignore
+
+    load_dotenv()
+except Exception:  # pragma: no cover — dotenv is optional at runtime
+    pass
+
 from pydantic import BaseModel
 
 from . import cache, ratelimit
-from .models import (
-    Application,
-    Device,
-    IntakeAnswers,
-    RagContext,
-    RetrievedChunk,
-)
-from .rag import prompts
+from .models import RagContext, RetrievedChunk
 from .rag import retrieve as retrieve_mod
-from .taxonomy import Category, DeviceTier
 
 DEFAULT_GEN_MODEL = "gemini-2.5-flash-lite"
 TEMP_PARSE = 0.1
 TEMP_TIER = 0.1
 TEMP_EXPLAIN = 0.4
+
+# Real-time console logger (stderr). Separate from the JSONL audit log: this one
+# narrates each retrieval + Gemini call live so `./run.sh` shows *why* the engine
+# is or isn't using the LLM. See asra_matcher/obslog.py.
+from .obslog import get_logger, short
+
+_log = get_logger("rag")
+
+# Tracks the rate-limit window we last shouted about, so the big "quota
+# exhausted" banner prints once per window instead of once per failed call.
+_quota_banner_until: float | None = None
 
 
 def _max_output_tokens() -> int:
@@ -90,8 +104,17 @@ _TOKEN_LEDGER: contextvars.ContextVar[dict | None] = contextvars.ContextVar(
 
 
 def start_token_capture() -> dict:
-    """Begin capturing token usage for the current context. Returns the ledger."""
-    ledger = {"input": 0, "output": 0, "total": 0, "calls": 0}
+    """Begin capturing token usage for the current context. Returns the ledger.
+
+    Beyond raw token counts, the ledger distinguishes three LLM outcomes so the
+    eval can tell them apart instead of lumping them together as "fallback":
+      * ``calls``      — fresh, billed Gemini responses (live LLM).
+      * ``cache_hits`` — real prior Gemini responses served from disk (0 new
+                         tokens, but genuine LLM output — NOT a fallback).
+      * ``fallbacks``  — a deterministic template/heuristic ran because the LLM
+                         was unavailable or failed (the only true fallback).
+    """
+    ledger = {"input": 0, "output": 0, "total": 0, "calls": 0, "cache_hits": 0, "fallbacks": 0}
     _TOKEN_LEDGER.set(ledger)
     return ledger
 
@@ -103,6 +126,22 @@ def read_token_capture() -> dict | None:
 
 def stop_token_capture() -> None:
     _TOKEN_LEDGER.set(None)
+
+
+def _note_cache_hit() -> None:
+    """Record that one LLM result was served from the disk cache (real LLM
+    output, 0 new tokens). No-op when no ledger is active."""
+    ledger = _TOKEN_LEDGER.get()
+    if ledger is not None:
+        ledger["cache_hits"] += 1
+
+
+def _note_fallback() -> None:
+    """Record that one LLM task deterministically fell back (template/heuristic).
+    No-op when no ledger is active."""
+    ledger = _TOKEN_LEDGER.get()
+    if ledger is not None:
+        ledger["fallbacks"] += 1
 
 
 def _record_usage(response: Any) -> None:
@@ -122,56 +161,66 @@ def _record_usage(response: Any) -> None:
     ledger["calls"] += 1
 
 
-@dataclass
-class TierRecommendation:
-    recommended_tier: DeviceTier
-    rationale: str
-    citations: list[str]
-    confidence: float
-    abstained: bool = False
-    fallback_used: bool = False
-    chunks: list[RetrievedChunk] = None  # type: ignore[assignment]
-
-
-@dataclass
-class MatchExplanation:
-    explanations: dict[str, str]   # device_id -> explanation
-    citations: dict[str, list[str]]  # device_id -> [source_path,...]
-    fallback_used: bool = False
-    chunks: list[RetrievedChunk] = None  # type: ignore[assignment]
-
-
-@dataclass
-class IntakeParseResult:
-    parsed: IntakeAnswers
-    citations: list[str]
-    uncertain_fields: list[str]
-    fallback_used: bool = False
-    chunks: list[RetrievedChunk] = None  # type: ignore[assignment]
-
-
-class _IntakeParseEnvelope(BaseModel):
-    """Native response_schema for parse_intake — lets Gemini emit the parsed
-    object plus citations/uncertain_fields in a constrained shape, so the full
-    IntakeAnswers JSON-schema no longer has to be inlined into the prompt."""
-
-    parsed: IntakeAnswers
-    citations: list[str] = []
-    uncertain_fields: list[str] = []
-
-
 # ---------------------------------------------------------------------------
 # Low-level generation
 # ---------------------------------------------------------------------------
 
 
-def _client():
+# One genai.Client per API key, built on demand. The KeyPool decides which key
+# to use and parks any that hit a 429 / auth error (see asra_matcher.keypool).
+_clients: dict[str, Any] = {}
+_keypool: Any | None = None
+
+
+def _pool():
+    """Lazily build the process-wide KeyPool from the environment."""
+    global _keypool
+    if _keypool is None:
+        from . import keypool as _kp
+
+        _keypool = _kp.KeyPool(_kp.discover_keys())
+        if len(_keypool) > 1:
+            _log.info("Gemini key pool: %d keys configured", len(_keypool))
+    return _keypool
+
+
+def reset_pool() -> None:
+    """Drop the cached pool + clients (re-read env on next call). For tests."""
+    global _keypool
+    _keypool = None
+    _clients.clear()
+
+
+def _client_for(key: str):
     from google import genai  # type: ignore
 
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is not set")
-    return genai.Client(api_key=api_key)
+    c = _clients.get(key)
+    if c is None:
+        c = genai.Client(api_key=key)
+        _clients[key] = c
+        _log.info("Gemini client ready — gen=%s embed=%s key=…%s", _model(), _embedding_model(), key[-4:])
+    return c
+
+
+def _client():
+    """Backward-compatible client accessor (used by embeddings + probe).
+
+    Returns a client bound to the next live pooled key; raises when none is
+    configured/available so callers fall back deterministically.
+    """
+    key = _pool().acquire()
+    if key is None:
+        if not _pool().has_keys():
+            _log.error("No GEMINI API key configured — running on deterministic fallbacks only")
+            raise RuntimeError("GEMINI_API_KEY is not set")
+        raise RuntimeError("all Gemini API keys are cooling (rate-limited)")
+    return _client_for(key)
+
+
+def _retry_seconds(msg: str) -> float:
+    """Seconds to park a key after a 429, parsed from the error (default 60s)."""
+    m = _RETRY_RE.search(msg) or _RETRY_RE2.search(msg)
+    return float(m.group(1)) if m else 60.0
 
 
 # ---------------------------------------------------------------------------
@@ -280,6 +329,27 @@ def _record_failure(exc: Exception) -> None:
             quota["metric"] = mm.group(1)
         _HEALTH["quota"] = quota or None
 
+        # Shout once per rate-limit window so a whole eval run doesn't repeat it.
+        global _quota_banner_until
+        if _quota_banner_until != _HEALTH["rate_limited_until"]:
+            _quota_banner_until = _HEALTH["rate_limited_until"]
+            _log.error(
+                "🚫 GEMINI QUOTA EXHAUSTED — every call now falls back to "
+                "deterministic logic. quota=%s limit=%s model=%s retry≈%ss. "
+                "This is the free tier's daily request cap, NOT a code bug.",
+                quota.get("quota_id", "?"),
+                quota.get("limit", "?"),
+                _model(),
+                int(secs) if secs else "?",
+            )
+    elif kind == "auth":
+        _log.error(
+            "🔑 GEMINI AUTH ERROR — key rejected. Check GEMINI_API_KEY in 'RAG Model/.env'. %s",
+            short(msg),
+        )
+    else:
+        _log.error("⚠ GEMINI CALL ERROR [other] — %s", short(msg))
+
 
 def _iso(ts: float | None) -> str | None:
     if not ts:
@@ -297,7 +367,7 @@ def model_status(probe: bool = False) -> dict[str, Any]:
     call) to confirm both answer right now.
     """
     sdk = _sdk_ok()
-    key = bool(os.environ.get("GEMINI_API_KEY"))
+    key = _pool().has_keys()
     now = time.time()
 
     rlu = _HEALTH["rate_limited_until"]
@@ -343,6 +413,9 @@ def model_status(probe: bool = False) -> dict[str, Any]:
         "provider": "google-gemini",
         "sdk_installed": sdk,
         "api_key_configured": key,
+        "keys_total": len(_pool()),
+        "keys_live": _pool().live_count(),
+        "key_pool": _pool().status(),
         "state": state,
         "live": state == "live",
         "using_fallback": state
@@ -388,45 +461,75 @@ def _generate(
     ck = cache.make_key(_model(), system, user, temperature, json_mode, response_schema)
     hit = cache.get("gen", ck)
     if hit is not None:
+        _note_cache_hit()
+        _log.debug("✓ cache hit (gen) — served from disk, no API call, 0 tokens")
         return hit
 
+    cfg_kwargs: dict[str, Any] = {
+        "temperature": temperature,
+        "system_instruction": system,
+        "max_output_tokens": _max_output_tokens(),
+    }
+    if json_mode:
+        cfg_kwargs["response_mime_type"] = "application/json"
+    if response_schema is not None:
+        cfg_kwargs["response_schema"] = response_schema
+    # Narrow extraction/classification — no model "thinking" (it bills at 4x).
+    cfg_kwargs["thinking_config"] = types.ThinkingConfig(thinking_budget=_thinking_budget())
+    cfg = types.GenerateContentConfig(**cfg_kwargs)
+
+    _log.debug(
+        "→ Gemini call — system=%d chars, user=%d chars, json=%s, schema=%s",
+        len(system), len(user), json_mode, response_schema is not None,
+    )
+
+    pool = _pool()
     last_exc: Exception | None = None
-    for _attempt in range(2):
+    max_tries = max(2, len(pool) + 1)
+    transient_retry_used = False
+
+    for _ in range(max_tries):
+        key = pool.acquire()
+        if key is None:
+            last_exc = last_exc or RuntimeError("all Gemini API keys are cooling (rate-limited)")
+            break
         try:
-            client = _client()
-            cfg_kwargs: dict[str, Any] = {
-                "temperature": temperature,
-                "system_instruction": system,
-                "max_output_tokens": _max_output_tokens(),
-            }
-            if json_mode:
-                cfg_kwargs["response_mime_type"] = "application/json"
-            if response_schema is not None:
-                cfg_kwargs["response_schema"] = response_schema
-            # These tasks are narrow extraction/classification — no model
-            # "thinking" needed. Thinking tokens bill at the (4x) output rate,
-            # so disable by default; override budget via env.
-            cfg_kwargs["thinking_config"] = types.ThinkingConfig(
-                thinking_budget=_thinking_budget()
-            )
-            cfg = types.GenerateContentConfig(**cfg_kwargs)
             ratelimit.wait_generation()
-            resp = client.models.generate_content(
+            resp = _client_for(key).models.generate_content(
                 model=_model(), contents=user, config=cfg
             )
             _record_usage(resp)
             _record_success()
             text = resp.text or ""
             cache.put("gen", ck, text)
+            um = getattr(resp, "usage_metadata", None)
+            _log.info(
+                "✓ Gemini OK key=…%s — tokens in=%s out=%s total=%s",
+                key[-4:],
+                getattr(um, "prompt_token_count", "?"),
+                getattr(um, "candidates_token_count", "?"),
+                getattr(um, "total_token_count", "?"),
+            )
             return text
         except Exception as exc:
             last_exc = exc
-            # Don't re-send the (large) prompt on non-transient errors: quota
-            # and auth failures won't succeed on retry and just double the
-            # input-token spend. Let the caller fall back deterministically.
-            if _classify_error(str(exc)) in ("rate_limit", "auth"):
-                break
-            time.sleep(0.5)
+            kind = _classify_error(str(exc))
+            if kind == "rate_limit":
+                secs = _retry_seconds(str(exc))
+                pool.mark_cooling(key, secs)
+                _log.warning("✗ key …%s rate-limited (429) — cooling %ss, rotating", key[-4:], int(secs))
+                continue
+            if kind == "auth":
+                pool.mark_cooling(key, 3600)
+                _log.warning("✗ key …%s rejected (auth) — disabling 1h, rotating", key[-4:])
+                continue
+            if not transient_retry_used:
+                transient_retry_used = True
+                _log.warning("✗ Gemini failed [%s] — retrying once: %s", kind, short(exc))
+                time.sleep(0.5)
+                continue
+            break
+
     assert last_exc is not None
     _record_failure(last_exc)
     raise last_exc
@@ -495,386 +598,141 @@ def _prune_chunks(
 
 
 # ---------------------------------------------------------------------------
-# Task A — tier recommendation
+# Simplified flow — single combined "fit + explain" call (Q1–Q4 model)
 # ---------------------------------------------------------------------------
+#
+# Mirror of the AI Model's fit_and_explain, but grounded: it retrieves a few
+# tier/software-matrix chunks so the scores and rationale cite the KB. Q1 (OS)
+# and the software-capability check stay deterministic in asra_matcher.simple;
+# this is the only token spend (one generation + the retrieval embeddings).
 
+_FIT_SYSTEM = (
+    "You help a nonprofit match donated, refurbished computers to applicants, "
+    "using ONLY the provided context (tier definitions and the software "
+    "capability matrix) plus the device specs. For EACH candidate device, return "
+    "needs_fit and challenge_fit in [0,1] and a concrete 1–2 sentence rationale "
+    "that cites the applicant's words, the device specs, and the source files it "
+    "relied on. Do not invent specs."
+)
 
-def recommend_tier(
-    application: Application,
-    *,
-    retrieve_fn=None,
-    generate_fn=None,
-    today: datetime | None = None,
-) -> TierRecommendation:
-    """RAG-augmented tier recommendation for A3 / C applications."""
-    retrieve_fn = retrieve_fn or retrieve_mod.query
-    cat_filter = {"category": application.category.value}
-    chunks = []
-    try:
-        chunks += retrieve_fn(
-            application.intake.main_usage + " " + " ".join(application.intake.software_needed),
-            namespaces=["categories"],
-            k_per_namespace=4,
-            filters={"categories": cat_filter},
-        )
-        chunks += retrieve_fn(
-            application.intake.main_usage,
-            namespaces=["tiers"],
-            k_per_namespace=3,
-        )
-        if application.intake.software_needed:
-            chunks += retrieve_fn(
-                " ".join(application.intake.software_needed),
-                namespaces=["software"],
-                k_per_namespace=4,
-            )
-        chunks += retrieve_fn(
-            application.intake.main_usage,
-            namespaces=["decisions"],
-            k_per_namespace=2,
-            filters={"decisions": cat_filter},
-        )
-    except Exception:
-        # Retrieval failure: pipeline continues with empty context → triggers fallback.
-        chunks = []
-
-    chunks = _prune_chunks(chunks)
-    ctx = RagContext(task="tier_recommendation", chunks=chunks)
-    system, user = prompts.tier_recommendation_prompt(application, ctx)
-
-    raw = ""
-    parsed: dict[str, Any] | None = None
-    error: str | None = None
-    fallback_used = False
-    try:
-        gen = generate_fn or _generate
-        raw = gen(system, user, temperature=TEMP_TIER)
-        parsed = _parse_json(raw)
-    except Exception as exc:
-        error = repr(exc)
-        parsed = None
-
-    abstained = bool(parsed and parsed.get("abstain"))
-    if parsed and not abstained and parsed.get("recommended_tier") in {"T1", "T2", "T3"}:
-        rec = TierRecommendation(
-            recommended_tier=DeviceTier(parsed["recommended_tier"]),
-            rationale=parsed.get("rationale", ""),
-            citations=list(parsed.get("citations") or []),
-            confidence=float(parsed.get("confidence") or 0.0),
-            chunks=chunks,
-        )
-    else:
-        fallback_used = True
-        rec = TierRecommendation(
-            recommended_tier=_conservative_fallback_tier(application),
-            rationale="LLM abstained or failed; using conservative fallback tier.",
-            citations=[],
-            confidence=0.0,
-            abstained=abstained,
-            fallback_used=True,
-            chunks=chunks,
-        )
-
-    _audit(
-        {
-            "timestamp": datetime.utcnow().isoformat(),
-            "task": "recommend_tier",
-            "applicant_id": application.applicant_id,
-            "category": application.category.value,
-            "retrieved_chunks": [
-                {"source_path": c.source_path, "similarity": c.similarity}
-                for c in chunks
-            ],
-            "raw_response": raw,
-            "error": error,
-            "fallback_used": fallback_used,
-            "result": {
-                "recommended_tier": rec.recommended_tier.value,
-                "confidence": rec.confidence,
+_FIT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "properties": {
+        "assessments": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "device_id": {"type": "string"},
+                    "needs_fit": {"type": "number"},
+                    "challenge_fit": {"type": "number"},
+                    "explanation": {"type": "string"},
+                    "citations": {"type": "array", "items": {"type": "string"}},
+                },
+                "required": ["device_id", "needs_fit", "challenge_fit", "explanation"],
             },
         }
-    )
-    return rec
+    },
+    "required": ["assessments"],
+}
 
 
-def _conservative_fallback_tier(app: Application) -> DeviceTier:
-    """When the LLM abstains, pick the most conservative tier."""
-    if app.category == Category.A3:
-        if app.intake.a3_subtrack and app.intake.a3_subtrack.value == "software_engineering":
-            # Default to Standard unless software signals otherwise.
-            return DeviceTier.T2
-        return DeviceTier.T2
-    if app.category == Category.C:
-        return DeviceTier.T3
-    return DeviceTier.T3
+def _clamp01(v: Any) -> float:
+    try:
+        return max(0.0, min(1.0, float(v)))
+    except (TypeError, ValueError):
+        return 0.0
 
 
-# ---------------------------------------------------------------------------
-# Task B — match explanations
-# ---------------------------------------------------------------------------
-
-
-def explain_matches(
-    application: Application,
-    devices: list[Device],
+def fit_and_explain(
+    main_needs: str,
+    software: str,
+    challenge: str,
+    devices: list[Any],
     *,
     retrieve_fn=None,
     generate_fn=None,
-) -> MatchExplanation:
-    retrieve_fn = retrieve_fn or retrieve_mod.query
-    chunks: list[RetrievedChunk] = []
-    try:
-        chunks += retrieve_fn(
-            application.intake.main_usage,
-            namespaces=["decisions"],
-            k_per_namespace=3,
-            filters={"decisions": {"category": application.category.value}},
-        )
-        chunks += retrieve_fn(
-            "scoring weights priority timing condition efficiency multi-category",
-            namespaces=["policies"],
-            k_per_namespace=2,
-        )
-        tiers_present = {d.tier.value for d in devices if d.tier}
-        if tiers_present:
-            chunks += retrieve_fn(
-                "tier definitions " + " ".join(tiers_present),
-                namespaces=["tiers"],
-                k_per_namespace=2,
-            )
-    except Exception:
-        chunks = []
+) -> tuple[dict[str, dict[str, Any]], bool]:
+    """Score + explain a small candidate set in one grounded call.
 
-    chunks = _prune_chunks(chunks)
-    ctx = RagContext(task="explain_matches", chunks=chunks)
-    system, user = prompts.explanation_prompt(application, devices, ctx)
+    Returns ``(by_device_id, used_ai)`` where each value is
+    ``{"needs_fit", "challenge_fit", "explanation", "citations"}``. On any
+    failure (or no key/SDK) returns neutral 0.6 scores with a deterministic
+    template and ``used_ai=False``.
+    """
+    if not devices:
+        return {}, False
 
-    raw = ""
-    parsed: dict[str, Any] | None = None
-    error: str | None = None
-    fallback_used = False
-    try:
-        gen = generate_fn or _generate
-        raw = gen(system, user, temperature=TEMP_EXPLAIN)
-        parsed = _parse_json(raw)
-    except Exception as exc:
-        error = repr(exc)
-
-    explanations: dict[str, str] = {}
-    citations: dict[str, list[str]] = {}
-    if parsed and not parsed.get("abstain"):
-        for entry in parsed.get("explanations") or []:
-            did = entry.get("device_id")
-            if not did:
-                continue
-            explanations[did] = entry.get("explanation", "")
-            citations[did] = list(entry.get("citations") or [])
-    if not explanations:
-        fallback_used = True
+    def _fallback() -> tuple[dict[str, dict[str, Any]], bool]:
+        out: dict[str, dict[str, Any]] = {}
         for d in devices:
-            explanations[d.id] = (
-                f"Device {d.id} ({d.item_type.value}, "
-                f"tier {d.tier.value if d.tier else 'n/a'}, condition {d.condition}/5) "
-                f"is the highest-scoring fit for this {application.category.value} application "
-                "based on the deterministic score breakdown."
-            )
-            citations[d.id] = []
+            tier = d.tier.value if getattr(d, "tier", None) else d.item_type.value
+            out[d.id] = {
+                "needs_fit": 0.6,
+                "challenge_fit": 0.6,
+                "explanation": (
+                    f"Device {d.id} is a {tier} machine in condition {d.condition}/5 — "
+                    "a reasonable match scored without the language model."
+                ),
+                "citations": [],
+            }
+        return out, False
 
-    _audit(
-        {
-            "timestamp": datetime.utcnow().isoformat(),
-            "task": "explain_matches",
-            "applicant_id": application.applicant_id,
-            "category": application.category.value,
-            "device_ids": [d.id for d in devices],
-            "retrieved_chunks": [
-                {"source_path": c.source_path, "similarity": c.similarity}
-                for c in chunks
-            ],
-            "raw_response": raw,
-            "error": error,
-            "fallback_used": fallback_used,
-        }
-    )
-    return MatchExplanation(
-        explanations=explanations,
-        citations=citations,
-        fallback_used=fallback_used,
-        chunks=chunks,
-    )
+    if not (_sdk_ok() and os.environ.get("GEMINI_API_KEY")):
+        _note_fallback()
+        _log.info("· fit_and_explain: LLM unavailable → neutral scores for %d device(s)", len(devices))
+        return _fallback()
 
-
-# ---------------------------------------------------------------------------
-# Task C — intake parse
-# ---------------------------------------------------------------------------
-
-
-def parse_intake(
-    raw_answers: dict[str, Any],
-    *,
-    retrieve_fn=None,
-    generate_fn=None,
-    applicant_id: str = "unknown",
-) -> IntakeParseResult:
+    # Light retrieval: tier definitions + software matrix only (token diet).
     retrieve_fn = retrieve_fn or retrieve_mod.query
-    purpose_hint = str(raw_answers.get("q2", ""))
-    sw_hint = str(raw_answers.get("q4", ""))
-
-    chunks: list[RetrievedChunk] = []
+    chunks = []
     try:
-        chunks += retrieve_fn(
-            purpose_hint or raw_answers.get("q3", ""),
-            namespaces=["categories"],
-            k_per_namespace=3,
-        )
-        if sw_hint and sw_hint.lower() not in {"none", ""}:
-            chunks += retrieve_fn(
-                sw_hint, namespaces=["software"], k_per_namespace=3
-            )
-    except Exception:
-        chunks = []
-
-    chunks = _prune_chunks(chunks)
-    ctx = RagContext(task="parse_intake", chunks=chunks)
-    system, user = prompts.intake_parse_prompt(raw_answers, ctx)
-
-    raw = ""
-    parsed_json: dict[str, Any] | None = None
-    error: str | None = None
-    fallback_used = False
-    try:
-        gen = generate_fn or _generate
-        if generate_fn is None:
-            # Native structured output: Gemini returns {parsed, citations,
-            # uncertain_fields} matching _IntakeParseEnvelope, so the full
-            # IntakeAnswers JSON-schema no longer has to be inlined into the
-            # prompt (it was ~424 tokens re-sent on every call).
-            raw = gen(
-                system, user, temperature=TEMP_PARSE,
-                response_schema=_IntakeParseEnvelope,
-            )
-        else:
-            raw = gen(system, user, temperature=TEMP_PARSE)
-        parsed_json = _parse_json(raw)
+        chunks += retrieve_fn(main_needs, namespaces=["tiers"], k_per_namespace=2)
+        if software:
+            chunks += retrieve_fn(software, namespaces=["software"], k_per_namespace=2)
     except Exception as exc:
-        error = repr(exc)
+        _log.warning("· fit_and_explain: retrieval failed → ungrounded call: %s", short(exc))
+        chunks = []
+    chunks = _prune_chunks(chunks, top_n=3)
+    ctx = RagContext(task="fit_and_explain", chunks=chunks)
 
-    citations: list[str] = []
-    uncertain: list[str] = []
-    intake_obj: IntakeAnswers | None = None
-    if parsed_json and not parsed_json.get("abstain"):
-        try:
-            intake_obj = IntakeAnswers.model_validate(parsed_json.get("parsed") or parsed_json)
-            citations = list(parsed_json.get("citations") or [])
-            uncertain = list(parsed_json.get("uncertain_fields") or [])
-        except Exception as exc:
-            error = (error or "") + f" | validation: {exc!r}"
-
-    if intake_obj is None:
-        # Deterministic fallback: best-effort heuristic parser using raw answers.
-        fallback_used = True
-        intake_obj = _heuristic_parse(raw_answers)
-
-    _audit(
-        {
-            "timestamp": datetime.utcnow().isoformat(),
-            "task": "parse_intake",
-            "applicant_id": applicant_id,
-            "retrieved_chunks": [
-                {"source_path": c.source_path, "similarity": c.similarity}
-                for c in chunks
-            ],
-            "raw_response": raw,
-            "error": error,
-            "fallback_used": fallback_used,
-        }
-    )
-    return IntakeParseResult(
-        parsed=intake_obj,
-        citations=citations,
-        uncertain_fields=uncertain,
-        fallback_used=fallback_used,
-        chunks=chunks,
+    blocks: list[str] = []
+    for d in devices:
+        tier = d.tier.value if getattr(d, "tier", None) else "n/a"
+        blocks.append(f"--- Device {d.id} ---\ntier: {tier}, condition: {d.condition}/5\nspecs: {d.specs}")
+    user = (
+        f"Context:\n{ctx.render()}\n\n"
+        f"Applicant needs (Q2): {main_needs or '(not provided)'}\n"
+        f"Software wanted (Q3): {software or '(none specified)'}\n"
+        f"Challenge without a computer (Q4): {challenge or '(not provided)'}\n\n"
+        "Score each candidate below and explain, citing source filenames. Return JSON "
+        '{"assessments": [{"device_id","needs_fit","challenge_fit","explanation","citations"}]} '
+        "with exactly one entry per device, using the device_id shown.\n\n"
+        + "\n".join(blocks)
     )
 
+    try:
+        raw = (generate_fn or _generate)(_FIT_SYSTEM, user, temperature=0.2, response_schema=_FIT_SCHEMA)
+        parsed = _parse_json(raw) or {}
+        by_id: dict[str, dict[str, Any]] = {}
+        for entry in parsed.get("assessments", []) or []:
+            did = str(entry.get("device_id", "")).strip()
+            if did:
+                by_id[did] = {
+                    "needs_fit": _clamp01(entry.get("needs_fit")),
+                    "challenge_fit": _clamp01(entry.get("challenge_fit")),
+                    "explanation": str(entry.get("explanation", "")).strip(),
+                    "citations": list(entry.get("citations") or []),
+                }
+        if not by_id:
+            raise ValueError("no assessments parsed from model output")
+        fb, _ = _fallback()
+        for d in devices:
+            by_id.setdefault(d.id, fb[d.id])
+        return by_id, True
+    except Exception as exc:
+        _note_fallback()
+        _log.warning("· fit_and_explain: fell back to neutral scores (%s)", short(exc))
+        _audit({"task": "fit_and_explain_fallback", "error": str(exc)})
+        return _fallback()
 
-# ---------------------------------------------------------------------------
-# Heuristic fallback for parse_intake
-# ---------------------------------------------------------------------------
-
-_PURPOSE_KEYWORDS = {
-    "school": Category.A2,
-    "learning": Category.A2,
-    "k-6": Category.A1,
-    "elementary": Category.A1,
-    "high school": Category.A2,
-    "post-secondary": Category.A3,
-    "university": Category.A3,
-    "college": Category.A3,
-    "work": Category.C,
-    "job": Category.C,
-    "employment": Category.C,
-    "healthcare": Category.B,
-    "medical": Category.B,
-    "personal": Category.E,
-    "browsing": Category.E,
-    "newcomer": Category.F,
-    "immigrant": Category.F,
-    "canada": Category.F,
-    "senior": Category.D,
-    "elder": Category.D,
-}
-
-_URGENCY_KEYWORDS = {
-    "this week": "critical",
-    "critical": "critical",
-    "urgent": "critical",
-    "month": "high",
-    "soon": "high",
-    "1-3": "medium",
-    "couple months": "medium",
-    "medium": "medium",
-    "flexible": "low",
-    "no rush": "low",
-    "low": "low",
-}
-
-
-def _heuristic_parse(raw: dict[str, Any]) -> IntakeAnswers:
-    text_all = " ".join(str(v) for v in raw.values()).lower()
-    purposes: list[Category] = []
-    for kw, cat in _PURPOSE_KEYWORDS.items():
-        if kw in text_all and cat not in purposes:
-            purposes.append(cat)
-    if not purposes:
-        purposes = [Category.E]  # personal browsing default
-
-    urgency = "medium"
-    for kw, u in _URGENCY_KEYWORDS.items():
-        if kw in text_all:
-            urgency = u
-            break
-
-    sw_raw = str(raw.get("q4", "")).strip()
-    software_list: list[str] = []
-    if sw_raw and sw_raw.lower() != "none":
-        software_list = [s.strip() for s in re.split(r"[,;]", sw_raw) if s.strip()]
-
-    shared = 1
-    m = re.search(r"\b(\d+)\b", str(raw.get("q5", "")))
-    if m:
-        try:
-            shared = max(1, int(m.group(1)))
-        except ValueError:
-            shared = 1
-
-    return IntakeAnswers(
-        who_needs_it=str(raw.get("q1", "")).strip() or "unspecified",
-        purpose=purposes,
-        a3_subtrack=None,
-        main_usage=str(raw.get("q3", "")).strip() or "general use",
-        software_needed=software_list,
-        shared_user_count=shared,
-        urgency=urgency,  # type: ignore[arg-type]
-        current_tech_access={"has_internet": None, "device_situation": None, "notes": str(raw.get("q7", ""))},
-    )

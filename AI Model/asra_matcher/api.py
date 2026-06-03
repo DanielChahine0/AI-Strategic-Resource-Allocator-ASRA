@@ -1,39 +1,45 @@
-"""Minimal FastAPI shim for ASRA.
+"""FastAPI surface for the simplified ASRA allocator.
 
 Endpoints:
-  POST /match          — body: {"applicant": {...}, "inventory": [...]}
-                         returns FinalMatchResult
-  POST /intake/parse   — body: {"q1": "...", "q2": "...", ...}
-                         returns parsed Applicant (id auto-assigned)
+  GET  /inventory   — live refurbished inventory from the Google Sheet
+  POST /allocate    — one applicant (Q1–Q4) → top matches + per-step token ledger
+  POST /batch       — many applicants FCFS, spread across the API-key pool
+  POST /impact      — run the mock dataset (optionally one area) → impact summary
+  GET  /status      — live model + key-pool health
   GET  /health
-  POST /evaluate       — run the engine over a labelled dataset; returns
-                         per-match rows + an aggregate summary (eval mode)
-  GET  /eval/datasets  — list available eval datasets
 
 No DB. Auth is optional: set ASRA_API_KEY to require a matching `X-API-Key`
-header on the mutating / LLM-spending routes (/match, /intake/parse, /evaluate).
-This is the surface a future web frontend would call.
+header on the LLM-spending routes (/allocate, /batch, /impact).
 """
 
 from __future__ import annotations
 
 import os
-from datetime import datetime
 from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from asra_matcher import engine, llm
-from asra_matcher import eval as eval_mod
-from asra_matcher.models import Applicant, Device, FinalMatchResult
+from asra_matcher import batch, eval_simple, llm, sheets, simple
+from asra_matcher.models import Device
+from asra_matcher.obslog import get_logger
 
-app = FastAPI(title="ASRA Matching Engine", version="0.1.0")
+app = FastAPI(title="ASRA Matching Engine", version="0.2.0")
+
+# Startup banner — emitted once when uvicorn imports this module.
+_boot = get_logger("ai")
+_boot_status = llm.model_status()
+_boot.info(
+    "ASRA AI Model API booting — model=%s · keys=%d · google-genai SDK=%s · state=%s",
+    _boot_status["model"],
+    _boot_status.get("keys_total", 0),
+    "ok" if _boot_status["sdk_installed"] else "MISSING (fallbacks only)",
+    _boot_status["state"],
+)
 
 # CORS: default to the local Vite dev-server origins; override with a
-# comma-separated ASRA_CORS_ORIGINS for other deployments. A wildcard "*" let
-# any website the user visited drive this PII-handling API from their browser.
+# comma-separated ASRA_CORS_ORIGINS for other deployments.
 _DEFAULT_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000"
 _CORS_ORIGINS = [
     o.strip() for o in os.getenv("ASRA_CORS_ORIGINS", _DEFAULT_ORIGINS).split(",") if o.strip()
@@ -47,7 +53,7 @@ app.add_middleware(
 
 
 def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Key")) -> None:
-    """Optional API-key gate for mutating / LLM-spending routes.
+    """Optional API-key gate for LLM-spending routes.
 
     Enforced only when ASRA_API_KEY is set in the environment, so the local
     one-command demo runs with no key. When a key IS configured, requests must
@@ -60,90 +66,85 @@ def require_api_key(x_api_key: str | None = Header(default=None, alias="X-API-Ke
         raise HTTPException(status_code=401, detail="missing or invalid API key")
 
 
-class MatchRequest(BaseModel):
-    applicant: Applicant
-    inventory: list[Device]
+class InventoryResponse(BaseModel):
+    devices: list[Device]
+    counts: dict[str, Any]
 
 
-@app.post("/match", response_model=FinalMatchResult, dependencies=[Depends(require_api_key)])
-def post_match(req: MatchRequest) -> FinalMatchResult:
-    return engine.match(req.applicant, req.inventory)
+@app.get("/inventory", response_model=InventoryResponse)
+def get_inventory(refresh: bool = False) -> InventoryResponse:
+    """Live refurbished inventory pulled from the LGT Google Sheet.
+
+    Returns only devices whose Status is "Refurbished- ready for distribution"
+    and whose type is an allocatable computer. `counts` reports how many rows
+    were seen at each filter stage (raw_rows / refurbished / machines) plus the
+    `source` (sheet / snapshot / local). Pass ?refresh=true to bypass the
+    in-memory TTL cache and re-pull the sheet.
+    """
+    devices, counts = sheets.load_inventory(force=refresh)
+    return InventoryResponse(devices=devices, counts=counts)
 
 
-class IntakeParseRequest(BaseModel):
-    q1: str = ""
-    q2: str = ""
-    q3: str = ""
-    q4: str = ""
-    q5: str = ""
-    q6: str = ""
-    q7: str = ""
-    q8: str = ""
-    applicant_id: str | None = None
+class AllocateRequest(BaseModel):
+    applicant: simple.SimpleApplicant
+    # Optional explicit inventory; when omitted, the live refurbished catalogue
+    # is pulled from the Google Sheet.
+    inventory: list[Device] | None = None
+    top_n: int | None = None
 
 
-@app.post("/intake/parse", response_model=Applicant, dependencies=[Depends(require_api_key)])
-def post_intake_parse(req: IntakeParseRequest) -> Applicant:
-    raw = req.model_dump(exclude={"applicant_id"})
-    intake_answers = llm.parse_intake(raw)
-    applicant_id = req.applicant_id or f"app-{datetime.now().strftime('%Y%m%d%H%M%S')}"
-    return Applicant(
-        applicant_id=applicant_id,
-        intake=intake_answers,
-        submitted_at=datetime.now().date(),
+@app.post("/allocate", response_model=simple.SimpleResult, dependencies=[Depends(require_api_key)])
+def post_allocate(req: AllocateRequest) -> simple.SimpleResult:
+    """Simplified Q1–Q4 first-come-first-serve allocation.
+
+    Q1 (OS) and the software-capability check are deterministic (0 tokens); the
+    only LLM spend is one combined fit+explain call over the top-N pre-filtered
+    candidates. Inventory defaults to the live refurbished sheet.
+    """
+    return simple.allocate(req.applicant, req.inventory, top_n=req.top_n)
+
+
+class BatchRequest(BaseModel):
+    applicants: list[simple.SimpleApplicant]
+    inventory: list[Device] | None = None
+    group_by: str = "submission"   # "submission" | "area" | "none"
+    batch_size: int = 10
+    top_n: int | None = None
+
+
+@app.post("/batch", response_model=batch.BatchResult, dependencies=[Depends(require_api_key)])
+def post_batch(req: BatchRequest) -> batch.BatchResult:
+    """Run a list of applicants first-come-first-serve through the simplified
+    allocator, spreading Gemini calls across the API-key pool. Returns
+    per-applicant matches + aggregate token totals + live key-pool state."""
+    return batch.run_batch(
+        req.applicants, req.inventory,
+        group_by=req.group_by, batch_size=req.batch_size, top_n=req.top_n,
     )
+
+
+class ImpactRequest(BaseModel):
+    area: str | None = None          # e.g. "Etobicoke"; None = all areas
+    group_by: str = "area"
+    batch_size: int = 10
+
+
+@app.post("/impact", response_model=eval_simple.ImpactReport, dependencies=[Depends(require_api_key)])
+def post_impact(req: ImpactRequest) -> eval_simple.ImpactReport:
+    """Run the simplified Q1–Q4 mock applicants (optionally one area, e.g.
+    Etobicoke) through the allocator against live refurbished inventory and
+    return an impact summary: matched count, tokens spent, and how much was
+    resolved deterministically vs. with the LLM."""
+    return eval_simple.run_impact(req.area, group_by=req.group_by, batch_size=req.batch_size)
+
+
+@app.get("/status")
+def status(probe: bool = False) -> dict:
+    """Live model + key-pool health for the dashboard. Pass ?probe=true to spend
+    one cheap call confirming the model answers right now (costs quota)."""
+    return llm.model_status(probe=probe)
 
 
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "llm_available": str(llm.is_available())}
-
-
-@app.get("/status")
-def status(probe: bool = False) -> dict:
-    """Live model state for the dashboard: which generation model is wired up,
-    whether it is serving live Gemini output or running on deterministic
-    fallbacks, quota/retry details from the last 429, and this session's
-    call stats. Pass ?probe=true to spend one cheap call confirming the
-    model answers right now (costs quota); default is a zero-cost snapshot
-    derived from real calls made this session.
-    """
-    return llm.model_status(probe=probe)
-
-
-class EvaluateRequest(BaseModel):
-    dataset: str = "sample-v1"
-    limit: int | None = None
-
-
-@app.post("/evaluate", response_model=eval_mod.EvalResult, dependencies=[Depends(require_api_key)])
-def post_evaluate(req: EvaluateRequest) -> eval_mod.EvalResult:
-    return eval_mod.run_eval(dataset=req.dataset, limit=req.limit)
-
-
-@app.get("/eval/datasets")
-def eval_datasets() -> dict[str, list[str]]:
-    return {"datasets": eval_mod.available_datasets()}
-
-
-class DatasetResponse(BaseModel):
-    dataset: str
-    applicants: list[Applicant]
-    inventory: list[Device]
-    ground_truth: dict[str, Any]
-
-
-@app.get("/eval/dataset/{dataset}", response_model=DatasetResponse)
-def eval_dataset(dataset: str) -> DatasetResponse:
-    """Raw labelled dataset (applicants + inventory + ground-truth labels) for
-    the frontend's read-only dataset viewer. Read-only; runs no matching."""
-    try:
-        applicants, inventory, ground_truth = eval_mod.load_dataset(dataset)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-    return DatasetResponse(
-        dataset=dataset,
-        applicants=applicants,
-        inventory=inventory,
-        ground_truth=ground_truth,
-    )

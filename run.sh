@@ -79,17 +79,44 @@ start_backend() {
   # applicant PII; do not expose them on all interfaces.
   ( cd "$dir" && exec "$py" -m uvicorn asra_matcher.api:app --host 127.0.0.1 --port "$port" ) \
     >"$LOG_DIR/$label.log" 2>&1 &
-  PIDS+=("$!")
+  # Expose the PID so wait_for can tell "still booting" from "already dead".
+  BACKEND_PID=$!
+  PIDS+=("$BACKEND_PID")
 }
 
-# Poll a port's /eval/datasets until it answers (or time out).
+# Refuse to start if a port is already taken, and name the squatter — so a
+# stale server (even one from another project) produces a clear message up
+# front instead of a backend that dies on bind and a silent 60-second wait.
+preflight_port() {
+  local label="$1" port="$2" pids
+  command -v lsof >/dev/null 2>&1 || return 0
+  pids="$(lsof -nP -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null | tr '\n' ' ' || true)"
+  pids="${pids% }"
+  if [[ -n "$pids" ]]; then
+    echo "✗ $label: port $port is already in use by PID(s): $pids" >&2
+    echo "  What's holding it:" >&2
+    ps -o pid,etime,command -p $pids 2>/dev/null | sed 's/^/    /' >&2 || true
+    echo "  Free it:  kill $pids   (then re-run ./run.sh)" >&2
+    exit 1
+  fi
+}
+
+# Poll a port's /health until it answers. Bails immediately if the
+# backend process dies (e.g. a bind failure) instead of polling a corpse, and
+# otherwise times out after ~60s. $3 = the backend's PID from start_backend.
 wait_for() {
-  local label="$1" port="$2" tries=0
+  local label="$1" port="$2" pid="$3" tries=0
   printf "→ waiting for %s" "$label"
-  until curl -sf "http://localhost:$port/eval/datasets" >/dev/null 2>&1; do
+  until curl -sf "http://localhost:$port/health" >/dev/null 2>&1; do
+    # Dead process? Don't wait the full minute — surface its log and bail now.
+    if ! kill -0 "$pid" 2>/dev/null; then
+      echo " — $label exited before it was ready. Last log lines:" >&2
+      tail -n 20 "$LOG_DIR/$label.log" >&2 || true
+      exit 1
+    fi
     tries=$((tries + 1))
     if (( tries > 60 )); then
-      echo " — timed out. Last log lines:" >&2
+      echo " — timed out after ${tries}s. Last log lines:" >&2
       tail -n 20 "$LOG_DIR/$label.log" >&2 || true
       exit 1
     fi
@@ -118,11 +145,16 @@ if [[ ! -d "$ROOT/RAG Model/chroma_db" ]]; then
   fi
 fi
 
-start_backend "ai-model"  "AI Model"  "$AI_PORT"
-start_backend "rag-model" "RAG Model" "$RAG_PORT"
+# Make sure both ports are free before we start anything, so a conflict is a
+# clear up-front error rather than a backend that dies on bind.
+preflight_port "ai-model"  "$AI_PORT"
+preflight_port "rag-model" "$RAG_PORT"
 
-wait_for "ai-model"  "$AI_PORT"
-wait_for "rag-model" "$RAG_PORT"
+start_backend "ai-model"  "AI Model"  "$AI_PORT";  ai_pid=$BACKEND_PID
+start_backend "rag-model" "RAG Model" "$RAG_PORT"; rag_pid=$BACKEND_PID
+
+wait_for "ai-model"  "$AI_PORT"  "$ai_pid"
+wait_for "rag-model" "$RAG_PORT" "$rag_pid"
 
 echo "→ both engines up. Starting frontend…"
 echo "  Open http://localhost:5173/compare"

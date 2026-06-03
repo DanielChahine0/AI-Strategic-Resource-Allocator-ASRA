@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 
 const NAV = [
-  { to: "/compare", label: "Compare" },
-  { to: "/dataset", label: "Dataset" },
+  { to: "/impact", label: "Impact" },
+  { to: "/inventory", label: "Inventory" },
 ];
 
 /**
@@ -13,7 +13,7 @@ export default function TopBar() {
   const { pathname } = useLocation();
   return (
     <header className="flex items-center justify-between gap-4 py-6">
-      <Link to="/compare" className="flex items-baseline gap-2.5">
+      <Link to="/impact" className="flex items-baseline gap-2.5">
         <span className="font-mono text-xs font-medium uppercase tracking-[0.34em] text-ink">
           ASRA
         </span>

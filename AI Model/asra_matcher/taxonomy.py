@@ -34,6 +34,20 @@ class DeviceTier(str, Enum):
     OTHER = "OTHER"  # Doesn't fit the three tiers
 
 
+class OSChoice(str, Enum):
+    """Q1 — operating system the applicant wants on the computer.
+
+    This is not a column in the inventory sheet (refurbished PCs are imaged on
+    distribution), so it acts as a *capability* filter: Ubuntu runs on almost
+    anything, Windows 11 needs a recent-enough CPU + adequate RAM, and "both"
+    must clear the Windows bar (the stricter of the two).
+    """
+
+    UBUNTU = "ubuntu"
+    WINDOWS = "windows"
+    BOTH = "both"
+
+
 class ItemType(str, Enum):
     """High-level device type."""
 
